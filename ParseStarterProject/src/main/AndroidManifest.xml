@@ -35,6 +35,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
         <activity
             android:name=".Starter"
             android:label="@string/title_activity_starter" >
@@ -44,10 +46,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+
         <activity
             android:name=".AuthenticateActivity"
             android:label="@string/title_activity_authenticate" >
         </activity>
+
+        <activity
+            android:name=".Welcome"
+            android:label="@string/welcome" >
+        </activity>
+
+
     </application>
 
 </manifest>

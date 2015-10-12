@@ -25,7 +25,7 @@ public class DoItParse extends Application {
     Parse.enableLocalDatastore(this);
 
     // Add your initialization code here
-    Parse.initialize(this, "wZRAPJETqif5DQnOfJWeTaeDEiC1ZR30JHOO9Nke", "NEq6AXeu5VXmJbSZBxc9A8Mnnb0ebBfu2yfyqR3s");
+    Parse.initialize(this, "E6nml5ahUWOBUMy56TFFOQvqjtcCAhsSGRr0L4gD", "7GMmQNtklSapF6cJO1sxkDPjTCdGj5X62Z2nAmR9");
 
     //ParseUser.enableAutomaticUser();
     ParseACL defaultACL = new ParseACL();
