@@ -1,6 +1,7 @@
 package com.parse.starter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,8 +13,8 @@ import com.parse.ParseUser;
 public class Welcome extends Activity {
 
     // Declare Variable
-    Button logout;
-
+    Button mlogout;
+    Button mBrowse;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,15 +46,25 @@ public class Welcome extends Activity {
         txtuser.setText("You are logged in as " + struser);
 
         // Locate Button in welcome.xml
-        logout = (Button) findViewById(R.id.log_out);
-
+        mlogout = (Button) findViewById(R.id.log_out);
+        mBrowse= (Button) findViewById(R.id.browse);
         // Logout Button Click Listener
-        logout.setOnClickListener(new OnClickListener() {
+        mlogout.setOnClickListener(new OnClickListener() {
 
             public void onClick(View arg0) {
                 // Logout current user
                 ParseUser.logOut();
                 finish();
+            }
+        });
+
+        mBrowse.setOnClickListener(new OnClickListener() {
+
+            public void onClick(View arg0) {
+                // Logout current user
+                Intent goals = new Intent(Welcome.this,ListGoals.class);
+                Welcome.this.startActivity(goals);
+
             }
         });
     }

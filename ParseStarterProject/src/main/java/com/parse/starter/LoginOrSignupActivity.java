@@ -50,8 +50,8 @@ protected EditText mEmail;
                                         Intent intent = new Intent(LoginOrSignupActivity.this, Starter.class);
                                         intent.putExtra(TYPE, LOGIN);
                                         //startActivity(intent);
-
-                                        ParseUser.logInInBackground(mEmail.getText().toString(), mPass.getText().toString(),
+                                          //mEmail.getText().toString()    mPass.getText().toString()
+                                        ParseUser.logInInBackground("a@b.com", "1234567",
                                                 new LogInCallback() {
                                                   public void done(ParseUser user, ParseException e) {
                                                     if (user != null) {

@@ -58,6 +58,10 @@
             android:name=".Welcome"
             android:label="@string/welcome" >
         </activity>
+        <activity
+            android:name=".ListGoals"
+            android:label="@string/welcome" >
+        </activity>
 
 
     </application>

@@ -50,4 +50,13 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="browse "
+        android:id="@+id/browse"
+        android:layout_above="@+id/log_out"
+        android:layout_alignLeft="@+id/welcome"
+        android:layout_alignStart="@+id/welcome" />
+
 </RelativeLayout>
