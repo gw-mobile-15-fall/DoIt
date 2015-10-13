@@ -93,6 +93,7 @@ protected EditText mEmail;
                         ParseUser user = new ParseUser();
                         user.setUsername(usernametxt);
                         user.setPassword(passwordtxt);
+
                         user.signUpInBackground(new SignUpCallback() {
                             public void done(ParseException e) {
                                 if (e == null) {

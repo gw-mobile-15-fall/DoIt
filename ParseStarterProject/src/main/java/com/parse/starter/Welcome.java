@@ -29,7 +29,19 @@ public class Welcome extends Activity {
         // Locate TextView in welcome.xml
         TextView txtuser = (TextView) findViewById(R.id.welcome);
 
+
+       /* ParseObject Java = new ParseObject("Goals");
+        ParseObject pizza = new ParseObject("Goals");
+        Java.put("name","How to learn Android Dev!?");
+        Java.addAllUnique("steps", Arrays.asList("Install Eclipse from: https://eclipse.org/downloads/", "watch this video: bla bla"));
+        pizza.put("name","How to cook pizza!?");
+        pizza.addAllUnique("steps", Arrays.asList("Go to Walmart!", "buy frozen pizza","cook it! Easy!"));
+        Java.saveInBackground();
+        pizza.saveInBackground();
+        */
         // Set the currentUser String into TextView
+
+        txtuser.setText("You are logged in as " + struser);
         txtuser.setText("You are logged in as " + struser);
 
         // Locate Button in welcome.xml
