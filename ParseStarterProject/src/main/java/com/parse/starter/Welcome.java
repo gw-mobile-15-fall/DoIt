@@ -1,6 +1,7 @@
 package com.parse.starter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,7 +29,8 @@ public class Welcome extends Activity {
     ListView mGoalsList;
     String goal;
     List mUserGoals;
-    private ArrayAdapter<String> listAdapter ;
+    Context pointer;
+    private ArrayAdapter listAdapter ;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,7 @@ public class Welcome extends Activity {
         // Locate TextView in welcome.xml
         TextView txtuser = (TextView) findViewById(R.id.welcome);
         mGoalsList = (ListView) findViewById(R.id.goals_list);
-        List goals = getUserGoals();
+        List goals = getUserGoals(this);
 
 
        /* ParseObject Java = new ParseObject("Goals");
@@ -94,6 +96,8 @@ public class Welcome extends Activity {
                 String result=data.getStringExtra("goal");
                 Log.d("I got goal: " , result);
                 addGoal(result);
+                listAdapter.add(result);
+                listAdapter.notifyDataSetChanged();;
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
@@ -130,7 +134,8 @@ public class Welcome extends Activity {
                         obj.addAllUnique("GoalsList", l);
                         obj.saveInBackground();
                         Log.d("Added:", ParseUser.getCurrentUser().getUsername() + "  with  " + Welcome.this.goal);
-
+                        mBrowse= (Button) findViewById(R.id.browse);
+                        mBrowse.setText(l.size()+"");
                     }
                 } else {
 
@@ -143,7 +148,8 @@ public class Welcome extends Activity {
         Log.d("Added:", ParseUser.getCurrentUser().getUsername() + "//  with  //" + Welcome.this.goal);
 
     }
-    public List getUserGoals(){
+    public List getUserGoals(Context p){
+        pointer = p;
         List l;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("UsersGoals");
         query.whereEqualTo("userName", ParseUser.getCurrentUser().getUsername());
@@ -153,9 +159,23 @@ public class Welcome extends Activity {
                     ParseObject obj = userList.get(0);
 
                     mUserGoals = (List) obj.get("GoalsList");
-                    Log.d("found user goals", mUserGoals.size() + "");
-                    mBrowse= (Button) findViewById(R.id.browse);
-                    mBrowse.setText(mUserGoals.size() +"");
+                    Log.d("found user goals", mUserGoals.size() +"------");
+                   mBrowse= (Button) findViewById(R.id.browse);
+                    mBrowse.setText(mUserGoals.size()+"" );
+                    Welcome.this. mGoalsList = (ListView) findViewById(R.id.Goals_list);
+
+                    listAdapter = new ArrayAdapter( Welcome.this, R.layout.group_item,R.id.usergoal, mUserGoals);
+                    if (listAdapter == null)
+                        Log.d("listAdapter == null","");
+                    if(Welcome.this. mGoalsList == null )
+                        Log.d("mGoalsList == null","");;
+
+
+                    Welcome.this.mGoalsList.setAdapter(listAdapter);
+                    Welcome.this.mGoalsList.setTextFilterEnabled(true);
+
+                    //setContentView(R.layout.activity_welcome);
+
 
                 } else {
                     Log.d("score", "Error: " + e.getMessage());

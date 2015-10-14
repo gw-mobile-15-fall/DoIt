@@ -86,7 +86,7 @@ boolean flag = true;
                         if (!groupList.contains(catList.get(i).getString("Category")))
                             groupList.add(catList.get(i).getString("Category"));
 
-                        
+
                         if(catList.get(i).getString("Category").equals("IT")) {
                             it.add(catList.get(i).getString("name"));
                             Log.d("Added to IT", catList.get(i).getString("name"));

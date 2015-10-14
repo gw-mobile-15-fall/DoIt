@@ -115,7 +115,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.group_item,
                     null);
         }
-        TextView item = (TextView) convertView.findViewById(R.id.goal);
+        TextView item = (TextView) convertView.findViewById(R.id.usergoal);
         item.setTypeface(null, Typeface.BOLD);
         item.setText(laptopName);
         return convertView;
