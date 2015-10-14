@@ -48,15 +48,26 @@
         android:text="@string/LogOut"
         android:id="@+id/log_out"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="browse "
         android:id="@+id/browse"
-        android:layout_above="@+id/log_out"
-        android:layout_alignLeft="@+id/welcome"
-        android:layout_alignStart="@+id/welcome" />
+        android:layout_alignTop="@+id/log_out"
+        android:layout_toEndOf="@+id/welcome"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/welcome"
+        android:textSize="12dp" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Goals_list"
+        android:layout_below="@+id/welcome"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/log_out" />
 
 </RelativeLayout>

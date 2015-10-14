@@ -1,6 +1,7 @@
 package com.parse.starter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -56,9 +57,15 @@ boolean flag = true;
                                             int groupPosition, int childPosition, long id) {
                     final String selected = (String) expListAdapter.getChild(
                             groupPosition, childPosition);
-                    Toast.makeText(getBaseContext(), selected, Toast.LENGTH_LONG)
+                    Toast.makeText(getBaseContext(), selected+"**", Toast.LENGTH_LONG)
                             .show();
 
+
+
+                    Intent toWelcome = new Intent();
+                    toWelcome.putExtra("goal",selected);
+                    setResult(RESULT_OK, toWelcome);
+                    finish();
                     return true;
                 }
             });

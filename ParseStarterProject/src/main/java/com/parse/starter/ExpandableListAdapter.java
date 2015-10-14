@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -61,7 +62,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                             public void onClick(DialogInterface dialog, int id) {
                                 List<String> child =
                                         laptopCollections.get(laptops.get(groupPosition));
-                                child.remove(childPosition);
+                                child.get(childPosition);
                                 notifyDataSetChanged();
                             }
                         });
@@ -81,7 +82,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     public int getChildrenCount(int groupPosition) {
-        return laptopCollections.get(laptops.get(groupPosition)).size();
+
+        if( laptops == null )
+            Log.d("Null is","labtop");
+        if(laptopCollections == null)
+            Log.d("Null is","laptopCollections");
+        Log.d("#######", (laptops.get(groupPosition)).toString());
+
+        Log.d("#######",laptopCollections.get(laptops.get(groupPosition)).toString());
+       return laptopCollections.get(laptops.get(groupPosition)).size();
+       // return 1;
     }
 
     public Object getGroup(int groupPosition) {
