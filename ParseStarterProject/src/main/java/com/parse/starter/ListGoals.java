@@ -10,8 +10,9 @@ import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.*;
+import com.parse.ParseQuery;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -26,12 +27,14 @@ public class ListGoals extends Activity{
 
         List<String> groupList;
         List<String> childList;
-        Map<String, List<String>> goalsCollection;
+        Map<String, List<String>> goalsCollection ;
         ExpandableListView expListView;
     List<String> travel = new LinkedList<String>();
     List<String> it = new LinkedList<String>();
     List<String> cook = new LinkedList<String>();
-        @Override
+//    goalsCollection = new LinkedHashMap<String, List<String>>();
+boolean flag = true;
+    @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.list_goals);
@@ -65,23 +68,38 @@ public class ListGoals extends Activity{
         groupList = new ArrayList<String>();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Goals");
         query.whereNotEqualTo("Category", "");
+        Log.d("will request", "Category ");
+
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> catList, ParseException e) {
                 if (e == null) {
+                    Log.d("ParseException", "null ");
+
                     for (int i = 0; i < catList.size(); i++) {
                         if (!groupList.contains(catList.get(i).getString("Category")))
                             groupList.add(catList.get(i).getString("Category"));
-                        if(catList.get(i).getString("Category").equals("IT"))
+                        if(catList.get(i).getString("Category").equals("IT")) {
                             it.add(catList.get(i).getString("name"));
-                        else if(catList.get(i).getString("Category").equals("Travel"))
+                            Log.d("Added to IT", catList.get(i).getString("name"));
+                        }
+                        else if(catList.get(i).getString("Category").equals("Travel")) {
                             travel.add(catList.get(i).getString("name"));
-                        else  if(catList.get(i).getString("Category").equals("Cook"))
+                            Log.d("Added to travel", catList.get(i).getString("name"));
+
+                        }
+                        else  if(catList.get(i).getString("Category").equals("Cook")) {
+
+
                             cook.add(catList.get(i).getString("name"));
+                            Log.d("Added to Cook", catList.get(i).getString("name"));
+                        }
                     }
+                   // createCollection();
                     Log.d("********", "");
-                    Log.d("score", "Retrieved " + catList.size() + " scores");
+                    Log.d("score", "Retrieved " + groupList.size() + " scores");
+                    flag = false;
                 } else {
-                    Log.d("score", "Error: ");
+                    Log.d("############", "Error: ");
                 }
             }
         });
@@ -91,25 +109,48 @@ public class ListGoals extends Activity{
     private void createCollection() {
         // preparing laptops collection(child)
 
+        Log.d("********", " start grou :" + groupList.size());
+        groupList.add("Cook");
+        groupList.add("IT");
+        groupList.add("Travel");
+        cook.add("pizaa");
+        travel.add("Paris");
+        travel.add("NY");
+        travel.add("LA");
+cook.add("burger");
+        it.add("iOS");
+        it.add("Android");
 
         goalsCollection = new LinkedHashMap<String, List<String>>();
 
         for (String Goal : groupList) {
             if (Goal.equals("Cook")) {
-                loadChild(cook);
-            } else if (Goal.equals("IT"))
-                loadChild(it);
-            else if (Goal.equals("Travel"))
-                loadChild(travel);
+                Log.d("********", " start Cook::::");
 
-            goalsCollection.put(Goal, childList);
+                loadChild(cook);
+                goalsCollection.put(Goal, childList);
+            } else if (Goal.equals("IT")) {
+
+                Log.d("********", " start IT::::");
+
+                loadChild(it);
+                goalsCollection.put(Goal, childList);
+            }
+            else if (Goal.equals("Travel")) {
+                loadChild(travel);
+                goalsCollection.put(Goal, childList);
+            }
+
         }
+
+        Log.d("goalsCollection size ", Integer.toString(goalsCollection.get("Cook").size()));
     }
 
     private void loadChild(List<String> laptopModels) {
         childList = new ArrayList<String>();
         for (String model : laptopModels)
             childList.add(model);
+
     }
 
     private void setGroupIndicatorToRight() {
