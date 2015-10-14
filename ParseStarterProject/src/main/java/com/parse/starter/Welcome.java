@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -19,6 +21,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Welcome extends Activity {
@@ -94,11 +97,18 @@ public class Welcome extends Activity {
         if (requestCode == 1) {
             if(resultCode == Activity.RESULT_OK){
                 String result=data.getStringExtra("goal");
-                Log.d("I got goal: " , result);
+                Log.d("I got goal: ", result);
                 addGoal(result);
-                listAdapter.add(result);
-                listAdapter.notifyDataSetChanged();;
-            }
+                if(listAdapter == null) {
+
+                }
+                else {
+                    listAdapter.add(result);
+
+                    listAdapter.notifyDataSetChanged();
+
+                }
+                }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
             }
@@ -119,8 +129,6 @@ public class Welcome extends Activity {
                     if (userList.size() == 0) {
                         ParseObject obj = new ParseObject("UsersGoals");
                         obj.put("user", ParseUser.getCurrentUser());
-
-
                         obj.put("userName", ParseUser.getCurrentUser().getUsername());
                         obj.addAllUnique("GoalsList", Arrays.asList(Welcome.this.goal));
                         obj.saveInBackground();
@@ -128,26 +136,62 @@ public class Welcome extends Activity {
 
                     } else {
                         ParseObject obj = userList.get(0);
-                        List l = (List) obj.get("GoalsList");
-                        Log.d("found user goals", l.size() + "");
-                        l.add(Welcome.this.goal);
-                        obj.addAllUnique("GoalsList", l);
+                        mUserGoals = (List) obj.get("GoalsList");
+                        if(mUserGoals != null)
+                        Log.d("found user goals", mUserGoals.size() + "");
+                        else {
+                            Log.d("found user goals", "with 0 goals");
+                            mUserGoals = new LinkedList();
+
+
+                        }
+                        mUserGoals.add(Welcome.this.goal);
+                        mUserGoals.add("0");
+                        obj.addAllUnique("GoalsList", mUserGoals);
                         obj.saveInBackground();
                         Log.d("Added:", ParseUser.getCurrentUser().getUsername() + "  with  " + Welcome.this.goal);
                         mBrowse= (Button) findViewById(R.id.browse);
-                        mBrowse.setText(l.size()+"");
+                        mBrowse.setText(mUserGoals.size() + "");
+
+                        listAdapter = new ArrayAdapter(Welcome.this, R.layout.group_item, R.id.usergoal, mUserGoals);
+                        mGoalsList = (ListView) findViewById(R.id.Goals_list);
+                        if(listAdapter == null) {
+                            Log.d("listAdapter == null","");
+                        }
+                        if(mGoalsList == null )
+                            Log.d("mGoalsList == null ","");
+
+                        else {
+                        Welcome.this.mGoalsList.setAdapter(listAdapter);
+                        Welcome.this.mGoalsList.setTextFilterEnabled(true);
+                            Welcome.this.mGoalsList.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    String item = (String) Welcome.this.mGoalsList.getItemAtPosition(position);
+                                    Toast.makeText(Welcome.this, "You selected : " + item, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+
+
                     }
-                } else {
+                }
+
+
+
+            }
+                else {
 
                     Log.d("score", "Error: " + e.getMessage());
                 }
+                Log.d("Added:", ParseUser.getCurrentUser().getUsername() + "//  with  //" + Welcome.this.goal);
+
             }
-        });
 
 
-        Log.d("Added:", ParseUser.getCurrentUser().getUsername() + "//  with  //" + Welcome.this.goal);
 
-    }
+    });
+        }
     public List getUserGoals(Context p){
         pointer = p;
         List l;
@@ -159,24 +203,34 @@ public class Welcome extends Activity {
                     ParseObject obj = userList.get(0);
 
                     mUserGoals = (List) obj.get("GoalsList");
-                    Log.d("found user goals", mUserGoals.size() +"------");
-                   mBrowse= (Button) findViewById(R.id.browse);
-                    mBrowse.setText(mUserGoals.size()+"" );
-                    Welcome.this. mGoalsList = (ListView) findViewById(R.id.Goals_list);
+                    if (mUserGoals != null) {
+                        Log.d("found user goals", mUserGoals.size() + "------");
+                        if (mUserGoals.size() != 0) {
+                            mBrowse = (Button) findViewById(R.id.browse);
+                            mBrowse.setText(mUserGoals.size() + "");
+                            Welcome.this.mGoalsList = (ListView) findViewById(R.id.Goals_list);
 
-                    listAdapter = new ArrayAdapter( Welcome.this, R.layout.group_item,R.id.usergoal, mUserGoals);
-                    if (listAdapter == null)
-                        Log.d("listAdapter == null","");
-                    if(Welcome.this. mGoalsList == null )
-                        Log.d("mGoalsList == null","");;
-
-
-                    Welcome.this.mGoalsList.setAdapter(listAdapter);
-                    Welcome.this.mGoalsList.setTextFilterEnabled(true);
-
-                    //setContentView(R.layout.activity_welcome);
+                            listAdapter = new ArrayAdapter(Welcome.this, R.layout.group_item, R.id.usergoal, mUserGoals);
+                            if (listAdapter == null)
+                                Log.d("listAdapter == null", "");
+                            if (Welcome.this.mGoalsList == null)
+                                Log.d("mGoalsList == null", "");
+                            ;
 
 
+                            Welcome.this.mGoalsList.setAdapter(listAdapter);
+                            Welcome.this.mGoalsList.setTextFilterEnabled(true);
+                            Welcome.this.mGoalsList.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    String item = (String) Welcome.this.mGoalsList.getItemAtPosition(position);
+                                    Toast.makeText(Welcome.this, "You selected : " + item, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            //setContentView(R.layout.activity_welcome);
+                        }
+
+                    }
                 } else {
                     Log.d("score", "Error: " + e.getMessage());
 
