@@ -42,7 +42,7 @@ boolean flag = true;
 
             createGroupList();
 
-            createCollection();
+           /* createCollection();
 
             expListView = (ExpandableListView) findViewById(R.id.goals_list);
             final ExpandableListAdapter expListAdapter = new ExpandableListAdapter(
@@ -68,7 +68,7 @@ boolean flag = true;
                     finish();
                     return true;
                 }
-            });
+            });*/
         }
 
     private void createGroupList() {
@@ -85,6 +85,8 @@ boolean flag = true;
                     for (int i = 0; i < catList.size(); i++) {
                         if (!groupList.contains(catList.get(i).getString("Category")))
                             groupList.add(catList.get(i).getString("Category"));
+
+                        
                         if(catList.get(i).getString("Category").equals("IT")) {
                             it.add(catList.get(i).getString("name"));
                             Log.d("Added to IT", catList.get(i).getString("name"));
@@ -104,6 +106,47 @@ boolean flag = true;
                    // createCollection();
                     Log.d("********", "");
                     Log.d("score", "Retrieved " + groupList.size() + " scores");
+
+
+                      createCollection();
+
+            expListView = (ExpandableListView) findViewById(R.id.goals_list);
+            final ExpandableListAdapter expListAdapter = new ExpandableListAdapter(
+                    ListGoals.this, groupList, goalsCollection);
+            expListView.setAdapter(expListAdapter);
+
+            //setGroupIndicatorToRight();
+
+            expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+                public boolean onChildClick(ExpandableListView parent, View v,
+                                            int groupPosition, int childPosition, long id) {
+                    final String selected = (String) expListAdapter.getChild(
+                            groupPosition, childPosition);
+                    Toast.makeText(getBaseContext(), selected + "**", Toast.LENGTH_LONG)
+                            .show();
+
+
+
+                    Intent toWelcome = new Intent();
+                    toWelcome.putExtra("goal",selected);
+                    setResult(RESULT_OK, toWelcome);
+                    finish();
+                    return true;
+                }
+            });
+
+
+
+
+
+
+
+
+
+
+
+
                     flag = false;
                 } else {
                     Log.d("############", "Error: ");
@@ -117,7 +160,7 @@ boolean flag = true;
         // preparing laptops collection(child)
 
         Log.d("********", " start grou :" + groupList.size());
-        groupList.add("Cook");
+       /* groupList.add("Cook");
         groupList.add("IT");
         groupList.add("Travel");
         cook.add("pizaa");
@@ -127,6 +170,7 @@ boolean flag = true;
 cook.add("burger");
         it.add("iOS");
         it.add("Android");
+        */
 
         goalsCollection = new LinkedHashMap<String, List<String>>();
 

@@ -154,6 +154,8 @@ public class Welcome extends Activity {
 
                     mUserGoals = (List) obj.get("GoalsList");
                     Log.d("found user goals", mUserGoals.size() + "");
+                    mBrowse= (Button) findViewById(R.id.browse);
+                    mBrowse.setText(mUserGoals.size() +"");
 
                 } else {
                     Log.d("score", "Error: " + e.getMessage());
