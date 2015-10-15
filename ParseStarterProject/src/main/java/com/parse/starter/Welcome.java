@@ -169,6 +169,14 @@ public class Welcome extends Activity {
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     String item = (String) Welcome.this.mGoalsList.getItemAtPosition(position);
                                     Toast.makeText(Welcome.this, "You selected : " + item, Toast.LENGTH_SHORT).show();
+                                    Intent i = new Intent(Welcome.this,GoalDeatils.class);
+                                    i.putExtra("goal", item);
+                                    i.putExtra("progress",mUserGoals.get (mUserGoals.indexOf(item) +1).toString() );
+                                    Log.d("goal", item);
+                                    Log.d("progress", mUserGoals.get(mUserGoals.indexOf(item) + 1).toString());
+
+                                    startActivity(i);
+
                                 }
                             });
 
@@ -225,8 +233,22 @@ public class Welcome extends Activity {
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     String item = (String) Welcome.this.mGoalsList.getItemAtPosition(position);
                                     Toast.makeText(Welcome.this, "You selected : " + item, Toast.LENGTH_SHORT).show();
+
+                                    Intent i = new Intent(Welcome.this,GoalDeatils.class);
+                                    i.putExtra("goal", item);
+                                    i.putExtra("progress",mUserGoals.get (mUserGoals.indexOf(item) +1).toString() );
+                                    Log.d("goal", item);
+                                    Log.d("progress", mUserGoals.get(mUserGoals.indexOf(item) + 1).toString());
+
+                                    startActivity(i);
+
+
+
+
                                 }
                             });
+
+
                             //setContentView(R.layout.activity_welcome);
                         }
 
