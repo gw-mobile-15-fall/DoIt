@@ -47,7 +47,7 @@ protected EditText mEmail;
     mLoginButton.setOnClickListener(new View.OnClickListener() {
                                       @Override
                                       public void onClick(View v) {
-                                        Intent intent = new Intent(LoginOrSignupActivity.this, Starter.class);
+                                        Intent intent = new Intent(LoginOrSignupActivity.this, StarterActivity.class);
                                         intent.putExtra(TYPE, LOGIN);
                                         //startActivity(intent);
                                           //mEmail.getText().toString()    mPass.getText().toString()
@@ -55,10 +55,10 @@ protected EditText mEmail;
                                                 new LogInCallback() {
                                                   public void done(ParseUser user, ParseException e) {
                                                     if (user != null) {
-                                                      // If user exist and authenticated, send user to Welcome.class
+                                                      // If user exist and authenticated, send user to ProfileActivity.class
                                                       Intent intent = new Intent(
                                                               LoginOrSignupActivity.this,
-                                                              Welcome.class);
+                                                              ProfileActivity.class);
                                                       startActivity(intent);
                                                       Toast.makeText(getApplicationContext(),
                                                               "Successfully Logged in",

@@ -25,4 +25,11 @@
     <string name="create_account">CREATE ACCOUNT</string>
     <string name="title_activity_authenticate">AuthenticateActivity</string>
     <string name="LogOut">LogOut</string>
+    <string name="jon_doe">John Doe</string>
+    <string name="user_bio">placeholder test for the user bio goes here. They can write a breif discription of themselves</string>
+    <string name="badges">Badges</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="number">10</string>
+    <string name="Test">Test list item</string>
 </resources>

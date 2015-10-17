@@ -4,4 +4,5 @@
     <color name="bg_color">#FBB03B</color>
     <color name="textColor">#ffffff</color>
     <color name="dark_orange">#F7931E</color>
+    <color name="transparent_white">#80ffffff</color>
 </resources>

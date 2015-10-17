@@ -1,16 +1,32 @@
 package com.parse.starter;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class Starter extends AppCompatActivity {
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class StarterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_starter);
+
+
+        // timer to launch login Activity
+        new Timer().schedule(new TimerTask() {
+            public void run() {
+                StarterActivity.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                        startActivity(new Intent(StarterActivity.this, LoginOrSignupActivity.class));
+                    }
+                });
+            }
+        }, 2000);
     }
 
     @Override

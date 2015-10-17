@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Welcome extends Activity {
+public class ProfileActivity extends Activity {
 
     // Declare Variable
     Button mlogout;
@@ -39,7 +39,7 @@ public class Welcome extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Get the view from singleitemview.xml
-        setContentView(R.layout.activity_welcome);
+        setContentView(R.layout.activity_profile);
 
         // Retrieve current user from Parse.com
         ParseUser currentUser = ParseUser.getCurrentUser();
@@ -84,8 +84,8 @@ public class Welcome extends Activity {
 
             public void onClick(View arg0) {
                 // Logout current user
-                Intent goals = new Intent(Welcome.this,ListGoals.class);
-                Welcome.this.startActivityForResult(goals, 1);
+                Intent goals = new Intent(ProfileActivity.this,ListGoals.class);
+                ProfileActivity.this.startActivityForResult(goals, 1);
 
             }
         });
@@ -130,9 +130,9 @@ public class Welcome extends Activity {
                         ParseObject obj = new ParseObject("UsersGoals");
                         obj.put("user", ParseUser.getCurrentUser());
                         obj.put("userName", ParseUser.getCurrentUser().getUsername());
-                        obj.addAllUnique("GoalsList", Arrays.asList(Welcome.this.goal));
+                        obj.addAllUnique("GoalsList", Arrays.asList(ProfileActivity.this.goal));
                         obj.saveInBackground();
-                        Log.d("Added:", ParseUser.getCurrentUser().getUsername() + "  with  " + Welcome.this.goal);
+                        Log.d("Added:", ParseUser.getCurrentUser().getUsername() + "  with  " + ProfileActivity.this.goal);
 
                     } else {
                         ParseObject obj = userList.get(0);
@@ -145,15 +145,15 @@ public class Welcome extends Activity {
 
 
                         }
-                        mUserGoals.add(Welcome.this.goal);
+                        mUserGoals.add(ProfileActivity.this.goal);
                         mUserGoals.add("0");
                         obj.addAllUnique("GoalsList", mUserGoals);
                         obj.saveInBackground();
-                        Log.d("Added:", ParseUser.getCurrentUser().getUsername() + "  with  " + Welcome.this.goal);
+                        Log.d("Added:", ParseUser.getCurrentUser().getUsername() + "  with  " + ProfileActivity.this.goal);
                         mBrowse= (Button) findViewById(R.id.browse);
-                        mBrowse.setText(mUserGoals.size() + "");
+//                        mBrowse.setText(mUserGoals.size() + "");
 
-                        listAdapter = new ArrayAdapter(Welcome.this, R.layout.group_item, R.id.usergoal, mUserGoals);
+                        listAdapter = new ArrayAdapter(ProfileActivity.this, R.layout.group_item, R.id.usergoal, mUserGoals);
                         mGoalsList = (ListView) findViewById(R.id.Goals_list);
                         if(listAdapter == null) {
                             Log.d("listAdapter == null","");
@@ -162,14 +162,14 @@ public class Welcome extends Activity {
                             Log.d("mGoalsList == null ","");
 
                         else {
-                        Welcome.this.mGoalsList.setAdapter(listAdapter);
-                        Welcome.this.mGoalsList.setTextFilterEnabled(true);
-                            Welcome.this.mGoalsList.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+                        ProfileActivity.this.mGoalsList.setAdapter(listAdapter);
+                        ProfileActivity.this.mGoalsList.setTextFilterEnabled(true);
+                            ProfileActivity.this.mGoalsList.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    String item = (String) Welcome.this.mGoalsList.getItemAtPosition(position);
-                                    Toast.makeText(Welcome.this, "You selected : " + item, Toast.LENGTH_SHORT).show();
-                                    Intent i = new Intent(Welcome.this,GoalDeatils.class);
+                                    String item = (String) ProfileActivity.this.mGoalsList.getItemAtPosition(position);
+                                    Toast.makeText(ProfileActivity.this, "You selected : " + item, Toast.LENGTH_SHORT).show();
+                                    Intent i = new Intent(ProfileActivity.this,GoalDeatils.class);
                                     i.putExtra("goal", item);
                                     i.putExtra("progress",mUserGoals.get (mUserGoals.indexOf(item) +1).toString() );
                                     Log.d("goal", item);
@@ -192,7 +192,7 @@ public class Welcome extends Activity {
 
                     Log.d("score", "Error: " + e.getMessage());
                 }
-                Log.d("Added:", ParseUser.getCurrentUser().getUsername() + "//  with  //" + Welcome.this.goal);
+                Log.d("Added:", ParseUser.getCurrentUser().getUsername() + "//  with  //" + ProfileActivity.this.goal);
 
             }
 
@@ -215,26 +215,26 @@ public class Welcome extends Activity {
                         Log.d("found user goals", mUserGoals.size() + "------");
                         if (mUserGoals.size() != 0) {
                             mBrowse = (Button) findViewById(R.id.browse);
-                            mBrowse.setText(mUserGoals.size() + "");
-                            Welcome.this.mGoalsList = (ListView) findViewById(R.id.Goals_list);
+//                            mBrowse.setText(mUserGoals.size() + "");
+                            ProfileActivity.this.mGoalsList = (ListView) findViewById(R.id.Goals_list);
 
-                            listAdapter = new ArrayAdapter(Welcome.this, R.layout.group_item, R.id.usergoal, mUserGoals);
+                            listAdapter = new ArrayAdapter(ProfileActivity.this, R.layout.group_item, R.id.usergoal, mUserGoals);
                             if (listAdapter == null)
                                 Log.d("listAdapter == null", "");
-                            if (Welcome.this.mGoalsList == null)
+                            if (ProfileActivity.this.mGoalsList == null)
                                 Log.d("mGoalsList == null", "");
                             ;
 
 
-                            Welcome.this.mGoalsList.setAdapter(listAdapter);
-                            Welcome.this.mGoalsList.setTextFilterEnabled(true);
-                            Welcome.this.mGoalsList.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+                            ProfileActivity.this.mGoalsList.setAdapter(listAdapter);
+                            ProfileActivity.this.mGoalsList.setTextFilterEnabled(true);
+                            ProfileActivity.this.mGoalsList.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    String item = (String) Welcome.this.mGoalsList.getItemAtPosition(position);
-                                    Toast.makeText(Welcome.this, "You selected : " + item, Toast.LENGTH_SHORT).show();
+                                    String item = (String) ProfileActivity.this.mGoalsList.getItemAtPosition(position);
+                                    Toast.makeText(ProfileActivity.this, "You selected : " + item, Toast.LENGTH_SHORT).show();
 
-                                    Intent i = new Intent(Welcome.this,GoalDeatils.class);
+                                    Intent i = new Intent(ProfileActivity.this,GoalDeatils.class);
                                     i.putExtra("goal", item);
                                     i.putExtra("progress",mUserGoals.get (mUserGoals.indexOf(item) +1).toString() );
                                     Log.d("goal", item);
@@ -249,7 +249,7 @@ public class Welcome extends Activity {
                             });
 
 
-                            //setContentView(R.layout.activity_welcome);
+                            //setContentView(R.layout.activity_profile);
                         }
 
                     }

@@ -2,46 +2,46 @@
 <items version="2" >
 
     <item
-        jar="/Users/Toogz/.gradle/caches/modules-2/files-2.1/com.parse/parse-android/1.10.2/2eaa8b8ca97c915eab3883bab40e15611e5e0393/parse-android-1.10.2.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="2eaa8b8ca97c915eab3883bab40e15611e5e0393">
-        <dex dex="/Users/Toogz/Documents/GitHub/Doit/ParseStarterProject/build/intermediates/pre-dexed/debug/parse-android-1.10.2-54347cf3d18698c680df9fe4ff4bb26c3b74c7a2.jar" />
-    </item>
-    <item
         jar="/Users/Toogz/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.0/support-annotations-22.2.0.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
-        <dex dex="/Users/Toogz/Documents/GitHub/Doit/ParseStarterProject/build/intermediates/pre-dexed/debug/support-annotations-22.2.0-4c09518ea07e40bd292f40d24c8022870454715c.jar" />
+        <dex dex="/Users/Toogz/Documents/GitHub/DoItGithub/ParseStarterProject/build/intermediates/pre-dexed/debug/support-annotations-22.2.0-4c09518ea07e40bd292f40d24c8022870454715c.jar" />
     </item>
     <item
-        jar="/Users/Toogz/Documents/GitHub/Doit/ParseStarterProject/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/classes.jar"
+        jar="/Users/Toogz/Documents/GitHub/DoItGithub/ParseStarterProject/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
+        <dex dex="/Users/Toogz/Documents/GitHub/DoItGithub/ParseStarterProject/build/intermediates/pre-dexed/debug/classes-a1d1e77289812a439080e2a14f4a25dede53528c.jar" />
+    </item>
+    <item
+        jar="/Users/Toogz/.gradle/caches/modules-2/files-2.1/com.parse/parse-android/1.10.2/2eaa8b8ca97c915eab3883bab40e15611e5e0393/parse-android-1.10.2.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="2eaa8b8ca97c915eab3883bab40e15611e5e0393">
+        <dex dex="/Users/Toogz/Documents/GitHub/DoItGithub/ParseStarterProject/build/intermediates/pre-dexed/debug/parse-android-1.10.2-54347cf3d18698c680df9fe4ff4bb26c3b74c7a2.jar" />
+    </item>
+    <item
+        jar="/Users/Toogz/Documents/GitHub/DoItGithub/ParseStarterProject/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/classes.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
-        <dex dex="/Users/Toogz/Documents/GitHub/Doit/ParseStarterProject/build/intermediates/pre-dexed/debug/classes-2c017f86a371738a5baa467224c177a3adc43cbc.jar" />
+        <dex dex="/Users/Toogz/Documents/GitHub/DoItGithub/ParseStarterProject/build/intermediates/pre-dexed/debug/classes-9e3a201471a2a2f08869e284ddd2cec204f53e48.jar" />
     </item>
     <item
         jar="/Users/Toogz/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-android/1.2.1/44780c2cf98f6a3cf4e77f1234d644758b329201/bolts-android-1.2.1.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="44780c2cf98f6a3cf4e77f1234d644758b329201">
-        <dex dex="/Users/Toogz/Documents/GitHub/Doit/ParseStarterProject/build/intermediates/pre-dexed/debug/bolts-android-1.2.1-418d77ddf1452cb887c7e6e73bedacb7e76cf750.jar" />
+        <dex dex="/Users/Toogz/Documents/GitHub/DoItGithub/ParseStarterProject/build/intermediates/pre-dexed/debug/bolts-android-1.2.1-418d77ddf1452cb887c7e6e73bedacb7e76cf750.jar" />
     </item>
     <item
-        jar="/Users/Toogz/Documents/GitHub/Doit/ParseStarterProject/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
-        <dex dex="/Users/Toogz/Documents/GitHub/Doit/ParseStarterProject/build/intermediates/pre-dexed/debug/classes-5d119ed57576f5a54c5dad58d1e7458528f21583.jar" />
-    </item>
-    <item
-        jar="/Users/Toogz/Documents/GitHub/Doit/ParseStarterProject/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/libs/internal_impl-22.2.0.jar"
+        jar="/Users/Toogz/Documents/GitHub/DoItGithub/ParseStarterProject/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/libs/internal_impl-22.2.0.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
-        <dex dex="/Users/Toogz/Documents/GitHub/Doit/ParseStarterProject/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-120c6cbc1f91b6830e2722db87dab955d7f360d8.jar" />
+        <dex dex="/Users/Toogz/Documents/GitHub/DoItGithub/ParseStarterProject/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-cff1afc06a1b738425abef4bb1abcb96134df331.jar" />
     </item>
 
 </items>
