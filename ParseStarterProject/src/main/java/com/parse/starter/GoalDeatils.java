@@ -27,9 +27,11 @@ public class GoalDeatils extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent goalIntent = getIntent();
+
         goal = goalIntent.getStringExtra("goal");
         progress = Integer.parseInt(goalIntent.getStringExtra("progress"));
         setContentView(R.layout.goal_details);
+
         pBar = (ProgressBar) findViewById(R.id.progressBar);
         goalTitle =  (TextView)findViewById(R.id.goal_title);
         nextStep=  (TextView)findViewById(R.id.nextStepTitle);
