@@ -32,4 +32,8 @@
     <string name="following">Following</string>
     <string name="number">10</string>
     <string name="Test">Test list item</string>
+    <string name="Do_it_select_goal">DO IT. SELECT A GOAL</string>
+    <string name="current_step">Current task:</string>
+    <string name="last_completed_task">Last completed:</string>
+    <string name="twenty_perccent">20 %</string>
 </resources>
