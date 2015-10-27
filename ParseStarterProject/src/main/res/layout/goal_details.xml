@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
 
-    android:background="@color/bg_color"
+    android:background="@color/textColor"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
@@ -11,35 +11,52 @@
     android:layout_height="match_parent"
     android:weightSum="1">
 
-    <ProgressBar
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="215dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
-        android:max="10"
-        android:layout_gravity="center_horizontal" />
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
+        android:textColor="@color/dark_orange"
+        android:textStyle="bold"
+        android:layout_marginTop="40dp"
         android:id="@+id/goal_title"
         android:layout_gravity="center_horizontal" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Next Step is:"
+        android:textColor="@color/dark_orange"
+        android:textStyle="normal"
+        android:text="@string/current_step"
         android:id="@+id/nextStepTitle" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
+        android:textColor="@color/dark_orange"
+        android:textStyle="normal"
+        android:text="@string/last_completed_task"
         android:id="@+id/NextStepText" />
+
+
+    <ProgressBar
+        android:progressDrawable="@drawable/circular_progress_bar"
+        android:background="@drawable/circle_shape"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="90dp"
+        android:id="@+id/progressBar"
+        android:max="10"
+        android:layout_gravity="center_horizontal" />
 
 
 </LinearLayout>

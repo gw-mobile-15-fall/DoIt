@@ -8,16 +8,16 @@
         android:id="@+id/goal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:paddingLeft="25dp" />
+        android:paddingLeft="35dp" />
 
     <ImageView
         android:id="@+id/delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_alignParentRight="true"
-        android:src="@android:drawable/checkbox_on_background"
+        android:layout_marginRight="40dp"
+        android:src="@drawable/code"
         android:contentDescription="@string/app_name"/>
 
 </RelativeLayout>
