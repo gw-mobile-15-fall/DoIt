@@ -12,7 +12,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
     <application
         android:name=".DoItParse"
         android:allowBackup="true"
@@ -63,7 +64,20 @@
             android:name=".GoalDeatils"
             android:label="@string/welcome" >
         </activity>
+        <activity
+            android:name=".SettingActivity"
+            android:label="@string/welcome" >
+        </activity>
+        <activity
+            android:name=".ExploreActivity"
+            android:label="@string/welcome" >
+        </activity>
 
+
+        <activity
+            android:name=".MemberActivity"
+            android:label="@string/welcome" >
+        </activity>
     </application>
 
 </manifest>

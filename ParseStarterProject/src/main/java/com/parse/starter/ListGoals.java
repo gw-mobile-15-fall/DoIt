@@ -14,6 +14,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -127,12 +128,49 @@ boolean flag = true;
                             .show();
 
 
+                    ParseQuery<ParseObject> queryGoal = ParseQuery.getQuery("Goals");
+                    queryGoal.whereEqualTo("name", selected);
+                    Log.d("will request", selected);
 
-                    Intent toWelcome = new Intent();
-                    toWelcome.putExtra("goal",selected);
-                    setResult(RESULT_OK, toWelcome);
-                    finish();
+                    queryGoal.findInBackground(new FindCallback<ParseObject>() {
+                        public void done(List<ParseObject> catList, ParseException e) {
+                            if (e == null) {
+                                Log.d("will add user:", ParseUser.getCurrentUser().get("name").toString());
+                                if (catList.size() > 0) {
+                                    Log.d("catList.size()", catList.size() + "");
+                                    ParseObject goal = catList.get(0);
+                                    goal.addUnique("users", ParseUser.getCurrentUser().get("name").toString());
+                                    // goal.put("CCC",ParseUser.getCurrentUser());
+                                    try {
+                                        goal.save();
+                                        Intent toWelcome = new Intent();
+                                        toWelcome.putExtra("goal", selected);
+                                        setResult(RESULT_OK, toWelcome);
+                                        finish();
+                                        //return true;
+                                    } catch (ParseException e1) {
+                                        e1.printStackTrace();
+                                    }
+
+                                } else {
+                                    Log.d("catList.size() zero:", catList.size() + "");
+                                }
+
+                            } else {
+
+                            }
+
+                        }
+
+                    });
+
+
+                   // Intent toWelcome = new Intent();
+                   // toWelcome.putExtra("goal", selected);
+                  // setResult(RESULT_OK, toWelcome);
+                   // finish();
                     return true;
+
                 }
             });
 

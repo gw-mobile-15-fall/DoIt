@@ -8,8 +8,11 @@
   ~ of patent rights can be found in the PATENTS file in the same directory.
   -->
 <resources>
+    takePhohto
     <string name="parse_app_id">wZRAPJETqif5DQnOfJWeTaeDEiC1ZR30JHOO9Nke</string>
     <string name="parse_client_key">NEq6AXeu5VXmJbSZBxc9A8Mnnb0ebBfu2yfyqR3s</string>
+    <string name="apply">Apply</string>
+    <string name="takePhoto">Take Photo!</string>
 
     <string name="app_name">Do it</string>
     <string name="welcome">Welcome</string>
@@ -36,4 +39,12 @@
     <string name="current_step">Current task:</string>
     <string name="last_completed_task">Last completed:</string>
     <string name="twenty_perccent">20 %</string>
+    <string name="NextStep">Next Step</string>
+    <string name="name">name:</string>
+    <string name="setting">setting</string>
+    <string name="bio"> Bio:</string>
+    <string name="explore"> explore</string>
+    <string name="friends_who_have">Members who have:</string>
+
+
 </resources>
