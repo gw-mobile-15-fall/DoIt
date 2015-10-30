@@ -135,11 +135,11 @@ boolean flag = true;
                     queryGoal.findInBackground(new FindCallback<ParseObject>() {
                         public void done(List<ParseObject> catList, ParseException e) {
                             if (e == null) {
-                                Log.d("will add user:", ParseUser.getCurrentUser().get("name").toString());
+                                Log.d("will add user:", ParseUser.getCurrentUser().getUsername());
                                 if (catList.size() > 0) {
                                     Log.d("catList.size()", catList.size() + "");
                                     ParseObject goal = catList.get(0);
-                                    goal.addUnique("users", ParseUser.getCurrentUser().get("name").toString());
+                                    goal.addUnique("users", ParseUser.getCurrentUser().getUsername());
                                     // goal.put("CCC",ParseUser.getCurrentUser());
                                     try {
                                         goal.save();
@@ -165,7 +165,7 @@ boolean flag = true;
                     });
 
 
-                   // Intent toWelcome = new Intent();
+                    // Intent toWelcome = new Intent();
                    // toWelcome.putExtra("goal", selected);
                   // setResult(RESULT_OK, toWelcome);
                    // finish();

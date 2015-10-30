@@ -23,7 +23,6 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
@@ -64,6 +63,15 @@ public class MemberActivity extends Activity {
         // Retrieve current user from Parse.com
 
         // Convert currentUser into String
+        mlogout = (Button) findViewById(R.id.log_out);
+        mBrowse = (Button) findViewById(R.id.browse);
+        mBrowse.setVisibility(View.GONE);
+        mSetting = (Button) findViewById(R.id.setting);
+        mSetting.setVisibility(View.GONE);
+        name = (TextView) findViewById(R.id.nameText);
+        bio = (TextView) findViewById(R.id.bio);
+        image = (ImageView) findViewById(R.id.userIcon);
+        badges = (TextView) findViewById(R.id.badgestTextNumber);
         memberName = getIntent().getStringExtra("name");
         // Locate TextView in welcome.xml
         txtuser = (TextView) findViewById(R.id.welcome);
@@ -73,8 +81,11 @@ public class MemberActivity extends Activity {
 
         ParseQuery<ParseUser> currentUser = ParseUser.getQuery();
         currentUser.whereEqualTo("name", memberName);
-        mlogout = (Button) findViewById(R.id.log_out);
 
+
+        follower = (TextView) findViewById(R.id.followersTextNumber);
+        following = (TextView) findViewById(R.id.followeingTextNumber);
+        getFollowing();
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Follow");
         query.whereEqualTo("toName", memberName);
         query.whereEqualTo("fromName", ParseUser.getCurrentUser().getUsername().toString());
@@ -94,18 +105,7 @@ public class MemberActivity extends Activity {
 
 
         //  mlogout.setVisibility(View.GONE);
-        mBrowse = (Button) findViewById(R.id.browse);
-        mBrowse.setVisibility(View.GONE);
-        mSetting = (Button) findViewById(R.id.setting);
-        mSetting.setVisibility(View.GONE);
-        name = (TextView) findViewById(R.id.nameText);
-        bio = (TextView) findViewById(R.id.bio);
-        image = (ImageView) findViewById(R.id.userIcon);
-        badges = (TextView) findViewById(R.id.badgestTextNumber);
 
-        follower = (TextView) findViewById(R.id.followersTextNumber);
-        following = (TextView) findViewById(R.id.followeingTextNumber);
-        getFollowing();
         getFollowers();
 
 
@@ -201,71 +201,71 @@ public class MemberActivity extends Activity {
     private List getUserGoals(String name) {
         memberName = name;
         List l;
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("UsersGoals");
+
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("UserWithGoals");
         query.whereEqualTo("userName", memberName);
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> userList, ParseException e) {
-                // JSONObject JSONObject = new JSONObject();
-                // JSONArray JSONArray = new JSONArray();
-                mUserGoals = new LinkedList();
-                if (e == null) {
-                    ParseObject obj = new ParseObject("UsersGoals");
-                    if (userList.size() == 0) {
+        List<ParseObject> userList = null;//;InBackground(new FindCallback<ParseObject>() {
+        try {
+            userList = query.find();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        // public void done(List<ParseObject> userList, ParseException e) {
+        // JSONObject JSONObject = new JSONObject();
+        // JSONArray JSONArray = new JSONArray();
+        mUserGoals = new LinkedList();
+        //     if (e == null) {
+        ParseObject obj = new ParseObject("UserWithGoals");
+        if (userList.size() == 0) {
 
-                        obj.add("userName", memberName);
-                        obj.add("MyList", JSONArray.put(JSONObject));
-                        mUserGoals.add("No_Goals");
-                    } else {
-                        mUserGoals.remove("No_Goals");
-                        obj = userList.get(0);
-                        JSONArray = obj.getJSONArray("MyList");
-                        for (int i = 1; i < JSONArray.length(); i++) {
 
-                            try {
-                                JSONObject = JSONArray.getJSONObject(i);
-                                if (JSONObject.opt("Time End:") == null)
-                                    mUserGoals.add(JSONObject.get("Name:"));
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
-                    }
+            mUserGoals.add("No_Goals");
+        } else {
 
-                    JSONArray = obj.getJSONArray("MyList");
-                    if (JSONArray.length() == 0) {
+            mUserGoals.remove("No_Goals");
 
-                        mUserGoals.add("No_Goals");
-                        Log.e("In if", "ffffffffffffffffff");
-                    }
 
-                    Log.d("found user goals", mUserGoals.size() + "------");
-                    if (mUserGoals.size() != 0) {
-                        mBrowse = (Button) findViewById(R.id.browse);
+            for (int i = 0; i < userList.size(); i++) {
+
+                obj = userList.get(i);
+                mUserGoals.add(obj.get("name"));
+            }
+
+
+
+        }
+
+
+        Log.d("found user goals", mUserGoals.size() + "------");
+        if (mUserGoals.size() != 0) {
+            mBrowse = (Button) findViewById(R.id.browse);
 //                            mBrowse.setText(mUserGoals.size() + "");
-                        MemberActivity.this.mGoalsList = (ListView) findViewById(R.id.Goals_list);
+            MemberActivity.this.mGoalsList = (ListView) findViewById(R.id.Goals_list);
 
-                        listAdapter = new ArrayAdapter(MemberActivity.this, R.layout.group_item, R.id.usergoal, mUserGoals);
-                        if (listAdapter == null)
-                            Log.d("listAdapter == null", "");
-                        if (MemberActivity.this.mGoalsList == null)
-                            Log.d("mGoalsList == null", "");
-                        ;
-                        if (mUserGoals.size() == 1 && mUserGoals.get(0).equals("No_Goals"))
-                            badges.setText("0");
-                        else
-                            badges.setText(mUserGoals.size() + "");
+            listAdapter = new ArrayAdapter(MemberActivity.this, R.layout.group_item, R.id.usergoal, mUserGoals);
+            if (listAdapter == null)
+                Log.d("listAdapter == null", "");
+            if (MemberActivity.this.mGoalsList == null)
+                Log.d("mGoalsList == null", "");
+            ;
+
+            if (mUserGoals.size() == 1 && mUserGoals.get(0).equals("No_Goals"))
+                badges.setText("0");
+            else
+                badges.setText(mUserGoals.size() + "");
 
 
-                        MemberActivity.this.mGoalsList.setAdapter(listAdapter);
+            MemberActivity.this.mGoalsList.setAdapter(listAdapter);
                         MemberActivity.this.mGoalsList.setTextFilterEnabled(true);
 
 
                     }
 
 
-                }
-            }
-        });
+
+
+
 
         return null;
     }

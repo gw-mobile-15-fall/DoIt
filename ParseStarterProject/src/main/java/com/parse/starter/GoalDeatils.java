@@ -41,30 +41,25 @@ public class GoalDeatils extends Activity {
     Button nextStepButton,CameraButton,exploreButton;
     TextView goalTitle,nextStep,NextStepText;
     List GoalSteps;
-    ImageView   mImageView;
+    ImageView   mImageView,timeline;
    org.json.JSONArray JSONArray = new JSONArray();
     JSONObject test = new JSONObject();
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     Calendar calobj = Calendar.getInstance();
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent goalIntent = getIntent();
 
-        try {
-            test = new JSONObject(goalIntent.getStringExtra("object"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
         goal = goalIntent.getStringExtra("goal");
         Log.d("Goa; = ", goal+" ---------------------------");
         progress = Integer.parseInt(goalIntent.getStringExtra("progress"));
 
-        try {
-            Log.d("progrss; = ", test.getString("Progress:"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
         setContentView(R.layout.goal_details);
 
         pBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -75,6 +70,24 @@ public class GoalDeatils extends Activity {
         CameraButton = (Button) findViewById(R.id.CameraButton);
            mImageView = (ImageView) findViewById(R.id.imageView);
         exploreButton = (Button) findViewById(R.id.explorebutton);
+        timeline  = (ImageView) findViewById(R.id.messageIcon);
+
+
+
+
+
+        /*timeline.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+                // Logout current user
+                Intent intent = new Intent(GoalDeatils.this,ExploreActivity.class);
+                intent.putExtra("type","timeline");
+                intent.putExtra("goal",goal);
+                startActivityForResult(intent, 1);
+
+            }
+        });*/
+
 
 
         exploreButton.setOnClickListener(new View.OnClickListener() {
@@ -150,39 +163,28 @@ public class GoalDeatils extends Activity {
             }
         }
         if (resultCode == Activity.RESULT_CANCELED) {
-            //Write your code if there's no result
         }
     }
 
     public void saveProgress(final boolean finished) {
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("UsersGoals");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("UserWithGoals");
         query.whereEqualTo("userName", ParseUser.getCurrentUser().getUsername());
+        query.whereEqualTo("name", goal);
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> userList, ParseException e) {
                 if (e == null) {
                     ParseObject obj = userList.get(0);
-
-                    JSONArray = obj.getJSONArray("MyList");
-                    for (int i = 1; i < JSONArray.length(); i++) {
-                        try {
-                            GoalDeatils.this.test = JSONArray.getJSONObject(i);
-                            if (test.get("Name:").equals(goal)) {
-                                GoalDeatils.this.test.put("Progress:", progress);
-                                if(finished) {
-
-                                    GoalDeatils.this.test.put("Time End:", df.format(calobj.getTime()));
-                                }
-                                JSONArray.put(i,GoalDeatils.this.test);
-                                obj.saveInBackground();
-                            }
-
-
-                        } catch (JSONException e1) {
-                            e1.printStackTrace();
-                        }
-                    }
+                    obj.put("progress", progress);
+                    obj.put("lastUpdate", System.currentTimeMillis() );
+                    if(finished)
+                        obj.put("timeEnd", df.format(calobj.getTime()));
+                    obj.saveInBackground();
                 }
+
+
+
+
             }
         });
 
@@ -278,13 +280,13 @@ public class GoalDeatils extends Activity {
         queryGoal.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> catList, ParseException e) {
                 if (e == null) {
-                    Log.d("will remove user:",ParseUser.getCurrentUser().get("name").toString());
+                    Log.d("will remove user:",ParseUser.getCurrentUser().getUsername());
                     if (catList.size() > 0) {
                         Log.d("catList.size()", catList.size() + "");
                         ParseObject goal = catList.get(0);
                         List al = new LinkedList<String>();
                         al = goal.getList("users");
-                        al.remove(ParseUser.getCurrentUser().get("name").toString());
+                        al.remove(ParseUser.getCurrentUser().getUsername());
 
                         goal.put("users",al);
                         // goal.put("CCC",ParseUser.getCurrentUser());

@@ -166,4 +166,13 @@
         android:id="@+id/Goals_list"
         android:layout_centerHorizontal="true" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="timeline"
+        android:id="@+id/timeLine"
+        android:layout_below="@+id/setting"
+        android:layout_toRightOf="@+id/followeingTextNumber"
+        android:layout_toEndOf="@+id/followeingTextNumber" />
+
 </RelativeLayout>

@@ -26,7 +26,6 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
@@ -39,7 +38,7 @@ public class ProfileActivity extends Activity {
 
     // Declare Variable
     Button mlogout;
-    Button mBrowse, mSetting;
+    Button mBrowse, mSetting,timeLine;
     ListView mGoalsList;
     String goal;
     List mUserGoals;
@@ -72,7 +71,26 @@ public class ProfileActivity extends Activity {
         // Locate TextView in welcome.xml
         TextView txtuser = (TextView) findViewById(R.id.welcome);
         mGoalsList = (ListView) findViewById(R.id.goals_list);
-        List goals = getUserGoals(this,false);
+        mlogout = (Button) findViewById(R.id.log_out);
+        mBrowse = (Button) findViewById(R.id.browse);
+        mSetting = (Button) findViewById(R.id.setting);
+        name = (TextView) findViewById(R.id.nameText);
+        bio = (TextView) findViewById(R.id.bio);
+        image = (ImageView) findViewById(R.id.userIcon);
+        badges = (TextView) findViewById(R.id.badgestTextNumber);
+        timeLine  = (Button) findViewById(R.id.timeLine);
+
+
+        follower = (TextView) findViewById(R.id.followersTextNumber);
+        following = (TextView) findViewById(R.id.followeingTextNumber);
+        getFollowing();
+        getFollowers();
+
+        try {
+            List goals = getUserGoals(this,false);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
 
        /* ParseObject Java = new ParseObject("Goals");
@@ -90,18 +108,6 @@ public class ProfileActivity extends Activity {
 
 
         // Locate Button in welcome.xml
-        mlogout = (Button) findViewById(R.id.log_out);
-        mBrowse = (Button) findViewById(R.id.browse);
-        mSetting = (Button) findViewById(R.id.setting);
-        name = (TextView) findViewById(R.id.nameText);
-        bio = (TextView) findViewById(R.id.bio);
-        image = (ImageView) findViewById(R.id.userIcon);
-        badges = (TextView) findViewById(R.id.badgestTextNumber);
-
-        follower = (TextView) findViewById(R.id.followersTextNumber);
-        following = (TextView) findViewById(R.id.followeingTextNumber);
-        getFollowing();
-        getFollowers();
 
 
         following.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +121,17 @@ public class ProfileActivity extends Activity {
 
             }
         });
+        timeLine.setOnClickListener(new View.OnClickListener() {
 
+            public void onClick(View arg0) {
+                // Logout current user
+                Intent intent = new Intent(ProfileActivity.this, ExploreActivity.class);
+                intent.putExtra("type", "timeline");
+                //intent.putExtra("goal", goal);
+                startActivityForResult(intent, 5);
+
+            }
+        });
         follower.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
@@ -196,7 +212,7 @@ public class ProfileActivity extends Activity {
                 } else {
                     //listAdapter.add(result);
 
-                    //listAdapter.notifyDataSetChanged();
+                   // listAdapter.notifyDataSetChanged();
 
                 }
             }
@@ -216,38 +232,13 @@ public class ProfileActivity extends Activity {
             getFollowers();
             getFollowing();
             Log.d("Back:requestCode == 3", "");
-            JSONObject obj = new JSONObject();
-            if ((data.getStringExtra("object") != null)) {
-                try {
-                    Log.d("Back:requestCode -null", "");
-                    obj = new JSONObject(data.getStringExtra("object"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                for (int i = 1; i < ProfileActivity.this.JSONArray.length(); i++) {
-                    try {
-                        JSONObject_ = JSONArray.getJSONObject(i);
-                        if (JSONObject_.get("Name:").equals(obj.get("Name:"))) {
-                            JSONObject_.put("Progress:", obj.get("Progress:"));
-                            JSONArray.put(i, JSONObject_);
 
 
-                            Log.d("JSONArray updated to:", obj.get("Progress:").toString());
-                            getUserGoals(this,false);
-                        }
-                    } catch (Exception e) {
-
-                    }
-
-
-                }
-
-            } else {
-                Log.d("I got null from:", data.getComponent().toString());
-            }
 
         }
+
+
+
         else if(requestCode == 4 )
             getFollowers();
         else if (requestCode == 5)
@@ -261,56 +252,31 @@ public class ProfileActivity extends Activity {
         goal = g;
 
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("UsersGoals");
-        query.whereEqualTo("userName", ParseUser.getCurrentUser().getUsername());
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> userList, ParseException e) {
-                //final JSONObject JSONObject = new JSONObject();
-                //JSONArray JSONArray = new JSONArray();
-                if (e == null) {
-                    Log.d("users:", "Retrieved " + userList.size() + " users");
-                    if (userList.size() == 0) {
-                        ParseObject obj = new ParseObject("UsersGoals");
-                        obj.put("user", ParseUser.getCurrentUser());
-                        obj.put("userName", ParseUser.getCurrentUser().getUsername());
-                        try {
-                            JSONObject_.put("Name:", ProfileActivity.this.goal);
-                            JSONObject_.put("Progress:", 0);
-                            JSONObject_.put("Time Started:", df.format(calobj.getTime()));
+        ParseObject obj = new ParseObject("UserWithGoals");
 
-                        } catch (JSONException e1) {
-                            e1.printStackTrace();
-                        }
-                        JSONArray.put(JSONObject_);
-                        obj.put("MyList", JSONArray);
-
-                        obj.saveInBackground();
-                        Log.d("Added: size() == 0", ParseUser.getCurrentUser().getUsername() + "  with  " + ProfileActivity.this.goal);
-
-                    } else {
-                        ParseObject obj = userList.get(0);
-                        //  mUserGoals.add(ProfileActivity.this.goal);
-                        JSONArray = obj.getJSONArray("MyList");
-                        try {
-                            JSONObject_.put("Name:", ProfileActivity.this.goal);
-                            JSONObject_.put("Progress:", 0);
-                            JSONObject_.put("Time Started:", df.format(calobj.getTime()));
-
-                        } catch (JSONException e1) {
-                            e1.printStackTrace();
-                        }
-                        JSONArray.put(JSONObject_);
-                        obj.put("MyList", JSONArray);
-                        obj.saveInBackground();
+        obj.put("userName",ParseUser.getCurrentUser().getUsername());
+        obj.put("name",g);
+        obj.put("progress",0);
+        obj.put("timeStart",df.format(calobj.getTime()));
+       // obj.put("progress",0);
+        try {
+            obj.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
 
-                    }
-                }
+        //  }
+            //}
+            //   }
+            //   });
+
+            try {
+                getUserGoals(this, true);
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-        });
-
-        getUserGoals(this,true);
-    }
+        }
 
     /*
     if (mUserGoals != null) {
@@ -394,56 +360,40 @@ Log.d("Added:", ParseUser.getCurrentUser().getUsername() + "//  with  //" + Prof
 });
 }
 */
-    public List getUserGoals(Context p, boolean b) {
+    public List getUserGoals(Context p, boolean b) throws ParseException {
         pointer = p;
         List l;
         flag = b ;
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("UsersGoals");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("UserWithGoals");
         query.whereEqualTo("userName", ParseUser.getCurrentUser().getUsername());
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> userList, ParseException e) {
+        List<ParseObject> userList =  query.find();//;InBackground(new FindCallback<ParseObject>() {
+           // public void done(List<ParseObject> userList, ParseException e) {
                 // JSONObject JSONObject = new JSONObject();
                 // JSONArray JSONArray = new JSONArray();
                 mUserGoals = new LinkedList();
-                if (e == null) {
-                    ParseObject obj = new ParseObject("UsersGoals");
+           //     if (e == null) {
+                    ParseObject obj = new ParseObject("UserWithGoals");
                     if (userList.size() == 0) {
 
-                        obj.add("userName", ParseUser.getCurrentUser().getUsername().toString());
-                        obj.add("MyList", JSONArray.put(JSONObject_));
+
                         mUserGoals.add("No_Goals");
                     } else {
-                        mUserGoals.remove("No_Goals");
-                        obj = userList.get(0);
-                        JSONArray = obj.getJSONArray("MyList");
-                        for (int i = 1; i < JSONArray.length(); i++) {
 
-                            try {
-                                JSONObject_ = JSONArray.getJSONObject(i);
-                                if (JSONObject_.opt("Time End:") == null)
-                                {
-                                    Log.e("will add to List:", JSONObject_.get("Name:").toString());
-                                    mUserGoals.add(JSONObject_.get("Name:"));
+                        mUserGoals.remove("No_Goals");
+
+
+                        for (int i = 0; i < userList.size(); i++) {
+
+                                    obj = userList.get(i);
+                                    mUserGoals.add(obj.get("name"));
                                 }
 
 
-                            } catch (JSONException e1) {
-                                Log.e("JSONException", "ffffffffffffffffff");
-                                e1.printStackTrace();
-                            }
+
                         }
-                    }
 
-                    //JSONArray = obj.getJSONArray("MyList");
-                    if (JSONArray.length() == 0) {
 
-                        mUserGoals.add("No_Goals");
-                        Log.e("In if", "ffffffffffffffffff");
-                    }
-                    //if( flag )
-                     //   mUserGoals.add(goal);
-
-                    Log.d("found user goals", mUserGoals.size() + "------");
+                      Log.d("found user goals", mUserGoals.size() + "------");
                     if (mUserGoals.size() != 0) {
                         mBrowse = (Button) findViewById(R.id.browse);
 //                            mBrowse.setText(mUserGoals.size() + "");
@@ -477,45 +427,47 @@ Log.d("Added:", ParseUser.getCurrentUser().getUsername() + "//  with  //" + Prof
                                 Toast.makeText(ProfileActivity.this, "You selected : " + item, Toast.LENGTH_SHORT).show();
 
                                 Intent intenet = new Intent(ProfileActivity.this, GoalDeatils.class);
-                                Log.d("will search on ::::::", ProfileActivity.this.JSONArray.length() + "");
-                                for (int i = 1; i < ProfileActivity.this.JSONArray.length(); i++) {
-                                    try {
-                                        ProfileActivity.this.JSONObject_ = ProfileActivity.this.JSONArray.getJSONObject(i);
-                                        Log.d("JSONObject.get(\"Name:\")", JSONObject_.get("Name:").toString());
-
-                                        if (ProfileActivity.this.JSONObject_.get("Name:").equals(item)) {
-                                            intenet.putExtra("goal", item);
-                                            Log.d("will get::::::", ProfileActivity.this.JSONObject_.get("Progress:").toString());
-
-                                            intenet.putExtra("progress", ProfileActivity.this.JSONObject_.get("Progress:").toString());
-                                            // intenet.putExtra("object", JSONObject.toString());
-                                            break;
-                                        }
-                                    } catch (JSONException e1) {
-                                        e1.printStackTrace();
-                                    }
-
+                                intenet.putExtra("goal", item);
+                                ParseQuery<ParseObject> query = ParseQuery.getQuery("UserWithGoals");
+                                query.whereEqualTo("userName", ParseUser.getCurrentUser().getUsername());
+                                query.whereEqualTo("name", item);
+                                List<ParseObject> userGoalList = null;
+                                try{
+                                     userGoalList = query.find();
+                                }
+                                catch( Exception e ){
+                                    e.printStackTrace();
                                 }
 
+                                ParseObject obj = userGoalList.get(0);
+
+
+
+                                intenet.putExtra("progress", obj.get("progress").toString());
+
+
                                 Log.d("goal seleceted", item);
-                                intenet.putExtra("object", JSONObject_.toString());
+
 
                                 startActivityForResult(intenet, 3);
+                                }
 
 
-                            }
+
+
+
                         });
 
 
                     }
 
-                } else {
-                    Log.d("score", "Error: " + e.getMessage());
+           //     } else {
+           //         Log.d("score", "Error: " + e.getMessage());
 
-                }
+           //     }
 
-            }
-        });
+         //   }
+       // });
 
         return mUserGoals;
     }

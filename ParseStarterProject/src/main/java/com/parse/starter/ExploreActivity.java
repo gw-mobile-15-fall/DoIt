@@ -17,6 +17,9 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,6 +31,7 @@ public class ExploreActivity extends Activity {
     List<String> usersList = new LinkedList<>();
     ArrayAdapter listAdapter;
     TextView title;
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
     ;
 
     @Override
@@ -160,6 +164,71 @@ public class ExploreActivity extends Activity {
 
 
             });
+        }
+
+        else if (intent.getStringExtra("type").equals("timeline") ){
+            Calendar calendar = Calendar.getInstance();
+
+            Log.d( "start timeline","");
+            usersList = new LinkedList<>();
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Follow");
+            query.whereEqualTo("from", ParseUser.getCurrentUser());
+
+            List<ParseObject>   followList = null;
+            try {
+                followList = query.find();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if(followList != null || followList.size() > 0 ) {
+                ParseObject obj = new ParseObject("Follow");
+                for (int i = 0; i < followList.size(); i++) {
+                    obj = followList.get(i);
+                    usersList.add(obj.get("toName").toString());
+                    Log.d("users::", obj.get("toName").toString());
+                }
+
+
+
+                List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
+
+                for(int i = 0 ; i < usersList.size() ; i++) {
+                    ParseQuery<ParseObject> getGoals = ParseQuery.getQuery("UserWithGoals");
+                    getGoals.whereEqualTo("userName", usersList.get(i).toString());
+                    Log.d("get goals of users::", usersList.get(i).toString());
+                    queries.add(getGoals);
+
+                }
+               // getGoals.orderByAscending("lastUpdate");
+                ParseQuery<ParseObject> superQuery = ParseQuery.getQuery("UserWithGoals");
+                ParseQuery.or(queries);
+                superQuery.addDescendingOrder("lastUpdate");
+                List<ParseObject>   usersGoalsLists = null;
+                try {
+                    usersGoalsLists = superQuery.find();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                usersList.clear();
+                for(int i = 0 ; i < usersGoalsLists.size() ; i++) {
+                    Log.d("gwt Event", usersGoalsLists.get(i).get("lastUpdate").toString());
+                    calendar.setTimeInMillis(Long.parseLong(usersGoalsLists.get(i).get("lastUpdate").toString()));
+
+                    usersList.add(usersGoalsLists.get(i).get("userName").toString() + "  has:" + usersGoalsLists.get(i).get("name").toString() + " in Step:" + usersGoalsLists.get(i).get("progress").toString() +
+                             " on time:"+ formatter.format(calendar.getTime()) );
+
+                    listAdapter = new ArrayAdapter(ExploreActivity.this, R.layout.group_item, R.id.usergoal, usersList);
+                    ExploreActivity.this.list.setAdapter(listAdapter);
+                    ExploreActivity.this.list.setTextFilterEnabled(true);
+
+
+
+                }
+
+
+
+            }
+
         }
 
 
