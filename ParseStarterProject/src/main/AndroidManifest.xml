@@ -78,6 +78,10 @@
             android:name=".MemberActivity"
             android:label="@string/welcome" >
         </activity>
+        <activity
+            android:name=".UploadActivity"
+            android:label="@string/welcome" >
+        </activity>
     </application>
 
 </manifest>
