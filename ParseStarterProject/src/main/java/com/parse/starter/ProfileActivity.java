@@ -33,7 +33,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
-
 public class ProfileActivity extends Activity {
 
     // Declare Variable
@@ -41,7 +40,7 @@ public class ProfileActivity extends Activity {
     Button mBrowse, mSetting,timeLine;
     ListView mGoalsList;
     String goal;
-    List mUserGoals;
+    List mUserGoals,mProgress,mIcons;
     Context pointer;
     private ArrayAdapter listAdapter;
     JSONObject JSONObject_ = new JSONObject();
@@ -51,9 +50,46 @@ public class ProfileActivity extends Activity {
     TextView name, bio, badges;
     boolean flag = false;
     ImageView image;
+    MyAdapter adapter;
+    onItemClicked lisinter = new onItemClicked() {
+        @Override
+        public void postion(int i) {
+            Log.d("Profile Activity got:", i + "");
 
+            int item = (int) ProfileActivity.this.mGoalsList.getItemAtPosition(i);
+            Toast.makeText(ProfileActivity.this, "You selected : " + mUserGoals.get(item), Toast.LENGTH_SHORT).show();
+
+            Intent intenet = new Intent(ProfileActivity.this, GoalDeatils.class);
+            intenet.putExtra("goal",  mUserGoals.get(item).toString());
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("UserWithGoals");
+            query.whereEqualTo("userName", ParseUser.getCurrentUser().getUsername());
+            query.whereEqualTo("name", mUserGoals.get(item).toString());
+            List<ParseObject> userGoalList = null;
+            try{
+                userGoalList = query.find();
+            }
+            catch( Exception e ){
+                e.printStackTrace();
+            }
+
+            ParseObject obj = userGoalList.get(0);
+
+
+
+            intenet.putExtra("progress", obj.get("progress").toString());
+
+
+            Log.d("goal seleceted", mUserGoals.get(item).toString());
+
+
+            startActivityForResult(intenet, 3);
+        }
+    };
 
     TextView follower, following;
+
+
+
 
 
     @Override
@@ -204,8 +240,10 @@ public class ProfileActivity extends Activity {
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 String result = data.getStringExtra("goal");
+
+                byte[] icon = data.getByteArrayExtra("icon");
                 Log.d("I got goal in Profile: ", result);
-                addGoal(result);
+                addGoal(result,icon);
                 mUserGoals.remove("No_Goals");
                 if (listAdapter == null) {
 
@@ -220,9 +258,9 @@ public class ProfileActivity extends Activity {
                 //Write your code if there's no result
             }
         } else if (requestCode == 2) {
-            if (data.getStringExtra("name").toString() != null)
+            if (data.getStringExtra("name")!= null)
                 name.setText(data.getStringExtra("name").toString());
-            if (data.getStringExtra("bio").toString() != null)
+            if (data.getStringExtra("bio") != null)
                 bio.setText(data.getStringExtra("bio").toString());
             if (data.getParcelableExtra("image") != null) {
                 image.setImageBitmap((Bitmap) data.getParcelableExtra("image"));
@@ -231,6 +269,11 @@ public class ProfileActivity extends Activity {
         } else if (requestCode == 3) {
             getFollowers();
             getFollowing();
+            try {
+                getUserGoals(this,false);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             Log.d("Back:requestCode == 3", "");
 
 
@@ -247,7 +290,7 @@ public class ProfileActivity extends Activity {
 
     }
 
-    public void addGoal(String g) {
+    public void addGoal(String g,byte[] icon) {
 
         goal = g;
 
@@ -258,7 +301,12 @@ public class ProfileActivity extends Activity {
         obj.put("name",g);
         obj.put("progress",0);
         obj.put("timeStart",df.format(calobj.getTime()));
-       // obj.put("progress",0);
+        obj.put("timeEnd","---");
+        if(icon  != null)
+        obj.put("icon",icon);
+
+
+        // obj.put("progress",0);
         try {
             obj.save();
         } catch (ParseException e) {
@@ -371,7 +419,9 @@ Log.d("Added:", ParseUser.getCurrentUser().getUsername() + "//  with  //" + Prof
                 // JSONObject JSONObject = new JSONObject();
                 // JSONArray JSONArray = new JSONArray();
                 mUserGoals = new LinkedList();
-           //     if (e == null) {
+                mProgress = new LinkedList();
+                mIcons = new LinkedList();
+                   //     if (e == null) {
                     ParseObject obj = new ParseObject("UserWithGoals");
                     if (userList.size() == 0) {
 
@@ -385,7 +435,12 @@ Log.d("Added:", ParseUser.getCurrentUser().getUsername() + "//  with  //" + Prof
                         for (int i = 0; i < userList.size(); i++) {
 
                                     obj = userList.get(i);
-                                    mUserGoals.add(obj.get("name"));
+
+                            if(obj.getString("timeEnd").equals("---") ){
+                                mUserGoals.add(obj.get("name"));
+                                    mProgress.add(obj.get("progress"));
+                                    mIcons.add(obj.get("icon"));
+                            }
                                 }
 
 
@@ -398,8 +453,11 @@ Log.d("Added:", ParseUser.getCurrentUser().getUsername() + "//  with  //" + Prof
                         mBrowse = (Button) findViewById(R.id.browse);
 //                            mBrowse.setText(mUserGoals.size() + "");
                         ProfileActivity.this.mGoalsList = (ListView) findViewById(R.id.Goals_list);
-
-                        listAdapter = new ArrayAdapter(ProfileActivity.this, R.layout.group_item, R.id.usergoal, mUserGoals);
+                        if(mUserGoals.get(0).toString().equals("No_Goals"))
+                            listAdapter = new ArrayAdapter(ProfileActivity.this, R.layout.group_item, R.id.usergoal, mUserGoals);
+                        else
+                        adapter = new MyAdapter(this,mUserGoals,mProgress,mIcons,lisinter);
+                        //listAdapter = new ArrayAdapter(ProfileActivity.this, R.layout.group_item, R.id.usergoal, mUserGoals);
                         if (listAdapter == null)
                             Log.d("listAdapter == null", "");
                         if (ProfileActivity.this.mGoalsList == null)
@@ -410,13 +468,18 @@ Log.d("Added:", ParseUser.getCurrentUser().getUsername() + "//  with  //" + Prof
                             badges.setText("0");
                         else
                             badges.setText(mUserGoals.size() + "");
+                        if(mUserGoals.get(0).toString().equals("No_Goals"))
+                            ProfileActivity.this.mGoalsList.setAdapter(listAdapter);
+                        else
+                            ProfileActivity.this.mGoalsList.setAdapter(adapter);
 
-
-                        ProfileActivity.this.mGoalsList.setAdapter(listAdapter);
                         ProfileActivity.this.mGoalsList.setTextFilterEnabled(true);
+                        ProfileActivity.this.mGoalsList.setClickable(true);
 
 
-                        ProfileActivity.this.mGoalsList.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener()
+                       // ProfileActivity.this.mGoalsList.setOnItemClickListener(onItemClickListener);
+
+                        ProfileActivity.this.mGoalsList.setOnItemClickListener( new AdapterView.OnItemClickListener()
 
                         {
 

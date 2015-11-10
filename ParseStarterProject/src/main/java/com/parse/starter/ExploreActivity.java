@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -30,9 +28,23 @@ public class ExploreActivity extends Activity {
     ListView list;
     List<String> usersList = new LinkedList<>();
     ArrayAdapter listAdapter;
+    MyAdapterUsers usersAdapter;
     TextView title;
     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-    ;
+    onItemClicked lisinter = new onItemClicked() {
+        @Override
+        public void postion(int i) {
+            Log.d("Profile Activity got:", i + "");
+
+            int item = (int) ExploreActivity.this.list.getItemAtPosition(i);
+            Toast.makeText(ExploreActivity.this, "You selected : " + usersList.get(item), Toast.LENGTH_SHORT).show();
+
+
+            Intent intent = new Intent(ExploreActivity.this, MemberActivity.class);
+            intent.putExtra("name",  usersList.get(item));
+            startActivity(intent);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +69,17 @@ public class ExploreActivity extends Activity {
                         ParseObject obj = catList.get(0);
                         if (obj.getList("users") != null) {
                             usersList = obj.getList("users");
-                            listAdapter = new ArrayAdapter(ExploreActivity.this, R.layout.group_item, R.id.usergoal, usersList);
-                            ExploreActivity.this.list.setAdapter(listAdapter);
+
+
+
+
+
+                            usersAdapter = new MyAdapterUsers(ExploreActivity.this, usersList,lisinter);
+                            ExploreActivity.this.list.setAdapter(usersAdapter);
                             ExploreActivity.this.list.setTextFilterEnabled(true);
-                            ExploreActivity.this.list.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener()
+
+
+                           /* ExploreActivity.this.list.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener()
 
                             {
 
@@ -68,13 +87,13 @@ public class ExploreActivity extends Activity {
                                 public void onItemClick(AdapterView<?> parent, View view,
                                                         int position, long id) {
                                     String item = (String) ExploreActivity.this.list.getItemAtPosition(position);
-                                    Toast.makeText(ExploreActivity.this, "You selected : " + item, Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(ExploreActivity.this, MemberActivity.class);
-                                    intent.putExtra("name", item);
-                                    startActivity(intent);
+
 
                                 }
-                            });
+                            });*/
+
+
+
                         } else
 
                         {
@@ -100,24 +119,9 @@ public class ExploreActivity extends Activity {
                             obj = followList.get(i);
                             usersList.add(obj.get("fromName").toString());
                         }
-                        listAdapter = new ArrayAdapter(ExploreActivity.this, R.layout.group_item, R.id.usergoal, usersList);
-                        ExploreActivity.this.list.setAdapter(listAdapter);
+                        usersAdapter = new MyAdapterUsers(ExploreActivity.this, usersList,lisinter);
+                        ExploreActivity.this.list.setAdapter(usersAdapter);
                         ExploreActivity.this.list.setTextFilterEnabled(true);
-                        ExploreActivity.this.list.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener()
-
-                        {
-
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view,
-                                                    int position, long id) {
-                                String item = (String) ExploreActivity.this.list.getItemAtPosition(position);
-                                Toast.makeText(ExploreActivity.this, "You selected : " + item, Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(ExploreActivity.this, MemberActivity.class);
-                                intent.putExtra("name", item);
-                                startActivity(intent);
-
-                            }
-                        });
 
                     }
 
@@ -134,29 +138,22 @@ public class ExploreActivity extends Activity {
             query.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> followList, ParseException e) {
                     if (e == null) {
+                        ParseUser user = new ParseUser();
                         ParseObject obj = new ParseObject("Follow");
                         for (int i = 0; i < followList.size(); i++) {
                             obj = followList.get(i);
                             usersList.add(obj.get("toName").toString());
+                            user = obj.getParseUser("to");
+                          // obj.getParseObject("to").fetch();
+
+
+
                         }
-                        listAdapter = new ArrayAdapter(ExploreActivity.this, R.layout.group_item, R.id.usergoal, usersList);
-                        ExploreActivity.this.list.setAdapter(listAdapter);
+                        usersAdapter = new MyAdapterUsers(ExploreActivity.this, usersList,lisinter);
+                        ExploreActivity.this.list.setAdapter(usersAdapter);
                         ExploreActivity.this.list.setTextFilterEnabled(true);
-                        ExploreActivity.this.list.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener()
 
-                        {
 
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view,
-                                                    int position, long id) {
-                                String item = (String) ExploreActivity.this.list.getItemAtPosition(position);
-                                Toast.makeText(ExploreActivity.this, "You selected : " + item, Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(ExploreActivity.this, MemberActivity.class);
-                                intent.putExtra("name", item);
-                                startActivity(intent);
-
-                            }
-                        });
 
                     }
 
@@ -212,10 +209,10 @@ public class ExploreActivity extends Activity {
                 usersList.clear();
                 for(int i = 0 ; i < usersGoalsLists.size() ; i++) {
                     Log.d("gwt Event", usersGoalsLists.get(i).get("lastUpdate").toString());
-                    calendar.setTimeInMillis(Long.parseLong(usersGoalsLists.get(i).get("lastUpdate").toString()));
+                    //calendar.setTimeInMillis(Long.parseLong(usersGoalsLists.get(i).get("lastUpdate").toString()));
 
                     usersList.add(usersGoalsLists.get(i).get("userName").toString() + "  has:" + usersGoalsLists.get(i).get("name").toString() + " in Step:" + usersGoalsLists.get(i).get("progress").toString() +
-                             " on time:"+ formatter.format(calendar.getTime()) );
+                             " on time:"+ usersGoalsLists.get(i).get("lastUpdate").toString() );
 
                     listAdapter = new ArrayAdapter(ExploreActivity.this, R.layout.group_item, R.id.usergoal, usersList);
                     ExploreActivity.this.list.setAdapter(listAdapter);

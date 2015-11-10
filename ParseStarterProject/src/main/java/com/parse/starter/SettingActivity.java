@@ -19,7 +19,7 @@ import java.io.ByteArrayOutputStream;
  * Created by omar on 10/27/2015.
  */
 public class SettingActivity extends Activity{
-    Button camButton,applyButton;
+    Button camButton,applyButton,upload;
     EditText name,bio;
     ImageView mImageView;
     Bitmap imageBitmap;
@@ -40,12 +40,26 @@ public class SettingActivity extends Activity{
 
 
         mImageView  = (ImageView) findViewById(R.id.imageView2);
+        upload= (Button) findViewById(R.id.upload);
+        if ( ParseUser.getCurrentUser().getList("areas").size() ==0 )
+            upload.setVisibility(View.GONE);
+
 
         camButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 // Logout current user
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, 1);
+
+            }
+        });
+
+
+        upload.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                // Logout current user
+                Intent intent = new Intent(SettingActivity.this,UploadActivity.class);
+                startActivity(intent);
 
             }
         });

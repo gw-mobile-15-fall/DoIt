@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -34,6 +35,7 @@ public class ListGoals extends Activity{
     List<String> travel = new LinkedList<String>();
     List<String> it = new LinkedList<String>();
     List<String> cook = new LinkedList<String>();
+    private Map<String, ParseFile> iconCollections  = new LinkedHashMap<String, ParseFile>(); ;
 //    goalsCollection = new LinkedHashMap<String, List<String>>();
 boolean flag = true;
     @Override
@@ -91,10 +93,13 @@ boolean flag = true;
                         if(catList.get(i).getString("Category").equals("IT")) {
                             it.add(catList.get(i).getString("name"));
                             Log.d("Added to IT", catList.get(i).getString("name"));
+                            iconCollections.put(catList.get(i).getString("name"), catList.get(i).getParseFile("icon"));
+
                         }
                         else if(catList.get(i).getString("Category").equals("Travel")) {
                             travel.add(catList.get(i).getString("name"));
                             Log.d("Added to travel", catList.get(i).getString("name"));
+                            iconCollections.put(catList.get(i).getString("name"),catList.get(i).getParseFile("icon"));
 
                         }
                         else  if(catList.get(i).getString("Category").equals("Cook")) {
@@ -102,6 +107,7 @@ boolean flag = true;
 
                             cook.add(catList.get(i).getString("name"));
                             Log.d("Added to Cook", catList.get(i).getString("name"));
+                            iconCollections.put(catList.get(i).getString("name"),catList.get(i).getParseFile("icon"));
                         }
                     }
                    // createCollection();
@@ -113,7 +119,7 @@ boolean flag = true;
 
             expListView = (ExpandableListView) findViewById(R.id.goals_list);
             final ExpandableListAdapter expListAdapter = new ExpandableListAdapter(
-                    ListGoals.this, groupList, goalsCollection);
+                    ListGoals.this, groupList, goalsCollection,iconCollections);
             expListView.setAdapter(expListAdapter);
 
             //setGroupIndicatorToRight();
@@ -145,6 +151,11 @@ boolean flag = true;
                                         goal.save();
                                         Intent toWelcome = new Intent();
                                         toWelcome.putExtra("goal", selected);
+                                        if(goal.getParseFile("icon") == null)
+                                            ;
+                                        else
+                                        toWelcome.putExtra("icon", goal.getParseFile("icon").getData());
+
                                         setResult(RESULT_OK, toWelcome);
                                         finish();
                                         //return true;

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,24 +16,31 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.parse.ParseException;
+import com.parse.ParseFile;
+
 import java.util.List;
 import java.util.Map;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Activity context;
-    private Map<String, List<String>> laptopCollections;
-    private List<String> laptops;
+    private Map<String, List<String>> goalCollections;
+    private Map<String, ParseFile> iconCollections;
 
-    public ExpandableListAdapter(Activity context, List<String> laptops,
-                                 Map<String, List<String>> laptopCollections) {
+    private List<String> goals;
+
+    public ExpandableListAdapter(Activity context, List<String> goalList,
+                                 Map<String, List<String>> goalCollections,Map<String, ParseFile> iconCollections) {
         this.context = context;
-        this.laptopCollections = laptopCollections;
-        this.laptops = laptops;
+        this.goalCollections = goalCollections;
+        this.goals = goalList;
+        this.iconCollections = iconCollections;
+
     }
 
     public Object getChild(int groupPosition, int childPosition) {
-        return laptopCollections.get(laptops.get(groupPosition)).get(childPosition);
+        return goalCollections.get(goals.get(groupPosition)).get(childPosition);
     }
 
     public long getChildId(int groupPosition, int childPosition) {
@@ -41,7 +50,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        final String laptop = (String) getChild(groupPosition, childPosition);
+        final String goal = (String) getChild(groupPosition, childPosition);
         LayoutInflater inflater = context.getLayoutInflater();
 
         if (convertView == null) {
@@ -51,6 +60,24 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView item = (TextView) convertView.findViewById(R.id.goal);
 
         ImageView delete = (ImageView) convertView.findViewById(R.id.delete);
+        ParseFile icon = iconCollections.get(goal);
+        byte[] bitmapdata ;
+        try {
+            if(icon == null )
+                ;
+               // Drawable myDrawable = context.getResources().getDrawable(R.drawable.doit_icon);
+                // delete.setImageDrawable(myDrawable);
+            else{
+                bitmapdata = icon.getData();
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapdata, 0, bitmapdata.length);
+                delete.setImageBitmap(bitmap);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+
         delete.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
@@ -61,7 +88,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 List<String> child =
-                                        laptopCollections.get(laptops.get(groupPosition));
+                                        goalCollections.get(goals.get(groupPosition));
                                 child.get(childPosition);
                                 notifyDataSetChanged();
                             }
@@ -77,29 +104,29 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             }
         });
 
-        item.setText(laptop);
+        item.setText(goal);
         return convertView;
     }
 
     public int getChildrenCount(int groupPosition) {
 
-        if( laptops == null )
-            Log.d("Null is","labtop");
-        if(laptopCollections == null)
-            Log.d("Null is","laptopCollections");
-        Log.d("#######", (laptops.get(groupPosition)).toString());
+        if( goals == null )
+            Log.d("Null is","goal");
+        if(goalCollections == null)
+            Log.d("Null is","GoalCollections");
+        Log.d("#######", (goals.get(groupPosition)).toString());
 
-        Log.d("#######",laptopCollections.get(laptops.get(groupPosition)).toString());
-       return laptopCollections.get(laptops.get(groupPosition)).size();
+        Log.d("#######", goalCollections.get(goals.get(groupPosition)).toString());
+       return goalCollections.get(goals.get(groupPosition)).size();
        // return 1;
     }
 
     public Object getGroup(int groupPosition) {
-        return laptops.get(groupPosition);
+        return goals.get(groupPosition);
     }
 
     public int getGroupCount() {
-        return laptops.size();
+        return goals.size();
     }
 
     public long getGroupId(int groupPosition) {
