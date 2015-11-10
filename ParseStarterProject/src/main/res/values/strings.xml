@@ -45,6 +45,12 @@
     <string name="bio"> Bio:</string>
     <string name="explore"> explore</string>
     <string name="friends_who_have">Members who have:</string>
+    <string name="upload">upload goal</string>
+    <string name="upload_goal">upload goal</string>
+    <string name="add_step">add_step</string>
+    <string name="write_task">add task</string>
+    <string name="categories">you can add goals in:</string>
+    <string name="goal_title">goal title</string>
 
 
 </resources>
