@@ -3,9 +3,11 @@ package com.parse.starter;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -38,7 +41,7 @@ public class GoalDeatils extends Activity {
 
     int progress;
     ProgressBar pBar;
-    Button nextStepButton,CameraButton,exploreButton;
+    Button nextStepButton,CameraButton,exploreButton,mShare,mWatch;
     TextView goalTitle,nextStep,NextStepText;
     List GoalSteps;
     ImageView   mImageView,timeline;
@@ -46,6 +49,7 @@ public class GoalDeatils extends Activity {
     JSONObject test = new JSONObject();
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     Calendar calobj = Calendar.getInstance();
+    Bitmap imageBitmap;
 
 
 
@@ -54,14 +58,13 @@ public class GoalDeatils extends Activity {
         super.onCreate(savedInstanceState);
         Intent goalIntent = getIntent();
 
-
-        goal = goalIntent.getStringExtra("goal");
-        Log.d("Goa; = ", goal+" ---------------------------");
+         goal = goalIntent.getStringExtra("goal");
+        Log.d("Goa; = ", goal + " ---------------------------");
         progress = Integer.parseInt(goalIntent.getStringExtra("progress"));
 
 
         setContentView(R.layout.goal_details);
-
+        mShare = (Button) findViewById(R.id.Share);
         pBar = (ProgressBar) findViewById(R.id.progressBar);
         goalTitle =  (TextView)findViewById(R.id.goal_title);
         nextStep=  (TextView)findViewById(R.id.nextStepTitle);
@@ -71,23 +74,21 @@ public class GoalDeatils extends Activity {
            mImageView = (ImageView) findViewById(R.id.imageView);
         exploreButton = (Button) findViewById(R.id.explorebutton);
         timeline  = (ImageView) findViewById(R.id.messageIcon);
+        mWatch = (Button) findViewById(R.id.Watch);
+        mWatch.setVisibility(View.INVISIBLE);
+    getSteps();
 
 
 
 
-
-        /*timeline.setOnClickListener(new View.OnClickListener() {
+        mShare.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
                 // Logout current user
-                Intent intent = new Intent(GoalDeatils.this,ExploreActivity.class);
-                intent.putExtra("type","timeline");
-                intent.putExtra("goal",goal);
-                startActivityForResult(intent, 1);
+               shareStep();
 
             }
-        });*/
-
+        });
 
 
         exploreButton.setOnClickListener(new View.OnClickListener() {
@@ -122,10 +123,26 @@ public class GoalDeatils extends Activity {
                 if( progress < GoalSteps.size()-1)
                 {
                     progress++;
-                    NextStepText.setText(GoalSteps.get(progress).toString()+"");
+                    NextStepText.setText(GoalSteps.get(progress).toString() + "");
                     saveProgress(false);
                     pBar.setProgress(progress);
-                    mImageView.setVisibility(View.GONE);
+                    mImageView.setVisibility(View.INVISIBLE);  Log.d("Watch", "&&&&&&&&&&&&&&&&&&&&&&");
+                    if( NextStepText.getText().toString().contains("watch")) {
+                        Log.d("Watch", "&&&&&&&&&&&&&&&&&&&&&&");
+                        mWatch.setVisibility(View.VISIBLE);
+                        mWatch.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String temp = NextStepText.getText().toString();
+                                int start = temp.indexOf("http");
+
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(temp.substring(start, temp.length()))));
+                            }
+                        });
+                    }
+                    else
+                        mWatch.setVisibility(View.INVISIBLE);
+
                 }
                 else
                 {
@@ -156,7 +173,7 @@ public class GoalDeatils extends Activity {
         if (requestCode == 1) {
             if(resultCode == Activity.RESULT_OK){
                 Bundle extras = data.getExtras();
-                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                 imageBitmap = (Bitmap) extras.get("data");
                 mImageView.setImageBitmap(imageBitmap);
                 mImageView.setVisibility(View.VISIBLE);
 
@@ -194,18 +211,32 @@ public class GoalDeatils extends Activity {
     public void getSteps(){
 
     ParseQuery<ParseObject> query = ParseQuery.getQuery("Goals");
-    query.whereEqualTo("name", goal);
-    query.findInBackground(new FindCallback<ParseObject>() {
-        public void done(List<ParseObject> userList, ParseException e) {
-            if (e == null) {
-                ParseObject obj = userList.get(0);
+        query.whereEqualTo("name", goal);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> userList, ParseException e) {
+                if (e == null) {
+                    ParseObject obj = userList.get(0);
 
-                GoalSteps = (List) obj.get("steps");
-                NextStepText.setText(GoalSteps.get(progress).toString() + "");
+                    GoalSteps = (List) obj.get("steps");
+                    NextStepText.setText(GoalSteps.get(progress).toString() + "");
+                    if( NextStepText.getText().toString().contains("watch")) {
+                        Log.d("Watch", "&&&&&&&&&&&&&&&&&&&&&&");
+                        mWatch.setVisibility(View.VISIBLE);
+                        mWatch.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String temp = NextStepText.getText().toString();
+                                int start = temp.indexOf("http");
 
-            } else {
-                e.printStackTrace();
-            }
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(temp.substring(start, temp.length()))));
+                            }
+                        });
+                    }
+                    else
+                        mWatch.setVisibility(View.INVISIBLE);
+                } else {
+                    e.printStackTrace();
+                }
 
 
         }
@@ -310,4 +341,45 @@ public class GoalDeatils extends Activity {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+      if(id == R.id.action_share){
+            Log.d("", "share button pressed");
+            shareStep();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+    private void shareStep(){
+
+
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_step_text) + ":" + progress + " in :" + goal);
+
+
+        if(mImageView.getDrawable() != null){
+            shareIntent.putExtra(Intent.EXTRA_STREAM, getImageUri(imageBitmap));
+            shareIntent.setType("image/*");
+        }
+        else{
+            shareIntent.setType("text/plain");
+        }
+
+
+        startActivity(shareIntent);
+    }
+    public Uri getImageUri( Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
 }

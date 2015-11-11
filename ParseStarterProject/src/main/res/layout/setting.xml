@@ -31,8 +31,10 @@
         android:layout_gravity="center_horizontal" />
 
     <ImageView
+        android:background="@drawable/image_border"
+        android:padding="2dp"
         android:layout_width="103dp"
-        android:layout_height="wrap_content"
+        android:layout_height="103dp"
         android:id="@+id/imageView2"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.24" />
@@ -50,6 +52,13 @@
         android:text="@string/takePhoto"
         android:id="@+id/camButton"
         android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Browse"
+        android:id="@+id/Browse"
+        android:layout_gravity="right" />
 
     <Button
         android:layout_width="wrap_content"

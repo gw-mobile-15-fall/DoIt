@@ -27,8 +27,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/dark_orange"
         android:textStyle="normal"
@@ -45,8 +45,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="30dp"
+
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/dark_orange"
         android:textStyle="normal"
@@ -54,13 +53,27 @@
         android:id="@+id/NextStepText" />
 
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Share_Temp"
+        android:id="@+id/Share"
+        android:layout_gravity="right" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Watch"
+        android:id="@+id/Watch"
+        android:layout_gravity="center_horizontal" />
+
     <ProgressBar
         android:progressDrawable="@drawable/circular_progress_bar"
         android:background="@drawable/circle_shape"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="90dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
         android:id="@+id/progressBar"
         android:max="10"
         android:layout_gravity="center_horizontal" />

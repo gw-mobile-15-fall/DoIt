@@ -37,7 +37,7 @@ public class ProfileActivity extends Activity {
 
     // Declare Variable
     Button mlogout;
-    Button mBrowse, mSetting,timeLine;
+    Button mBrowse, mSetting,timeLine,Watch;
     ListView mGoalsList;
     String goal;
     List mUserGoals,mProgress,mIcons;
@@ -115,7 +115,6 @@ public class ProfileActivity extends Activity {
         image = (ImageView) findViewById(R.id.userIcon);
         badges = (TextView) findViewById(R.id.badgestTextNumber);
         timeLine  = (Button) findViewById(R.id.timeLine);
-
 
         follower = (TextView) findViewById(R.id.followersTextNumber);
         following = (TextView) findViewById(R.id.followeingTextNumber);
@@ -257,7 +256,7 @@ public class ProfileActivity extends Activity {
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
             }
-        } else if (requestCode == 2) {
+        } else if (requestCode == 2 && resultCode == RESULT_OK) {
             if (data.getStringExtra("name")!= null)
                 name.setText(data.getStringExtra("name").toString());
             if (data.getStringExtra("bio") != null)

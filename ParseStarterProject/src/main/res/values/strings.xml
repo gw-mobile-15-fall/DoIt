@@ -51,6 +51,8 @@
     <string name="write_task">add task</string>
     <string name="categories">you can add goals in:</string>
     <string name="goal_title">goal title..</string>
+    <string name="action_share"> share..</string>
+    <string name="share_step_text">I am in step:</string>
 
 
 </resources>

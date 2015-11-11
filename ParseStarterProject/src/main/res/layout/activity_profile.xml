@@ -10,6 +10,8 @@
                 tools:context="com.parse.starter.StarterActivity">
 
     <ImageView
+        android:background="@drawable/image_border"
+
         android:id="@+id/userIcon"
         android:src="@drawable/user_icon"
         android:layout_width="100dp"
