@@ -18,6 +18,7 @@ import com.parse.ParseUser;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,8 +28,11 @@ import java.util.List;
 public class ExploreActivity extends Activity {
     ListView list;
     List<String> usersList = new LinkedList<>();
+    List<String> progress = new LinkedList<>();
+
     ArrayAdapter listAdapter;
     MyAdapterUsers usersAdapter;
+    MyTimeLineAdapter timeLine;
     TextView title;
     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
     onItemClicked lisinter = new onItemClicked() {
@@ -199,7 +203,7 @@ public class ExploreActivity extends Activity {
                // getGoals.orderByAscending("lastUpdate");
                 ParseQuery<ParseObject> superQuery = ParseQuery.getQuery("UserWithGoals");
                 ParseQuery.or(queries);
-                superQuery.addDescendingOrder("lastUpdate");
+                superQuery.addDescendingOrder("updatedAt");
                 List<ParseObject>   usersGoalsLists = null;
                 try {
                     usersGoalsLists = superQuery.find();
@@ -210,12 +214,13 @@ public class ExploreActivity extends Activity {
                 for(int i = 0 ; i < usersGoalsLists.size() ; i++) {
                     Log.d("gwt Event", usersGoalsLists.get(i).get("lastUpdate").toString());
                     //calendar.setTimeInMillis(Long.parseLong(usersGoalsLists.get(i).get("lastUpdate").toString()));
+                    Date d = (Date)usersGoalsLists.get(i).getUpdatedAt();
+                    usersList.add(usersGoalsLists.get(i).get("userName").toString() );
+                    progress.add("  " + getPhrase( usersGoalsLists.get(i).get("progress").toString()) + " " + usersGoalsLists.get(i).get("name").toString() +
+                             " on time:"+ d.toString() );
 
-                    usersList.add(usersGoalsLists.get(i).get("userName").toString() + "  has:" + usersGoalsLists.get(i).get("name").toString() + " in Step:" + usersGoalsLists.get(i).get("progress").toString() +
-                             " on time:"+ usersGoalsLists.get(i).get("lastUpdate").toString() );
-
-                    listAdapter = new ArrayAdapter(ExploreActivity.this, R.layout.group_item, R.id.usergoal, usersList);
-                    ExploreActivity.this.list.setAdapter(listAdapter);
+                    timeLine = new MyTimeLineAdapter(ExploreActivity.this, usersList, progress, lisinter);
+                    ExploreActivity.this.list.setAdapter(timeLine);
                     ExploreActivity.this.list.setTextFilterEnabled(true);
 
 
@@ -240,5 +245,20 @@ public class ExploreActivity extends Activity {
         this.setResult(RESULT_OK, intent);
 ;
         finish();
+    }
+
+    public String getPhrase(String stepInString){
+        int step = Integer.parseInt(stepInString);
+        switch (step){
+            case 0: return " Just added ";
+            case 1: return "in the first step of";
+            case 5: return " half way throgh in ";
+            case 9: return "almost finish ";
+            case 10: return "finished ";
+            default: return "in step " + step +  "of";
+        }
+
+
+
     }
 }

@@ -232,6 +232,8 @@ public class GoalDeatils extends Activity {
                             }
                         });
                     }
+
+
                     else
                         mWatch.setVisibility(View.INVISIBLE);
                 } else {
