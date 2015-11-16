@@ -3,6 +3,7 @@ package com.parse.starter;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 
@@ -34,15 +36,25 @@ public class SettingActivity extends Activity{
         setContentView(R.layout.setting);
         name = (EditText)findViewById(R.id.memberName);
         bio = (EditText)findViewById(R.id.bioText);
+        mImageView  = (ImageView) findViewById(R.id.imageView2);
+
         name.setText(ParseUser.getCurrentUser().get("name").toString());
         bio.setText(ParseUser.getCurrentUser().get("bio").toString());
-
+        ParseFile p = (ParseFile) ParseUser.getCurrentUser().getParseFile("image");
+        byte[] b = null;
+        try {
+            b = p.getData();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if(b != null ){
+            mImageView.setImageBitmap(BitmapFactory.decodeByteArray(b, 0, b.length));
+        }
         Browse = (Button) findViewById(R.id.Browse);
         camButton = (Button) findViewById(R.id.camButton);
         applyButton = (Button) findViewById(R.id.applyButton);
 
 
-        mImageView  = (ImageView) findViewById(R.id.imageView2);
         upload= (Button) findViewById(R.id.upload);
         if ( ParseUser.getCurrentUser().getList("areas").size() ==0 )
             upload.setVisibility(View.GONE);
@@ -94,7 +106,7 @@ public class SettingActivity extends Activity{
                 if(imageBitmap != null)
                   {
                       ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                      imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                      imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                       byte[] image = stream.toByteArray();
                       ParseFile file = new ParseFile("photo.png", image);
                       user.put("image",file);
@@ -123,7 +135,7 @@ public class SettingActivity extends Activity{
                 Bundle extras = data.getExtras();
                 imageBitmap = (Bitmap) extras.get("data");
                 mImageView.setImageBitmap(imageBitmap);
-                mImageView.setRotation(90);
+               // mImageView.setRotation(90);
                 mImageView.setVisibility(View.VISIBLE);
 
             }
@@ -141,7 +153,7 @@ public class SettingActivity extends Activity{
                 imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                 // Log.d(TAG, String.valueOf(bitmap));
 
-                ImageView imageView = (ImageView) findViewById(R.id.imageView);
+
                 mImageView.setImageBitmap(imageBitmap);
                 mImageView.setVisibility(View.VISIBLE);
 

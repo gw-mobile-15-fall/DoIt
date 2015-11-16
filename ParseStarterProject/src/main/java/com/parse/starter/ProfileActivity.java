@@ -193,7 +193,7 @@ public class ProfileActivity extends Activity {
                     } else {
                         Bitmap imagebit = BitmapFactory.decodeByteArray(data, 0, data.length);
                         ProfileActivity.this.image.setImageBitmap(imagebit);
-                        ProfileActivity.this.image.setRotation(90);
+                        //ProfileActivity.this.image.setRotation(90);
                         ProfileActivity.this.image.setVisibility(View.VISIBLE);
 
                     }
