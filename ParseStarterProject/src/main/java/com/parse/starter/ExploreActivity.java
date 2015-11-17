@@ -215,9 +215,10 @@ public class ExploreActivity extends Activity {
                     Log.d("gwt Event", usersGoalsLists.get(i).get("lastUpdate").toString());
                     //calendar.setTimeInMillis(Long.parseLong(usersGoalsLists.get(i).get("lastUpdate").toString()));
                     Date d = (Date)usersGoalsLists.get(i).getUpdatedAt();
+                    getTime(d);
                     usersList.add(usersGoalsLists.get(i).get("userName").toString() );
-                    progress.add("  " + getPhrase( usersGoalsLists.get(i).get("progress").toString()) + " " + usersGoalsLists.get(i).get("name").toString() +
-                             " on time:"+ d.toString() );
+                    progress.add("" + getPhrase( usersGoalsLists.get(i).get("progress").toString()) + " " + usersGoalsLists.get(i).get("name").toString() +
+                             " on: "+   getTime(d) );
 
                     timeLine = new MyTimeLineAdapter(ExploreActivity.this, usersList, progress, lisinter);
                     ExploreActivity.this.list.setAdapter(timeLine);
@@ -247,18 +248,26 @@ public class ExploreActivity extends Activity {
         finish();
     }
 
-    public String getPhrase(String stepInString){
+    public String getPhrase(String stepInString) {
         int step = Integer.parseInt(stepInString);
-        switch (step){
-            case 0: return " Just added ";
-            case 1: return "in the first step of";
-            case 5: return " half way throgh in ";
-            case 9: return "almost finish ";
-            case 10: return "finished ";
-            default: return "in step " + step +  "of";
+        switch (step) {
+            case 0:
+                return " Just added ";
+            case 1:
+                return "in the first step of";
+            case 5:
+                return " half way throgh in ";
+            case 9:
+                return "almost finish ";
+            case 10:
+                return "finished ";
+            default:
+                return "in step " + step + "of";
         }
-
-
+    }
+    public String getTime(Date date){
+        SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("EEE hh:mm a");
+    return DATE_FORMAT.format(date);
 
     }
 }

@@ -15,10 +15,23 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <!--
+      IMPORTANT: Change "com.parse.starter.permission.C2D_MESSAGE" in the lines below
+      to match your app's package name + ".permission.C2D_MESSAGE".
+    -->
+    <permission android:protectionLevel="signature"
+        android:name="com.parse.starter.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.parse.starter.permission.C2D_MESSAGE" />
+
 
     <uses-feature android:name="android.hardware.camera" />
     <application
-        android:name=".DoItParse"
+        android:name="com.parse.starter.DoItParse"
         android:allowBackup="true"
         android:icon="@mipmap/doit_icon"
         android:label="@string/app_name"
@@ -30,16 +43,18 @@
         <meta-data
             android:name="com.parse.CLIENT_KEY"
             android:value="@string/parse_client_key" />
+        <meta-data android:name="com.parse.push.notification_icon"
+            android:resource="@drawable/doit_icon"/>
 
         <activity
-            android:name=".LoginOrSignupActivity"
+            android:name="com.parse.starter.LoginOrSignupActivity"
             android:label="@string/app_name" >
 
         </activity>
 
 
         <activity
-            android:name=".StarterActivity"
+            android:name="com.parse.starter.StarterActivity"
             android:label="@string/title_activity_starter" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,40 +66,61 @@
 
 
         <activity
-            android:name=".AuthenticateActivity"
+            android:name="com.parse.starter.AuthenticateActivity"
             android:label="@string/title_activity_authenticate" >
         </activity>
 
         <activity
-            android:name=".ProfileActivity"
+            android:name="com.parse.starter.ProfileActivity"
             android:label="@string/welcome" >
         </activity>
         <activity
-            android:name=".ListGoals"
+            android:name="com.parse.starter.ListGoals"
             android:label="@string/welcome" >
         </activity>
         <activity
-            android:name=".GoalDeatils"
+            android:name="com.parse.starter.GoalDeatils"
             android:label="@string/welcome" >
         </activity>
         <activity
-            android:name=".SettingActivity"
+            android:name="com.parse.starter.SettingActivity"
             android:label="@string/welcome" >
         </activity>
         <activity
-            android:name=".ExploreActivity"
+            android:name="com.parse.starter.ExploreActivity"
             android:label="@string/welcome" >
         </activity>
 
 
         <activity
-            android:name=".MemberActivity"
+            android:name="com.parse.starter.MemberActivity"
             android:label="@string/welcome" >
         </activity>
         <activity
-            android:name=".UploadActivity"
+            android:name="com.parse.starter.UploadActivity"
             android:label="@string/welcome" >
         </activity>
     </application>
+
+    <service android:name="com.parse.PushService" />
+
+    <receiver android:name="com.parse.starter.Receiver"
+        android:exported="false">
+        <intent-filter>
+            <action android:name="com.parse.push.intent.RECEIVE" />
+            <action android:name="com.parse.push.intent.DELETE" />
+            <action android:name="com.parse.push.intent.OPEN" />
+        </intent-filter>
+    </receiver>
+
+    <receiver android:name="com.parse.GcmBroadcastReceiver"
+        android:permission="com.google.android.c2dm.permission.SEND">
+        <intent-filter>
+            <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+            <category android:name="com.parse.starter" />
+        </intent-filter>
+    </receiver>
 
 </manifest>

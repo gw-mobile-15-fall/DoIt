@@ -12,8 +12,8 @@ import android.app.Application;
 
 import com.parse.Parse;
 import com.parse.ParseACL;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
-
 
 public class DoItParse extends Application {
 
@@ -27,6 +27,8 @@ public class DoItParse extends Application {
     // Add your initialization code here
     Parse.initialize(this, "E6nml5ahUWOBUMy56TFFOQvqjtcCAhsSGRr0L4gD", "7GMmQNtklSapF6cJO1sxkDPjTCdGj5X62Z2nAmR9");
 
+
+    ParseInstallation.getCurrentInstallation().saveInBackground();
     //ParseUser.enableAutomaticUser();
     ParseACL defaultACL = new ParseACL();
     // Optionally enable public read access.
