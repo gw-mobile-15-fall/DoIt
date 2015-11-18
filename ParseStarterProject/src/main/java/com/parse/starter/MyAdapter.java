@@ -1,5 +1,6 @@
 package com.parse.starter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
@@ -35,7 +36,7 @@ public class MyAdapter extends BaseAdapter {
     };
     private static LayoutInflater mInflater = null;
     SharedPreferences mPreferences;
-    public MyAdapter(ProfileActivity mainActivity, List goalsList, List progressList,List icons, onItemClicked listenter) {
+    public MyAdapter(Activity mainActivity, List goalsList, List progressList,List icons, onItemClicked listenter) {
         goals = goalsList;
         context = mainActivity;
         progress = progressList;
@@ -85,9 +86,17 @@ public class MyAdapter extends BaseAdapter {
             holder.goal.setText(goals.get(position));
 
         holder.progress.setText("Step: " + progress.get(position));
-       holder.goal.setOnClickListener(myButtonClickListener);
-        holder.icon.setOnClickListener(myButtonClickListener);
-        holder.progress.setOnClickListener(myButtonClickListener);
+        if( l != null) {
+            holder.progress.setText("Step: " + progress.get(position));
+
+            holder.goal.setOnClickListener(myButtonClickListener);
+            holder.icon.setOnClickListener(myButtonClickListener);
+            holder.progress.setOnClickListener(myButtonClickListener);
+
+        }
+        else
+            holder.progress.setText(" Within: " + progress.get(position));
+
         byte b[] = (byte[]) icons.get(position);
         if(b == null || b.length==0  ) {
             Drawable myDrawable = context.getResources().getDrawable(R.drawable.doit_icon);

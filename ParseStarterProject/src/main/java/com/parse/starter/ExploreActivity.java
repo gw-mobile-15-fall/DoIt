@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by omar on 10/28/2015.
@@ -60,6 +61,7 @@ public class ExploreActivity extends Activity {
 
 
         if (intent.getStringExtra("type").equals("explore")) {
+            title.setText(getResources().getString(R.string.friends_who_have));
             String goal = intent.getStringExtra("goal");
             Log.d("Goal is: ", goal);
             title.append(" " + goal + " goal!");
@@ -112,6 +114,7 @@ public class ExploreActivity extends Activity {
 
         } else if (intent.getStringExtra("type").equals("followers")) {
             usersList = new LinkedList<>();
+            title.setText(getResources().getString(R.string.followers));
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Follow");
             query.whereEqualTo("to", ParseUser.getCurrentUser());
 
@@ -135,6 +138,8 @@ public class ExploreActivity extends Activity {
 
 
         } else if (intent.getStringExtra("type").equals("following")) {
+            title.setText(getResources().getString(R.string.following));
+
             usersList = new LinkedList<>();
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Follow");
             query.whereEqualTo("from", ParseUser.getCurrentUser());
@@ -168,6 +173,8 @@ public class ExploreActivity extends Activity {
         }
 
         else if (intent.getStringExtra("type").equals("timeline") ){
+            title.setText(getResources().getString(R.string.timeLine));
+
             Calendar calendar = Calendar.getInstance();
 
             Log.d( "start timeline","");
@@ -233,9 +240,53 @@ public class ExploreActivity extends Activity {
             }
 
         }
+        else if (intent.getStringExtra("type").equals("history") ){
+            title.setText(getResources().getString(R.string.history));
+
+            Log.d( "start history","");
+            List<String> goalsDone = new LinkedList<>();
+            List<String> Duration = new LinkedList<>();
+
+            List<byte[]> goalsIcons = new LinkedList<>();
+             ParseQuery<ParseObject> query = ParseQuery.getQuery("UserWithGoals");
+           query.whereNotEqualTo("timeEnd", "---");
+            query.whereEqualTo("userName",ParseUser.getCurrentUser().getUsername());
+
+            List<ParseObject>   goalsList = null;
+            try {
+                goalsList = query.find();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if(goalsList != null || goalsList.size() > 0 ) {
+                ParseObject obj = new ParseObject("UsersWithGoals");
+                for (int i = 0; i < goalsList.size(); i++) {
+                    obj = goalsList.get(i);
+                    goalsDone.add(obj.get("name").toString());
+                    goalsIcons.add(obj.getBytes("icon"));
+                    //Log.d("users::", obj.getCreatedAt() + " " + obj.getUpdatedAt().toString() );
+                     Duration.add(getDifferenceDays(obj.getCreatedAt(), obj.getUpdatedAt()) + " Days");
+
+                }
 
 
-    }
+
+
+                    MyAdapter GoalsDoneAdapter = new MyAdapter(ExploreActivity.this, goalsDone, Duration,goalsIcons, null);
+                    ExploreActivity.this.list.setAdapter(GoalsDoneAdapter);
+                    ExploreActivity.this.list.setTextFilterEnabled(true);
+
+
+
+                }
+
+
+
+            }
+
+        }
+
+
 
     @Override
     public void onBackPressed() {
@@ -269,5 +320,9 @@ public class ExploreActivity extends Activity {
         SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("EEE hh:mm a");
     return DATE_FORMAT.format(date);
 
+    }
+    public static long getDifferenceDays(Date d1, Date d2) {
+        long diff = d2.getTime() - d1.getTime();
+        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
 }

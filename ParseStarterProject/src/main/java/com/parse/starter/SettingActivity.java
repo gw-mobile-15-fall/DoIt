@@ -23,7 +23,7 @@ import java.io.IOException;
  * Created by omar on 10/27/2015.
  */
 public class SettingActivity extends Activity{
-    Button camButton,applyButton,upload,Browse;
+    Button camButton,applyButton,upload,Browse,historyButton;
     EditText name,bio;
     ImageView mImageView;
     Bitmap imageBitmap;
@@ -37,7 +37,7 @@ public class SettingActivity extends Activity{
         name = (EditText)findViewById(R.id.memberName);
         bio = (EditText)findViewById(R.id.bioText);
         mImageView  = (ImageView) findViewById(R.id.imageView2);
-
+        historyButton =  (Button) findViewById(R.id.historyButton);
         name.setText(ParseUser.getCurrentUser().get("name").toString());
         bio.setText(ParseUser.getCurrentUser().get("bio").toString());
         ParseFile p = (ParseFile) ParseUser.getCurrentUser().getParseFile("image");
@@ -68,6 +68,16 @@ public class SettingActivity extends Activity{
 
             }
         });
+
+        historyButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                // Logout current user
+                Intent intent = new Intent(SettingActivity.this,ExploreActivity.class);
+                intent.putExtra("type","history");
+                startActivityForResult(intent, 1);
+
+            }
+        });
         Browse.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 // Logout current user
@@ -79,6 +89,10 @@ public class SettingActivity extends Activity{
 
             }
         });
+
+
+
+
 
         upload.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -163,5 +177,7 @@ public class SettingActivity extends Activity{
 
 
         }
+
+
     }
 }

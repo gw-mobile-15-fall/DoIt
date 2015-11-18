@@ -53,6 +53,7 @@
     <string name="goal_title">goal title..</string>
     <string name="action_share"> share..</string>
     <string name="share_step_text">I am in step:</string>
-
+    <string name="history">Goals History</string>
+    <string name="timeLine">Timeline</string>
 
 </resources>
