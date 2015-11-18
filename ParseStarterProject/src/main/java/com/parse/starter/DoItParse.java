@@ -14,6 +14,7 @@ import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 public class DoItParse extends Application {
 
@@ -28,14 +29,30 @@ public class DoItParse extends Application {
     Parse.initialize(this, "E6nml5ahUWOBUMy56TFFOQvqjtcCAhsSGRr0L4gD", "7GMmQNtklSapF6cJO1sxkDPjTCdGj5X62Z2nAmR9");
 
 
-    ParseInstallation.getCurrentInstallation().saveInBackground();
-    //ParseUser.enableAutomaticUser();
-    ParseACL defaultACL = new ParseACL();
-    // Optionally enable public read access.
-    // defaultACL.setPublicReadAccess(true);
-    ParseACL.setDefaultACL(defaultACL, true);
 
-    ParseObject testObject = new ParseObject("TestObject");
+
+      ParseInstallation.getCurrentInstallation().saveInBackground();
+
+
+            ParseUser.enableAutomaticUser();
+            ParseACL defaultACL = new ParseACL();
+    // Optionally enable public read access.
+    defaultACL.setPublicReadAccess(true);
+    ParseACL.setDefaultACL(defaultACL, true); ParseInstallation.getCurrentInstallation().saveInBackground();
+      /*ParsePush.subscribeInBackground("", new SaveCallback() {
+          @Override
+          public void done(ParseException e) {
+              if (e == null) {
+                  Log.d("com.parse.push", "successfully subscribed to the broadcast channel.");
+
+              } else {
+                  Log.e("com.parse.push", "failed to subscribe for push", e);
+              }
+          }
+      });*/
+
+
+      ParseObject testObject = new ParseObject("TestObject");
     testObject.put("foo", "bar");
     testObject.saveInBackground();
 

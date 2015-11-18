@@ -219,7 +219,7 @@ public class ExploreActivity extends Activity {
                 }
                 usersList.clear();
                 for(int i = 0 ; i < usersGoalsLists.size() ; i++) {
-                    Log.d("gwt Event", usersGoalsLists.get(i).get("lastUpdate").toString());
+//                    Log.d("gwt Event", usersGoalsLists.get(i).get("lastUpdate").toString());
                     //calendar.setTimeInMillis(Long.parseLong(usersGoalsLists.get(i).get("lastUpdate").toString()));
                     Date d = (Date)usersGoalsLists.get(i).getUpdatedAt();
                     getTime(d);

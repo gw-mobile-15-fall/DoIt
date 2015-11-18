@@ -23,7 +23,7 @@ import java.io.IOException;
  * Created by omar on 10/27/2015.
  */
 public class SettingActivity extends Activity{
-    Button camButton,applyButton,upload,Browse,historyButton;
+    Button camButton,applyButton,upload,Browse,historyButton,yourChannels;
     EditText name,bio;
     ImageView mImageView;
     Bitmap imageBitmap;
@@ -38,6 +38,7 @@ public class SettingActivity extends Activity{
         bio = (EditText)findViewById(R.id.bioText);
         mImageView  = (ImageView) findViewById(R.id.imageView2);
         historyButton =  (Button) findViewById(R.id.historyButton);
+        yourChannels = (Button) findViewById(R.id.yourChannels);
         name.setText(ParseUser.getCurrentUser().get("name").toString());
         bio.setText(ParseUser.getCurrentUser().get("bio").toString());
         ParseFile p = (ParseFile) ParseUser.getCurrentUser().getParseFile("image");
@@ -78,6 +79,16 @@ public class SettingActivity extends Activity{
 
             }
         });
+        yourChannels.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                // Logout current user
+                Intent intent = new Intent(SettingActivity.this, subscribeActivity.class);
+
+                startActivityForResult(intent, 1);
+
+            }
+        });
+
         Browse.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 // Logout current user
