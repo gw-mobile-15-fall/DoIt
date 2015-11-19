@@ -38,7 +38,11 @@ public class DoItParse extends Application {
             ParseACL defaultACL = new ParseACL();
     // Optionally enable public read access.
     defaultACL.setPublicReadAccess(true);
-    ParseACL.setDefaultACL(defaultACL, true); ParseInstallation.getCurrentInstallation().saveInBackground();
+    ParseACL.setDefaultACL(defaultACL, true);
+      ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+      installation.put("user",ParseUser.getCurrentUser());
+      installation.saveInBackground();
+      ParseInstallation.getCurrentInstallation().saveInBackground();
       /*ParsePush.subscribeInBackground("", new SaveCallback() {
           @Override
           public void done(ParseException e) {

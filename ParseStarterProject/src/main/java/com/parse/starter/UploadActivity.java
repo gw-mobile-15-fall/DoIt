@@ -16,7 +16,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.parse.ParseObject;
-import com.parse.ParsePush;
 import com.parse.ParseUser;
 
 import java.util.LinkedList;
@@ -127,12 +126,12 @@ String item;
                     obj.put("steps", stepsList);
                     obj.saveInBackground();
                     Log.d("ssave", "");
-                    ParsePush push = new ParsePush();
-                    push.setChannel(list.getSelectedItem().toString());
-                    push.setMessage("New Goal in " + list.getSelectedItem().toString());
-                    Log.d("New Goal in " , list.getSelectedItem().toString());
-                    push.sendInBackground();
-                    Log.d("push.sendInBackground()", list.getSelectedItem().toString());
+                  //  ParsePush push = new ParsePush();
+                  //  push.setChannel(list.getSelectedItem().toString());
+                  //  push.setMessage("New Goal in " + list.getSelectedItem().toString());
+                  //  Log.d("New Goal in " , list.getSelectedItem().toString());
+                   // push.sendInBackground();
+                 //   Log.d("push.sendInBackground()", list.getSelectedItem().toString());
                 }
 
 
