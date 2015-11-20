@@ -45,33 +45,7 @@ boolean flag = true;
 
             createGroupList();
 
-           /* createCollection();
 
-            expListView = (ExpandableListView) findViewById(R.id.goals_list);
-            final ExpandableListAdapter expListAdapter = new ExpandableListAdapter(
-                    this, groupList, goalsCollection);
-            expListView.setAdapter(expListAdapter);
-
-            //setGroupIndicatorToRight();
-
-            expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-
-                public boolean onChildClick(ExpandableListView parent, View v,
-                                            int groupPosition, int childPosition, long id) {
-                    final String selected = (String) expListAdapter.getChild(
-                            groupPosition, childPosition);
-                    Toast.makeText(getBaseContext(), selected+"**", Toast.LENGTH_LONG)
-                            .show();
-
-
-
-                    Intent toWelcome = new Intent();
-                    toWelcome.putExtra("goal",selected);
-                    setResult(RESULT_OK, toWelcome);
-                    finish();
-                    return true;
-                }
-            });*/
         }
 
     private void createGroupList() {
@@ -177,9 +151,9 @@ boolean flag = true;
 
 
                     // Intent toWelcome = new Intent();
-                   // toWelcome.putExtra("goal", selected);
-                  // setResult(RESULT_OK, toWelcome);
-                   // finish();
+                    // toWelcome.putExtra("goal", selected);
+                    // setResult(RESULT_OK, toWelcome);
+                    // finish();
                     return true;
 
                 }

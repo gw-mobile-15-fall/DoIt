@@ -18,31 +18,29 @@ import com.parse.ParseUser;
 
 public class DoItParse extends Application {
 
-  @Override
-  public void onCreate() {
-    super.onCreate();
+    @Override
+    public void onCreate() {
+        super.onCreate();
 
-    // Enable Local Datastore.
-    Parse.enableLocalDatastore(this);
+        // Enable Local Datastore.
+        Parse.enableLocalDatastore(this);
 
-    // Add your initialization code here
-    Parse.initialize(this, "E6nml5ahUWOBUMy56TFFOQvqjtcCAhsSGRr0L4gD", "7GMmQNtklSapF6cJO1sxkDPjTCdGj5X62Z2nAmR9");
-
-
+        // Add your initialization code here
+        Parse.initialize(this, Constants.PARSE_APP_ID, Constants.PARSE_CLIENT_ID);
 
 
-      ParseInstallation.getCurrentInstallation().saveInBackground();
+        ParseInstallation.getCurrentInstallation().saveInBackground();
 
 
-            ParseUser.enableAutomaticUser();
-            ParseACL defaultACL = new ParseACL();
-    // Optionally enable public read access.
-    defaultACL.setPublicReadAccess(true);
-    ParseACL.setDefaultACL(defaultACL, true);
-      ParseInstallation installation = ParseInstallation.getCurrentInstallation();
-      installation.put("user",ParseUser.getCurrentUser());
-      installation.saveInBackground();
-      ParseInstallation.getCurrentInstallation().saveInBackground();
+        ParseUser.enableAutomaticUser();
+        ParseACL defaultACL = new ParseACL();
+        // Optionally enable public read access.
+        defaultACL.setPublicReadAccess(true);
+        ParseACL.setDefaultACL(defaultACL, true);
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.put("user", ParseUser.getCurrentUser());
+        installation.saveInBackground();
+        ParseInstallation.getCurrentInstallation().saveInBackground();
       /*ParsePush.subscribeInBackground("", new SaveCallback() {
           @Override
           public void done(ParseException e) {
@@ -56,9 +54,9 @@ public class DoItParse extends Application {
       });*/
 
 
-      ParseObject testObject = new ParseObject("TestObject");
-    testObject.put("foo", "bar");
-    testObject.saveInBackground();
+        ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("foo", "bar");
+        testObject.saveInBackground();
 
-  }
+    }
 }

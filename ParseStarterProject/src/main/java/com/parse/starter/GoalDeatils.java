@@ -126,9 +126,10 @@ public class GoalDeatils extends Activity {
                     NextStepText.setText(GoalSteps.get(progress).toString() + "");
                     saveProgress(false);
                     pBar.setProgress(progress);
-                    mImageView.setVisibility(View.INVISIBLE);  Log.d("Watch", "&&&&&&&&&&&&&&&&&&&&&&");
+                    mImageView.setVisibility(View.INVISIBLE);
+
                     if( NextStepText.getText().toString().contains("watch")) {
-                        Log.d("Watch", "&&&&&&&&&&&&&&&&&&&&&&");
+
                         mWatch.setVisibility(View.VISIBLE);
                         mWatch.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -146,11 +147,11 @@ public class GoalDeatils extends Activity {
                 }
                 else
                 {
-                    NextStepText.setText("Congrats!!");
+                    NextStepText.setText(getResources().getString(R.string.congrats));
                     pBar.setProgress(10);
                     nextStep.setVisibility(View.GONE);
                     saveProgress(true);
-                    nextStepButton.setText("Wow! No more tasks!");
+                    nextStepButton.setText(getResources().getString(R.string.no_task_left));
                     nextStepButton.setEnabled(false);
                     mImageView.setVisibility(View.GONE);
                     removeNameFromGoal();
@@ -274,34 +275,7 @@ public class GoalDeatils extends Activity {
         Log.d("onBackPressed", "progress:"+progress);
         finish();
     }
-  /*  @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("onDestroy", "claaed");
-        Intent intent = this.getIntent();
-        intent.putExtra("object", test.toString());
-        this.setResult(RESULT_OK, intent);
-        saveProgress(false);
 
-        finish();
-
-
-
-
-    }
-
-    @Override
-    public void finish() {
-        Log.d("finish", "claaed");
-
-        Intent intent = this.getIntent();
-        intent.putExtra("object", test.toString());
-         this.setResult(RESULT_OK, intent);
-        //saveProgress(false);
-
-
-        super.finish();
-    }*/
 
     public void removeNameFromGoal(){
 
@@ -345,9 +319,7 @@ public class GoalDeatils extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement

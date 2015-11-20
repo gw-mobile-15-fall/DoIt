@@ -87,15 +87,15 @@ public class MemberActivity extends Activity {
         following = (TextView) findViewById(R.id.followeingTextNumber);
         getFollowing();
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Follow");
-        query.whereEqualTo("toName", memberName);
-        query.whereEqualTo("fromName", ParseUser.getCurrentUser().getUsername().toString());
+        query.whereEqualTo(Constants.TO_NAME, memberName);
+        query.whereEqualTo(Constants.FROM_NAME, ParseUser.getCurrentUser().getUsername().toString());
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> catList, ParseException e) {
                 if (e == null) {
                     if (catList == null || catList.size() == 0)
-                        mlogout.setText("follow");
+                        mlogout.setText(getResources().getString(R.string.Follow));
                     else
-                        mlogout.setText("unfollow");
+                        mlogout.setText(getResources().getString(R.string.Unfollow));
 
                 }
 
@@ -116,20 +116,20 @@ public class MemberActivity extends Activity {
 
 
                 ParseObject follow = new ParseObject("Follow");
-                if (mlogout.getText().toString().equals("follow")) {
+                if (mlogout.getText().toString().equalsIgnoreCase("follow")) {
                     follow.put("from", ParseUser.getCurrentUser());
                     follow.put("to", current);
-                    follow.put("toName", memberName);
-                    follow.put("fromName", ParseUser.getCurrentUser().getUsername().toString());
+                    follow.put(Constants.TO_NAME, memberName);
+                    follow.put(Constants.FROM_NAME, ParseUser.getCurrentUser().getUsername().toString());
                     follow.saveInBackground();
                     Toast.makeText(MemberActivity.this, "You follwed : " + memberName, Toast.LENGTH_SHORT).show();
-                    mlogout.setText("unfollow");
+                    mlogout.setText(getResources().getString(R.string.Unfollow));
                     getFollowers();
 
                 } else {
                     ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Follow");
-                    query.whereEqualTo("toName", memberName);
-                    query.whereEqualTo("fromName", ParseUser.getCurrentUser().getUsername().toString());
+                    query.whereEqualTo(Constants.TO_NAME, memberName);
+                    query.whereEqualTo(Constants.FROM_NAME, ParseUser.getCurrentUser().getUsername().toString());
                     query.findInBackground(new FindCallback<ParseObject>() {
                         public void done(List<ParseObject> catList, ParseException e) {
                             if (e == null) {
@@ -140,8 +140,8 @@ public class MemberActivity extends Activity {
 
                                     obj.deleteInBackground();
 
-                                    Toast.makeText(MemberActivity.this, "You unfollwed : " + memberName, Toast.LENGTH_SHORT).show();
-                                    mlogout.setText("follow");
+                                    Toast.makeText(MemberActivity.this, getResources().getString(R.string.You_unfollowed) + memberName, Toast.LENGTH_SHORT).show();
+                                    mlogout.setText(getResources().getString(R.string.Follow));
 
                                 }
 
@@ -179,7 +179,7 @@ public class MemberActivity extends Activity {
                                 } else {
                                     Bitmap imagebit = BitmapFactory.decodeByteArray(data, 0, data.length);
                                     MemberActivity.this.image.setImageBitmap(imagebit);
-                                    MemberActivity.this.image.setRotation(90);
+                                    //MemberActivity.this.image.setRotation(90);
                                     MemberActivity.this.image.setVisibility(View.VISIBLE);
 
                                 }
@@ -233,7 +233,6 @@ public class MemberActivity extends Activity {
             }
 
 
-
         }
 
 
@@ -257,14 +256,10 @@ public class MemberActivity extends Activity {
 
 
             MemberActivity.this.mGoalsList.setAdapter(listAdapter);
-                        MemberActivity.this.mGoalsList.setTextFilterEnabled(true);
+            MemberActivity.this.mGoalsList.setTextFilterEnabled(true);
 
 
-                    }
-
-
-
-
+        }
 
 
         return null;
@@ -272,7 +267,7 @@ public class MemberActivity extends Activity {
 
     public void getFollowing() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Follow");
-        query.whereEqualTo("fromName", memberName);
+        query.whereEqualTo(Constants.FROM_NAME, memberName);
 
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> followList, ParseException e) {
@@ -287,7 +282,7 @@ public class MemberActivity extends Activity {
 
     public void getFollowers() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Follow");
-        query.whereEqualTo("toName", memberName);
+        query.whereEqualTo(Constants.TO_NAME, memberName);
 
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> followList, ParseException e) {

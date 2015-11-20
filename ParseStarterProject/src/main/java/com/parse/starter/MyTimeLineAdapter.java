@@ -20,7 +20,7 @@ import com.parse.ParseUser;
 import java.util.List;
 
 public class MyTimeLineAdapter extends BaseAdapter {
-    List<String> userList,events;
+    List<String> userList, events;
 
     List icons;
     Context context;
@@ -38,12 +38,13 @@ public class MyTimeLineAdapter extends BaseAdapter {
 
         }
     };
+
     public MyTimeLineAdapter(ExploreActivity mainActivity, List userList, List Progress, onItemClicked lisitener) {
         this.userList = userList;
         context = mainActivity;
         mInflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        l  = lisitener;
+        l = lisitener;
         events = Progress;
     }
 
@@ -86,37 +87,31 @@ public class MyTimeLineAdapter extends BaseAdapter {
         holder.progressText.setOnClickListener(myButtonClickListener);
 
         holder.user.setText(userList.get(position));
-        holder.progressText.setText(": " + events.get(position) );
+        holder.progressText.setText(": " + events.get(position));
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("username", userList.get(position));
 
-        try{
+        try {
             List<ParseUser> objects = query.find();
 
             ParseFile p = (ParseFile) objects.get(0).getParseFile("image");
             try {
                 byte[] b = p.getData();
-                if(b == null || b.length==0  ) {
+                if (b == null || b.length == 0) {
                     Drawable myDrawable = context.getResources().getDrawable(R.drawable.doit_icon);
                     holder.icon.setImageDrawable(myDrawable);
-                }
-                else
+                } else
                     holder.icon.setImageBitmap(BitmapFactory.decodeByteArray(b, 0, b.length));
 
             } catch (ParseException e1) {
                 e1.printStackTrace();
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
 
         }
-
-
 
 
         // The query was successful.
-
-
 
 
         rowView.setOnClickListener(new View.OnClickListener() {
@@ -126,8 +121,6 @@ public class MyTimeLineAdapter extends BaseAdapter {
 
             }
         });
-
-
 
 
         return rowView;

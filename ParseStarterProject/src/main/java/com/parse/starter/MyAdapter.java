@@ -29,14 +29,15 @@ public class MyAdapter extends BaseAdapter {
             View parentRow = (View) v.getParent();
             ListView listView = (ListView) parentRow.getParent();
             final int position = listView.getPositionForView(parentRow);
-            Log.d("Postion ::", position+"");
+            Log.d("Postion ::", position + "");
             l.postion(position);
 
         }
     };
     private static LayoutInflater mInflater = null;
     SharedPreferences mPreferences;
-    public MyAdapter(Activity mainActivity, List goalsList, List progressList,List icons, onItemClicked listenter) {
+
+    public MyAdapter(Activity mainActivity, List goalsList, List progressList, List icons, onItemClicked listenter) {
         goals = goalsList;
         context = mainActivity;
         progress = progressList;
@@ -83,27 +84,25 @@ public class MyAdapter extends BaseAdapter {
         holder.progress = (TextView) rowView.findViewById(R.id.progress);
         //mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-            holder.goal.setText(goals.get(position));
+        holder.goal.setText(goals.get(position));
 
-        holder.progress.setText("Step: " + progress.get(position));
-        if( l != null) {
-            holder.progress.setText("Step: " + progress.get(position));
+        holder.progress.setText(context.getResources().getString(R.string.in_step) + progress.get(position));
+        if (l != null) {
+            holder.progress.setText(context.getResources().getString(R.string.in_step) + progress.get(position));
 
             holder.goal.setOnClickListener(myButtonClickListener);
             holder.icon.setOnClickListener(myButtonClickListener);
             holder.progress.setOnClickListener(myButtonClickListener);
 
-        }
-        else
+        } else
             holder.progress.setText(" Within: " + progress.get(position));
 
         byte b[] = (byte[]) icons.get(position);
-        if(b == null || b.length==0  ) {
+        if (b == null || b.length == 0) {
             Drawable myDrawable = context.getResources().getDrawable(R.drawable.doit_icon);
             holder.icon.setImageDrawable(myDrawable);
-        }
-        else
-        holder.icon.setImageBitmap(BitmapFactory.decodeByteArray(b, 0, b.length));
+        } else
+            holder.icon.setImageBitmap(BitmapFactory.decodeByteArray(b, 0, b.length));
 
         rowView.setOnClickListener(new OnClickListener() {
             @Override
@@ -112,9 +111,6 @@ public class MyAdapter extends BaseAdapter {
 
             }
         });
-
-
-
 
 
         return rowView;

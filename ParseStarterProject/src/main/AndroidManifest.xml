@@ -107,6 +107,11 @@
             android:label="@string/welcome" >
         </activity>
 
+        <activity
+            android:name="com.parse.starter.GraphActivity"
+            android:label="@string/welcome" >
+        </activity>
+
 
         <service android:name="com.parse.PushService" />
         <receiver android:name="com.parse.ParsePushBroadcastReceiver"

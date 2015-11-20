@@ -39,12 +39,13 @@ public class MyAdapterUsers extends BaseAdapter {
 
         }
     };
+
     public MyAdapterUsers(ExploreActivity mainActivity, List userList, onItemClicked lisitener) {
         this.userList = userList;
         context = mainActivity;
         mInflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    l  = lisitener;
+        l = lisitener;
 
     }
 
@@ -88,36 +89,30 @@ public class MyAdapterUsers extends BaseAdapter {
 
         holder.user.setText(userList.get(position));
 
-             ParseQuery<ParseUser> query = ParseUser.getQuery();
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("username", userList.get(position));
 
-                   try{
-                       List<ParseUser> objects = query.find();
-                       holder.bio.setText(": " + objects.get(0).get("bio"));
-                       ParseFile p = (ParseFile) objects.get(0).getParseFile("image");
-                       try {
-                           byte[] b = p.getData();
-                           if(b == null || b.length==0  ) {
-                               Drawable myDrawable = context.getResources().getDrawable(R.drawable.doit_icon);
-                               holder.icon.setImageDrawable(myDrawable);
-                           }
-                           else
-                               holder.icon.setImageBitmap(BitmapFactory.decodeByteArray(b, 0, b.length));
+        try {
+            List<ParseUser> objects = query.find();
+            holder.bio.setText(": " + objects.get(0).get("bio"));
+            ParseFile p = (ParseFile) objects.get(0).getParseFile("image");
+            try {
+                byte[] b = p.getData();
+                if (b == null || b.length == 0) {
+                    Drawable myDrawable = context.getResources().getDrawable(R.drawable.doit_icon);
+                    holder.icon.setImageDrawable(myDrawable);
+                } else
+                    holder.icon.setImageBitmap(BitmapFactory.decodeByteArray(b, 0, b.length));
 
-                       } catch (ParseException e1) {
-                           e1.printStackTrace();
-                       }
-                   }
-                   catch (Exception e){
+            } catch (ParseException e1) {
+                e1.printStackTrace();
+            }
+        } catch (Exception e) {
 
-                   }
+        }
 
 
-
-
-                    // The query was successful.
-
-
+        // The query was successful.
 
 
         rowView.setOnClickListener(new OnClickListener() {
@@ -127,8 +122,6 @@ public class MyAdapterUsers extends BaseAdapter {
 
             }
         });
-
-
 
 
         return rowView;

@@ -121,8 +121,8 @@ String item;
                     Log.d("stepsList.size() > 5 ", "");
 
                     ParseObject obj = new ParseObject("Goals");
-                    obj.put("name",title.getText().toString());
-                    obj.put("Category",list.getSelectedItem().toString());
+                    obj.put("name", title.getText().toString());
+                    obj.put("Category", list.getSelectedItem().toString());
                     obj.put("steps", stepsList);
                     obj.saveInBackground();
                     Log.d("ssave", "");

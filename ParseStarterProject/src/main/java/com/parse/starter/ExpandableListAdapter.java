@@ -31,7 +31,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private List<String> goals;
 
     public ExpandableListAdapter(Activity context, List<String> goalList,
-                                 Map<String, List<String>> goalCollections,Map<String, ParseFile> iconCollections) {
+                                 Map<String, List<String>> goalCollections, Map<String, ParseFile> iconCollections) {
         this.context = context;
         this.goalCollections = goalCollections;
         this.goals = goalList;
@@ -61,13 +61,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         ImageView delete = (ImageView) convertView.findViewById(R.id.delete);
         ParseFile icon = iconCollections.get(goal);
-        byte[] bitmapdata ;
+        byte[] bitmapdata;
         try {
-            if(icon == null )
+            if (icon == null)
                 ;
-               // Drawable myDrawable = context.getResources().getDrawable(R.drawable.doit_icon);
+                // Drawable myDrawable = context.getResources().getDrawable(R.drawable.doit_icon);
                 // delete.setImageDrawable(myDrawable);
-            else{
+            else {
                 bitmapdata = icon.getData();
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapdata, 0, bitmapdata.length);
                 delete.setImageBitmap(bitmap);
@@ -75,7 +75,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
 
 
         delete.setOnClickListener(new OnClickListener() {
@@ -110,15 +109,15 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     public int getChildrenCount(int groupPosition) {
 
-        if( goals == null )
-            Log.d("Null is","goal");
-        if(goalCollections == null)
-            Log.d("Null is","GoalCollections");
+        if (goals == null)
+            Log.d("Null is", "goal");
+        if (goalCollections == null)
+            Log.d("Null is", "GoalCollections");
         Log.d("#######", (goals.get(groupPosition)).toString());
 
         Log.d("#######", goalCollections.get(goals.get(groupPosition)).toString());
-       return goalCollections.get(goals.get(groupPosition)).size();
-       // return 1;
+        return goalCollections.get(goals.get(groupPosition)).size();
+        // return 1;
     }
 
     public Object getGroup(int groupPosition) {

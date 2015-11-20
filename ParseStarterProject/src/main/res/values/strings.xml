@@ -32,6 +32,9 @@
     <string name="user_bio">placeholder test for the user bio goes here. They can write a breif discription of themselves</string>
     <string name="badges">Badges</string>
     <string name="followers">Followers</string>
+    <string name="Follow">Follow</string>
+    <string name="Unfollow">Unfollow</string>
+
     <string name="following">Following</string>
     <string name="number">10</string>
     <string name="Test">Test list item</string>
@@ -53,9 +56,24 @@
     <string name="goal_title">goal title..</string>
     <string name="action_share"> share..</string>
     <string name="share_step_text">I am in step:</string>
+    <string name="check_my_finished_Goals">Check My Finished Goals</string>
+    <string name="you_selected">You selected :</string>
     <string name="history">Goals History</string>
     <string name="timeLine">Timeline</string>
+    <string name="just_added">Just added</string>
+    <string name="first_step">in the first step of</string>
+    <string name="half_way">half way throgh in</string>
+    <string name="almost_finish">yalmost finish</string>
+    <string name="finished">finished</string>
+    <string name="in_step">in step</string>
+    <string name="of">of</string>
     <string name="yourChannels">your Channels</string>
-
+    <string name="congrats">congrats</string>
+    <string name="no_task_left">Wow! No more tasks!</string>
+    <string name="no_user">No such user exist, please signup</string>
+    <string name="Logged_in">Successfully Logged in</string>
+    <string name="You_followed">You followed</string>
+    <string name="You_unfollowed">You unfollowed</string>
+    <string name="Select_Picture">"Select Picture"</string>
 
 </resources>

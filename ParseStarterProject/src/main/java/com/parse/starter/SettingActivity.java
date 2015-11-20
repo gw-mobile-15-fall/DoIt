@@ -22,22 +22,23 @@ import java.io.IOException;
 /**
  * Created by omar on 10/27/2015.
  */
-public class SettingActivity extends Activity{
-    Button camButton,applyButton,upload,Browse,historyButton,yourChannels;
-    EditText name,bio;
+public class SettingActivity extends Activity {
+    Button camButton, applyButton, upload, Browse, historyButton, yourChannels;
+    EditText name, bio;
     ImageView mImageView;
     Bitmap imageBitmap;
-    EditText nameInput,bioInput;
+    EditText nameInput, bioInput;
     private int PICK_IMAGE_REQUEST = 2;
     private int CAM_IMAGE_REQUEST = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting);
-        name = (EditText)findViewById(R.id.memberName);
-        bio = (EditText)findViewById(R.id.bioText);
-        mImageView  = (ImageView) findViewById(R.id.imageView2);
-        historyButton =  (Button) findViewById(R.id.historyButton);
+        name = (EditText) findViewById(R.id.memberName);
+        bio = (EditText) findViewById(R.id.bioText);
+        mImageView = (ImageView) findViewById(R.id.imageView2);
+        historyButton = (Button) findViewById(R.id.historyButton);
         yourChannels = (Button) findViewById(R.id.yourChannels);
         name.setText(ParseUser.getCurrentUser().get("name").toString());
         bio.setText(ParseUser.getCurrentUser().get("bio").toString());
@@ -48,7 +49,7 @@ public class SettingActivity extends Activity{
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        if(b != null ){
+        if (b != null) {
             mImageView.setImageBitmap(BitmapFactory.decodeByteArray(b, 0, b.length));
         }
         Browse = (Button) findViewById(R.id.Browse);
@@ -56,8 +57,8 @@ public class SettingActivity extends Activity{
         applyButton = (Button) findViewById(R.id.applyButton);
 
 
-        upload= (Button) findViewById(R.id.upload);
-        if ( ParseUser.getCurrentUser().getList("areas").size() ==0 )
+        upload = (Button) findViewById(R.id.upload);
+        if (ParseUser.getCurrentUser().getList("areas").size() == 0)
             upload.setVisibility(View.GONE);
 
 
@@ -73,8 +74,8 @@ public class SettingActivity extends Activity{
         historyButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 // Logout current user
-                Intent intent = new Intent(SettingActivity.this,ExploreActivity.class);
-                intent.putExtra("type","history");
+                Intent intent = new Intent(SettingActivity.this, GraphActivity.class);
+                intent.putExtra("type", "history");
                 startActivityForResult(intent, 1);
 
             }
@@ -93,22 +94,19 @@ public class SettingActivity extends Activity{
             public void onClick(View arg0) {
                 // Logout current user
                 Intent intent = new Intent();
-                 intent.setType("image/*");
+                intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+                startActivityForResult(Intent.createChooser(intent, getResources().getString(R.string.Select_Picture)), PICK_IMAGE_REQUEST);
 
 
             }
         });
 
 
-
-
-
         upload.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 // Logout current user
-                Intent intent = new Intent(SettingActivity.this,UploadActivity.class);
+                Intent intent = new Intent(SettingActivity.this, UploadActivity.class);
                 startActivity(intent);
 
             }
@@ -118,32 +116,29 @@ public class SettingActivity extends Activity{
                 // Logout current user
                 Intent returnIntent = new Intent();
                 ParseUser user = ParseUser.getCurrentUser();
-                if(SettingActivity.this.name.getText().toString() != null)
-                {
+                if (SettingActivity.this.name.getText().toString() != null) {
                     user.put("name", SettingActivity.this.name.getText().toString());
                     returnIntent.putExtra("name", SettingActivity.this.name.getText().toString());
                 }
-                if(SettingActivity.this.bio.getText().toString() != null) {
+                if (SettingActivity.this.bio.getText().toString() != null) {
                     user.put("bio", SettingActivity.this.bio.getText().toString());
                     returnIntent.putExtra("bio", SettingActivity.this.bio.getText().toString());
 
                 }
-                if(imageBitmap != null)
-                  {
-                      ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                      imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                      byte[] image = stream.toByteArray();
-                      ParseFile file = new ParseFile("photo.png", image);
-                      user.put("image",file);
-                      returnIntent.putExtra("image", imageBitmap);
+                if (imageBitmap != null) {
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byte[] image = stream.toByteArray();
+                    ParseFile file = new ParseFile("photo.png", image);
+                    user.put("image", file);
+                    returnIntent.putExtra("image", imageBitmap);
 
-                  }
+                }
                 user.saveInBackground();
 
 
-                setResult(Activity.RESULT_OK,returnIntent);
+                setResult(Activity.RESULT_OK, returnIntent);
                 finish();
-
 
 
             }
@@ -160,7 +155,7 @@ public class SettingActivity extends Activity{
                 Bundle extras = data.getExtras();
                 imageBitmap = (Bitmap) extras.get("data");
                 mImageView.setImageBitmap(imageBitmap);
-               // mImageView.setRotation(90);
+                // mImageView.setRotation(90);
                 mImageView.setVisibility(View.VISIBLE);
 
             }

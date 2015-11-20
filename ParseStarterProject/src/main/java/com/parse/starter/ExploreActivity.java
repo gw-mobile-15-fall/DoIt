@@ -42,11 +42,11 @@ public class ExploreActivity extends Activity {
             Log.d("Profile Activity got:", i + "");
 
             int item = (int) ExploreActivity.this.list.getItemAtPosition(i);
-            Toast.makeText(ExploreActivity.this, "You selected : " + usersList.get(item), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ExploreActivity.this, getResources().getString(R.string.you_selected) + usersList.get(item), Toast.LENGTH_SHORT).show();
 
 
             Intent intent = new Intent(ExploreActivity.this, MemberActivity.class);
-            intent.putExtra("name",  usersList.get(item));
+            intent.putExtra("name", usersList.get(item));
             startActivity(intent);
         }
     };
@@ -77,27 +77,9 @@ public class ExploreActivity extends Activity {
                             usersList = obj.getList("users");
 
 
-
-
-
-                            usersAdapter = new MyAdapterUsers(ExploreActivity.this, usersList,lisinter);
+                            usersAdapter = new MyAdapterUsers(ExploreActivity.this, usersList, lisinter);
                             ExploreActivity.this.list.setAdapter(usersAdapter);
                             ExploreActivity.this.list.setTextFilterEnabled(true);
-
-
-                           /* ExploreActivity.this.list.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener()
-
-                            {
-
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View view,
-                                                        int position, long id) {
-                                    String item = (String) ExploreActivity.this.list.getItemAtPosition(position);
-
-
-                                }
-                            });*/
-
 
 
                         } else
@@ -124,9 +106,9 @@ public class ExploreActivity extends Activity {
                         ParseObject obj = new ParseObject("Follow");
                         for (int i = 0; i < followList.size(); i++) {
                             obj = followList.get(i);
-                            usersList.add(obj.get("fromName").toString());
+                            usersList.add(obj.get(Constants.FROM_NAME).toString());
                         }
-                        usersAdapter = new MyAdapterUsers(ExploreActivity.this, usersList,lisinter);
+                        usersAdapter = new MyAdapterUsers(ExploreActivity.this, usersList, lisinter);
                         ExploreActivity.this.list.setAdapter(usersAdapter);
                         ExploreActivity.this.list.setTextFilterEnabled(true);
 
@@ -151,17 +133,15 @@ public class ExploreActivity extends Activity {
                         ParseObject obj = new ParseObject("Follow");
                         for (int i = 0; i < followList.size(); i++) {
                             obj = followList.get(i);
-                            usersList.add(obj.get("toName").toString());
+                            usersList.add(obj.get(Constants.TO_NAME).toString());
                             user = obj.getParseUser("to");
-                          // obj.getParseObject("to").fetch();
-
+                            // obj.getParseObject("to").fetch();
 
 
                         }
-                        usersAdapter = new MyAdapterUsers(ExploreActivity.this, usersList,lisinter);
+                        usersAdapter = new MyAdapterUsers(ExploreActivity.this, usersList, lisinter);
                         ExploreActivity.this.list.setAdapter(usersAdapter);
                         ExploreActivity.this.list.setTextFilterEnabled(true);
-
 
 
                     }
@@ -170,122 +150,111 @@ public class ExploreActivity extends Activity {
 
 
             });
-        }
-
-        else if (intent.getStringExtra("type").equals("timeline") ){
+        } else if (intent.getStringExtra("type").equals("timeline")) {
             title.setText(getResources().getString(R.string.timeLine));
 
             Calendar calendar = Calendar.getInstance();
 
-            Log.d( "start timeline","");
+            Log.d("start timeline", "");
             usersList = new LinkedList<>();
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Follow");
             query.whereEqualTo("from", ParseUser.getCurrentUser());
 
-            List<ParseObject>   followList = null;
+            List<ParseObject> followList = null;
             try {
                 followList = query.find();
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            if(followList != null || followList.size() > 0 ) {
+            if (followList != null || followList.size() > 0) {
                 ParseObject obj = new ParseObject("Follow");
                 for (int i = 0; i < followList.size(); i++) {
                     obj = followList.get(i);
-                    usersList.add(obj.get("toName").toString());
-                    Log.d("users::", obj.get("toName").toString());
+                    usersList.add(obj.get(Constants.TO_NAME).toString());
+                    Log.d("users::", obj.get(Constants.TO_NAME).toString());
                 }
-
 
 
                 List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
 
-                for(int i = 0 ; i < usersList.size() ; i++) {
+                for (int i = 0; i < usersList.size(); i++) {
                     ParseQuery<ParseObject> getGoals = ParseQuery.getQuery("UserWithGoals");
                     getGoals.whereEqualTo("userName", usersList.get(i).toString());
                     Log.d("get goals of users::", usersList.get(i).toString());
                     queries.add(getGoals);
 
                 }
-               // getGoals.orderByAscending("lastUpdate");
+                // getGoals.orderByAscending("lastUpdate");
                 ParseQuery<ParseObject> superQuery = ParseQuery.getQuery("UserWithGoals");
                 ParseQuery.or(queries);
                 superQuery.addDescendingOrder("updatedAt");
-                List<ParseObject>   usersGoalsLists = null;
+                List<ParseObject> usersGoalsLists = null;
                 try {
                     usersGoalsLists = superQuery.find();
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
                 usersList.clear();
-                for(int i = 0 ; i < usersGoalsLists.size() ; i++) {
+                for (int i = 0; i < usersGoalsLists.size(); i++) {
 //                    Log.d("gwt Event", usersGoalsLists.get(i).get("lastUpdate").toString());
                     //calendar.setTimeInMillis(Long.parseLong(usersGoalsLists.get(i).get("lastUpdate").toString()));
-                    Date d = (Date)usersGoalsLists.get(i).getUpdatedAt();
+                    Date d = (Date) usersGoalsLists.get(i).getUpdatedAt();
                     getTime(d);
-                    usersList.add(usersGoalsLists.get(i).get("userName").toString() );
-                    progress.add("" + getPhrase( usersGoalsLists.get(i).get("progress").toString()) + " " + usersGoalsLists.get(i).get("name").toString() +
-                             " on: "+   getTime(d) );
+                    usersList.add(usersGoalsLists.get(i).get("userName").toString());
+                    progress.add("" + getPhrase(usersGoalsLists.get(i).get("progress").toString()) + " " + usersGoalsLists.get(i).get("name").toString() +
+                            " on: " + getTime(d));
 
                     timeLine = new MyTimeLineAdapter(ExploreActivity.this, usersList, progress, lisinter);
                     ExploreActivity.this.list.setAdapter(timeLine);
                     ExploreActivity.this.list.setTextFilterEnabled(true);
 
 
-
                 }
-
 
 
             }
 
-        }
-        else if (intent.getStringExtra("type").equals("history") ){
+        } else if (intent.getStringExtra("type").equals("history")) {
             title.setText(getResources().getString(R.string.history));
 
-            Log.d( "start history","");
+            Log.d("start history", "");
             List<String> goalsDone = new LinkedList<>();
             List<String> Duration = new LinkedList<>();
 
             List<byte[]> goalsIcons = new LinkedList<>();
-             ParseQuery<ParseObject> query = ParseQuery.getQuery("UserWithGoals");
-           query.whereNotEqualTo("timeEnd", "---");
-            query.whereEqualTo("userName",ParseUser.getCurrentUser().getUsername());
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("UserWithGoals");
+            query.whereNotEqualTo("timeEnd", "---");
+            query.whereEqualTo("userName", ParseUser.getCurrentUser().getUsername());
 
-            List<ParseObject>   goalsList = null;
+            List<ParseObject> goalsList = null;
             try {
                 goalsList = query.find();
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            if(goalsList != null || goalsList.size() > 0 ) {
+            if (goalsList != null || goalsList.size() > 0) {
                 ParseObject obj = new ParseObject("UsersWithGoals");
                 for (int i = 0; i < goalsList.size(); i++) {
                     obj = goalsList.get(i);
                     goalsDone.add(obj.get("name").toString());
                     goalsIcons.add(obj.getBytes("icon"));
                     //Log.d("users::", obj.getCreatedAt() + " " + obj.getUpdatedAt().toString() );
-                     Duration.add(getDifferenceDays(obj.getCreatedAt(), obj.getUpdatedAt()) + " Days");
+                    Duration.add(getDifferenceDays(obj.getCreatedAt(), obj.getUpdatedAt()) + " Days");
 
                 }
 
 
-
-
-                    MyAdapter GoalsDoneAdapter = new MyAdapter(ExploreActivity.this, goalsDone, Duration,goalsIcons, null);
-                    ExploreActivity.this.list.setAdapter(GoalsDoneAdapter);
-                    ExploreActivity.this.list.setTextFilterEnabled(true);
-
-
-
-                }
-
+                MyAdapter GoalsDoneAdapter = new MyAdapter(ExploreActivity.this, goalsDone, Duration, goalsIcons, null);
+                ExploreActivity.this.list.setAdapter(GoalsDoneAdapter);
+                ExploreActivity.this.list.setTextFilterEnabled(true);
 
 
             }
 
+
         }
 
+    }
 
 
     @Override
@@ -295,7 +264,7 @@ public class ExploreActivity extends Activity {
         Intent intent = this.getIntent();
 
         this.setResult(RESULT_OK, intent);
-;
+        ;
         finish();
     }
 
@@ -303,24 +272,26 @@ public class ExploreActivity extends Activity {
         int step = Integer.parseInt(stepInString);
         switch (step) {
             case 0:
-                return " Just added ";
+                return getResources().getString(R.string.just_added);
             case 1:
-                return "in the first step of";
+                return getResources().getString(R.string.first_step);
             case 5:
-                return " half way throgh in ";
+                return getResources().getString(R.string.half_way);
             case 9:
-                return "almost finish ";
+                return getResources().getString(R.string.almost_finish);
             case 10:
-                return "finished ";
+                return getResources().getString(R.string.finished);
             default:
-                return "in step " + step + "of";
+                return getResources().getString(R.string.in_step) + step + getResources().getString(R.string.of);
         }
     }
-    public String getTime(Date date){
+
+    public String getTime(Date date) {
         SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("EEE hh:mm a");
-    return DATE_FORMAT.format(date);
+        return DATE_FORMAT.format(date);
 
     }
+
     public static long getDifferenceDays(Date d1, Date d2) {
         long diff = d2.getTime() - d1.getTime();
         return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
