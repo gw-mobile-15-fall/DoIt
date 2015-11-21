@@ -39,15 +39,16 @@ public class ProfileActivity extends Activity {
     private  String goal;
     private  List mUserGoals, mProgress, mIcons;
     private  Context pointer;
-    private ArrayAdapter listAdapter;
+    private ArrayAdapter mListAdapter;
 
     private  DateFormat df = new SimpleDateFormat("dd/MM/yy");
     private  Calendar calobj = Calendar.getInstance();
-    private TextView name, bio, badges;
+    private TextView mName, mBio, mBadges;
     private  boolean flag = false;
     private ImageView image;
-    private MyAdapter adapter;
+    private MyAdapter mAdapter;
     TextView follower, following;
+
     onItemClicked lisinter = new onItemClicked() { // listener to user's goals list
         @Override
         public void postion(int i) {
@@ -96,10 +97,10 @@ public class ProfileActivity extends Activity {
         mlogout = (Button) findViewById(R.id.log_out);
         mBrowse = (Button) findViewById(R.id.browse);
         mSetting = (Button) findViewById(R.id.setting);
-        name = (TextView) findViewById(R.id.nameText);
-        bio = (TextView) findViewById(R.id.bio);
+        mName = (TextView) findViewById(R.id.nameText);
+        mBio = (TextView) findViewById(R.id.bio);
         image = (ImageView) findViewById(R.id.userIcon);
-        badges = (TextView) findViewById(R.id.badgestTextNumber);
+        mBadges = (TextView) findViewById(R.id.badgestTextNumber);
         timeLine = (Button) findViewById(R.id.timeLine);
 
         follower = (TextView) findViewById(R.id.followersTextNumber);
@@ -148,8 +149,8 @@ public class ProfileActivity extends Activity {
         });
 
 
-        name.setText(currentUser.get("name").toString()); // show the name
-        bio.setText(currentUser.get("bio").toString()); // show the label
+        mName.setText(currentUser.get("name").toString()); // show the name
+        mBio.setText(currentUser.get("bio").toString()); // show the label
         ParseFile imageFile = (ParseFile) currentUser.get("image"); // get the image "icon"
 
         imageFile.getDataInBackground(new GetDataCallback() { // get the avatar
@@ -210,7 +211,7 @@ public class ProfileActivity extends Activity {
                 Log.d("I got goal in Profile: ", result);
                 addGoal(result, icon); // add goal and icon to the list
                 mUserGoals.remove("No_Goals"); // remove the no_goal label if any
-                if (listAdapter == null) {
+                if (mListAdapter == null) {
 
                 } else {
 
@@ -221,9 +222,9 @@ public class ProfileActivity extends Activity {
             }
         } else if (requestCode == Constants.SETTING && resultCode == RESULT_OK) { // user apply changes in setting page
             if (data.getStringExtra("name") != null)  // update name
-                name.setText(data.getStringExtra("name").toString());
+                mName.setText(data.getStringExtra("name").toString());
             if (data.getStringExtra("bio") != null)// update bio
-                bio.setText(data.getStringExtra("bio").toString());
+                mBio.setText(data.getStringExtra("bio").toString());
             if (data.getParcelableExtra("image") != null) { // if there is avatar, draw it
                 image.setImageBitmap((Bitmap) data.getParcelableExtra("image"));
             }
@@ -287,7 +288,7 @@ public class ProfileActivity extends Activity {
         ParseObject obj = new ParseObject("UserWithGoals");
 
         if (userList.size() == 0) { // user with no goals in db
-            badges.setText("0"); // set label to 0
+            mBadges.setText("0"); // set label to 0
             mUserGoals.add("No_Goals"); // add to the list view, no goal
         } else { // user have goals
 
@@ -317,28 +318,28 @@ public class ProfileActivity extends Activity {
 
             if (mUserGoals.get(0).toString().equals("No_Goals")) // no goals, simple list view
             {
-                listAdapter = new ArrayAdapter(ProfileActivity.this, R.layout.group_item, R.id.usergoal, mUserGoals);
-                ProfileActivity.this.mGoalsList.setAdapter(listAdapter);
+                mListAdapter = new ArrayAdapter(ProfileActivity.this, R.layout.group_item, R.id.usergoal, mUserGoals);
+                ProfileActivity.this.mGoalsList.setAdapter(mListAdapter);
 
             }
             else // there are goals, custmoize the list view
             {
-                adapter = new MyAdapter(this, mUserGoals, mProgress, mIcons, lisinter);
-                ProfileActivity.this.mGoalsList.setAdapter(adapter);
+                mAdapter = new MyAdapter(this, mUserGoals, mProgress, mIcons, lisinter);
+                ProfileActivity.this.mGoalsList.setAdapter(mAdapter);
 
             }
 
 
-            if (listAdapter == null)
+            if (mListAdapter == null)
                 Log.d("listAdapter == null", "");
             if (ProfileActivity.this.mGoalsList == null)
                 Log.d("mGoalsList == null", "");
 
 
             if (mUserGoals.size() == 1 && mUserGoals.get(0).equals("No_Goals"))
-                badges.setText("0");
+                mBadges.setText("0");
             else
-                badges.setText(mUserGoals.size() + "");
+                mBadges.setText(mUserGoals.size() + "");
 
 
 

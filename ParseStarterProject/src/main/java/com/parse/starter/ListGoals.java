@@ -26,13 +26,13 @@ import java.util.Map;
 public class ListGoals extends Activity{
 
 
-    private   List<String> groupList;
-    private List<String> childList;
-    private   Map<String, List<String>> goalsCollection ;
+    private   List<String> mGroupList;
+    private List<String> mChildList;
+    private   Map<String, List<String>> mGoalsCollection;
     private    ExpandableListView expListView;
-    private  List<String> travel = new LinkedList<String>();
-    private  List<String> it = new LinkedList<String>();
-    private  List<String> cook = new LinkedList<String>();
+    private  List<String> mTravel = new LinkedList<String>();
+    private  List<String> mIT = new LinkedList<String>();
+    private  List<String> mCook = new LinkedList<String>();
     private Map<String, ParseFile> iconCollections  = new LinkedHashMap<String, ParseFile>(); ;
     private boolean flag = true;
     @Override
@@ -46,7 +46,7 @@ public class ListGoals extends Activity{
         }
 
     private void createGroupList() {
-        groupList = new ArrayList<String>();
+        mGroupList = new ArrayList<String>();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Goals");
         query.whereNotEqualTo("Category", "");
         Log.d("will request", "Category ");
@@ -57,18 +57,18 @@ public class ListGoals extends Activity{
                     Log.d("ParseException", "null ");
 
                     for (int i = 0; i < catList.size(); i++) {
-                        if (!groupList.contains(catList.get(i).getString("Category")))
-                            groupList.add(catList.get(i).getString("Category"));
+                        if (!mGroupList.contains(catList.get(i).getString("Category")))
+                            mGroupList.add(catList.get(i).getString("Category"));
 
 
                         if(catList.get(i).getString("Category").equals("IT")) {
-                            it.add(catList.get(i).getString("name"));
+                            mIT.add(catList.get(i).getString("name"));
                             Log.d("Added to IT", catList.get(i).getString("name"));
                             iconCollections.put(catList.get(i).getString("name"), catList.get(i).getParseFile("icon"));
 
                         }
                         else if(catList.get(i).getString("Category").equals("Travel")) {
-                            travel.add(catList.get(i).getString("name"));
+                            mTravel.add(catList.get(i).getString("name"));
                             Log.d("Added to travel", catList.get(i).getString("name"));
                             iconCollections.put(catList.get(i).getString("name"),catList.get(i).getParseFile("icon"));
 
@@ -76,19 +76,19 @@ public class ListGoals extends Activity{
                         else  if(catList.get(i).getString("Category").equals("Cook")) {
 
 
-                            cook.add(catList.get(i).getString("name"));
+                            mCook.add(catList.get(i).getString("name"));
                             Log.d("Added to Cook", catList.get(i).getString("name"));
                             iconCollections.put(catList.get(i).getString("name"),catList.get(i).getParseFile("icon"));
                         }
                     }
-                    Log.d("score", "Retrieved " + groupList.size() + " scores");
+                    Log.d("score", "Retrieved " + mGroupList.size() + " scores");
 
 
                       createCollection();
 
             expListView = (ExpandableListView) findViewById(R.id.goals_list);
             final ExpandableListAdapter expListAdapter = new ExpandableListAdapter(
-                    ListGoals.this, groupList, goalsCollection,iconCollections);
+                    ListGoals.this, mGroupList, mGoalsCollection,iconCollections);
             expListView.setAdapter(expListAdapter);
 
             expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -155,30 +155,30 @@ public class ListGoals extends Activity{
     }
 
     private void createCollection() {
-    goalsCollection = new LinkedHashMap<String, List<String>>();
+    mGoalsCollection = new LinkedHashMap<String, List<String>>();
 
-        for (String Goal : groupList) {
+        for (String Goal : mGroupList) {
             if (Goal.equals("Cook")) {
-                loadChild(cook);
-                goalsCollection.put(Goal, childList);
+                loadChild(mCook);
+                mGoalsCollection.put(Goal, mChildList);
             } else if (Goal.equals("IT")) {
-                loadChild(it);
-                goalsCollection.put(Goal, childList);
+                loadChild(mIT);
+                mGoalsCollection.put(Goal, mChildList);
             }
             else if (Goal.equals("Travel")) {
-                loadChild(travel);
-                goalsCollection.put(Goal, childList);
+                loadChild(mTravel);
+                mGoalsCollection.put(Goal, mChildList);
             }
 
         }
 
-        Log.d("goalsCollection size ", Integer.toString(goalsCollection.get("Cook").size()));
+        Log.d("goalsCollection size ", Integer.toString(mGoalsCollection.get("Cook").size()));
     }
 
     private void loadChild(List<String> laptopModels) {
-        childList = new ArrayList<String>();
+        mChildList = new ArrayList<String>();
         for (String model : laptopModels)
-            childList.add(model);
+            mChildList.add(model);
 
     }
 

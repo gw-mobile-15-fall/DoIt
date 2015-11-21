@@ -22,7 +22,7 @@ import java.util.List;
 public class MyTimeLineAdapter extends BaseAdapter {
     private List<String> userList, events;
 
-    private List icons;
+
     private Context context;
     private  Holder holder = new Holder();
     private static LayoutInflater mInflater = null;

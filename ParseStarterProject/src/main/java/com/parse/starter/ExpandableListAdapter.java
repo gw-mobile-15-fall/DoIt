@@ -24,23 +24,23 @@ import java.util.Map;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
-    private Activity context;
-    private Map<String, List<String>> goalCollections;
-    private Map<String, ParseFile> iconCollections;
+    private Activity mContext;
+    private Map<String, List<String>> mGoalCollections;
+    private Map<String, ParseFile> mIconCollections;
 
     private List<String> goals;
 
     public ExpandableListAdapter(Activity context, List<String> goalList,
                                  Map<String, List<String>> goalCollections, Map<String, ParseFile> iconCollections) {
-        this.context = context;
-        this.goalCollections = goalCollections;
+        this.mContext = context;
+        this.mGoalCollections = goalCollections;
         this.goals = goalList;
-        this.iconCollections = iconCollections;
+        this.mIconCollections = iconCollections;
 
     }
 
     public Object getChild(int groupPosition, int childPosition) {
-        return goalCollections.get(goals.get(groupPosition)).get(childPosition);
+        return mGoalCollections.get(goals.get(groupPosition)).get(childPosition);
     }
 
     public long getChildId(int groupPosition, int childPosition) {
@@ -51,7 +51,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
         final String goal = (String) getChild(groupPosition, childPosition);
-        LayoutInflater inflater = context.getLayoutInflater();
+        LayoutInflater inflater = mContext.getLayoutInflater();
 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.child_item, null);
@@ -60,7 +60,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView item = (TextView) convertView.findViewById(R.id.goal);
 
         ImageView delete = (ImageView) convertView.findViewById(R.id.delete);
-        ParseFile icon = iconCollections.get(goal);
+        ParseFile icon = mIconCollections.get(goal);
         byte[] bitmapdata;
         try {
             if (icon == null)
@@ -79,14 +79,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         delete.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setMessage("Do you want to add this goal?");
                 builder.setCancelable(false);
                 builder.setPositiveButton("Yes",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 List<String> child =
-                                        goalCollections.get(goals.get(groupPosition));
+                                        mGoalCollections.get(goals.get(groupPosition));
                                 child.get(childPosition);
                                 notifyDataSetChanged();
                             }
@@ -110,12 +110,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         if (goals == null)
             Log.d("Null is", "goal");
-        if (goalCollections == null)
+        if (mGoalCollections == null)
             Log.d("Null is", "GoalCollections");
         Log.d("#######", (goals.get(groupPosition)).toString());
 
-        Log.d("#######", goalCollections.get(goals.get(groupPosition)).toString());
-        return goalCollections.get(goals.get(groupPosition)).size();
+        Log.d("#######", mGoalCollections.get(goals.get(groupPosition)).toString());
+        return mGoalCollections.get(goals.get(groupPosition)).size();
 
     }
 
@@ -135,7 +135,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                              View convertView, ViewGroup parent) {
         String laptopName = (String) getGroup(groupPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) context
+            LayoutInflater infalInflater = (LayoutInflater) mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.group_item,
                     null);

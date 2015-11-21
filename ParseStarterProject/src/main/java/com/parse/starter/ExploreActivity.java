@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,25 +23,24 @@ import java.util.List;
 
 
 public class ExploreActivity extends Activity {
-    private ListView list;
-    private List<String> usersList = new LinkedList<>();
-    private List<String> progress = new LinkedList<>();
+    private ListView mList;
+    private List<String> mUsersList = new LinkedList<>();
+    private List<String> mProgress = new LinkedList<>();
 
-    private  ArrayAdapter listAdapter;
-    private  MyAdapterUsers usersAdapter;
-    private MyTimeLineAdapter timeLine;
-    private TextView title;
-    onItemClicked lisinter = new onItemClicked() { // lisinter to members' list to access thier profiles
+     private  MyAdapterUsers mUsersAdapter;
+    private MyTimeLineAdapter mTimeLine;
+    private TextView mTitle;
+    onItemClicked lisinter = new onItemClicked() { // lisinter to members' mList to access thier profiles
         @Override
         public void postion(int i) {
             Log.d("Profile Activity got:", i + "");
 
-            int item = (int) ExploreActivity.this.list.getItemAtPosition(i);
-            Toast.makeText(ExploreActivity.this, getResources().getString(R.string.you_selected) + usersList.get(item), Toast.LENGTH_SHORT).show();
+            int item = (int) ExploreActivity.this.mList.getItemAtPosition(i);
+            Toast.makeText(ExploreActivity.this, getResources().getString(R.string.you_selected) + mUsersList.get(item), Toast.LENGTH_SHORT).show();
 
 
             Intent intent = new Intent(ExploreActivity.this, MemberActivity.class);
-            intent.putExtra("name", usersList.get(item));
+            intent.putExtra("name", mUsersList.get(item));
             startActivity(intent);
         }
     };
@@ -51,40 +49,40 @@ public class ExploreActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.explore_friends);
-        list = (ListView) findViewById(R.id.memebers_list);
-        title = (TextView) findViewById(R.id.title_explore);
+        mList = (ListView) findViewById(R.id.memebers_list);
+        mTitle = (TextView) findViewById(R.id.title_explore);
         Intent intent = getIntent();
 
 
         if (intent.getStringExtra("type").equals("explore")) { // members who have same goal!
-            title.setText(getResources().getString(R.string.friends_who_have)); // set title
+            mTitle.setText(getResources().getString(R.string.friends_who_have)); // set title
             String goal = intent.getStringExtra("goal");
             Log.d("Goal is: ", goal);
-            title.append(" " + goal + " goal!");
+            mTitle.append(" " + goal + " goal!");
 
 
             ParseQuery<ParseObject> queryGoal = ParseQuery.getQuery("Goals");
             queryGoal.whereEqualTo("name", goal); //get a list of users with same goal
 
             Log.d("will request", goal);
-            usersList = new LinkedList<>();
+            mUsersList = new LinkedList<>();
             queryGoal.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> catList, ParseException e) {
                     if (e == null) { // No Error, means get the list of members
                         ParseObject obj = catList.get(0); // since we have one list => index = 0
                         if (obj.getList("users") != null) {
-                            usersList = obj.getList("users"); // added the members' list to LinkedList
+                            mUsersList = obj.getList("users"); // added the members' list to LinkedList
 
 
-                            usersAdapter = new MyAdapterUsers(ExploreActivity.this, usersList, lisinter); // set the list view with memebers' list
-                            ExploreActivity.this.list.setAdapter(usersAdapter);
-                            ExploreActivity.this.list.setTextFilterEnabled(true);
+                            mUsersAdapter = new MyAdapterUsers(ExploreActivity.this, mUsersList, lisinter); // set the list view with memebers' list
+                            ExploreActivity.this.mList.setAdapter(mUsersAdapter);
+                            ExploreActivity.this.mList.setTextFilterEnabled(true);
 
 
                         } else
 
                         {
-                            usersList.add("No Users"); // no users have same goal
+                            mUsersList.add("No Users"); // no users have same goal
                         }
 
 
@@ -94,8 +92,8 @@ public class ExploreActivity extends Activity {
 
 
         } else if (intent.getStringExtra("type").equals("followers")) { // get followers
-            usersList = new LinkedList<>();
-            title.setText(getResources().getString(R.string.followers)); // set title of screen
+            mUsersList = new LinkedList<>();
+            mTitle.setText(getResources().getString(R.string.followers)); // set title of screen
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Follow");
             query.whereEqualTo("to", ParseUser.getCurrentUser()); // find people eho follow current user
 
@@ -105,11 +103,11 @@ public class ExploreActivity extends Activity {
                         ParseObject obj = new ParseObject("Follow");
                         for (int i = 0; i < followList.size(); i++) {
                             obj = followList.get(i);
-                            usersList.add(obj.get(Constants.FROM_NAME).toString());// get the names of each one, added to list
+                            mUsersList.add(obj.get(Constants.FROM_NAME).toString());// get the names of each one, added to list
                         }
-                        usersAdapter = new MyAdapterUsers(ExploreActivity.this, usersList, lisinter); // set adapter list
-                        ExploreActivity.this.list.setAdapter(usersAdapter);
-                        ExploreActivity.this.list.setTextFilterEnabled(true);
+                        mUsersAdapter = new MyAdapterUsers(ExploreActivity.this, mUsersList, lisinter); // set adapter list
+                        ExploreActivity.this.mList.setAdapter(mUsersAdapter);
+                        ExploreActivity.this.mList.setTextFilterEnabled(true);
 
                     }
 
@@ -119,9 +117,9 @@ public class ExploreActivity extends Activity {
 
 
         } else if (intent.getStringExtra("type").equals("following")) { // same followers :)
-            title.setText(getResources().getString(R.string.following));
+            mTitle.setText(getResources().getString(R.string.following));
 
-            usersList = new LinkedList<>();
+            mUsersList = new LinkedList<>();
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Follow");
             query.whereEqualTo("from", ParseUser.getCurrentUser());
 
@@ -132,14 +130,14 @@ public class ExploreActivity extends Activity {
                         ParseObject obj = new ParseObject("Follow");
                         for (int i = 0; i < followList.size(); i++) {
                             obj = followList.get(i);
-                            usersList.add(obj.get(Constants.TO_NAME).toString());
+                            mUsersList.add(obj.get(Constants.TO_NAME).toString());
                             user = obj.getParseUser("to");
 
 
                         }
-                        usersAdapter = new MyAdapterUsers(ExploreActivity.this, usersList, lisinter);
-                        ExploreActivity.this.list.setAdapter(usersAdapter);
-                        ExploreActivity.this.list.setTextFilterEnabled(true);
+                        mUsersAdapter = new MyAdapterUsers(ExploreActivity.this, mUsersList, lisinter);
+                        ExploreActivity.this.mList.setAdapter(mUsersAdapter);
+                        ExploreActivity.this.mList.setTextFilterEnabled(true);
 
 
                     }
@@ -149,12 +147,12 @@ public class ExploreActivity extends Activity {
 
             });
         } else if (intent.getStringExtra("type").equals("timeline")) { // user click on timeline
-            title.setText(getResources().getString(R.string.timeLine)); // set tilte
+            mTitle.setText(getResources().getString(R.string.timeLine)); // set tilte
 
             Calendar calendar = Calendar.getInstance();
 
             Log.d("start timeline", "");
-            usersList = new LinkedList<>();
+            mUsersList = new LinkedList<>();
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Follow");
             query.whereEqualTo("from", ParseUser.getCurrentUser()); // get all the members were followed by current user
 
@@ -168,18 +166,18 @@ public class ExploreActivity extends Activity {
                 ParseObject obj = new ParseObject("Follow");
                 for (int i = 0; i < followList.size(); i++) {
                     obj = followList.get(i);
-                    usersList.add(obj.get(Constants.TO_NAME).toString()); // add the names to list
+                    mUsersList.add(obj.get(Constants.TO_NAME).toString()); // add the names to list
                     Log.d("users::", obj.get(Constants.TO_NAME).toString());
                 }
 
 
                 List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
 
-                for (int i = 0; i < usersList.size(); i++) { // here go to all users in the list, create a query for goals and
+                for (int i = 0; i < mUsersList.size(); i++) { // here go to all users in the list, create a query for goals and
                     // add them to SUPER query
                     ParseQuery<ParseObject> getGoals = ParseQuery.getQuery("UserWithGoals");
-                    getGoals.whereEqualTo("userName", usersList.get(i).toString());
-                    Log.d("get goals of users::", usersList.get(i).toString());
+                    getGoals.whereEqualTo("userName", mUsersList.get(i).toString());
+                    Log.d("get goals of users::", mUsersList.get(i).toString());
                     queries.add(getGoals);
 
                 }
@@ -193,18 +191,18 @@ public class ExploreActivity extends Activity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                usersList.clear();
+                mUsersList.clear();
                 for (int i = 0; i < usersGoalsLists.size(); i++) {
 
                     Date d = (Date) usersGoalsLists.get(i).getUpdatedAt(); // get the last update date
 
-                    usersList.add(usersGoalsLists.get(i).get("userName").toString()); // get the user f this event
-                    progress.add("" + getPhrase(usersGoalsLists.get(i).get("progress").toString()) + " " + usersGoalsLists.get(i).get("name").toString() +
+                    mUsersList.add(usersGoalsLists.get(i).get("userName").toString()); // get the user f this event
+                    mProgress.add("" + getPhrase(usersGoalsLists.get(i).get("progress").toString()) + " " + usersGoalsLists.get(i).get("name").toString() +
                             " on: " + getTime(d)); // get the pharse based on the current step!
 
-                    timeLine = new MyTimeLineAdapter(ExploreActivity.this, usersList, progress, lisinter); // set the adapter
-                    ExploreActivity.this.list.setAdapter(timeLine);
-                    ExploreActivity.this.list.setTextFilterEnabled(true);
+                    mTimeLine = new MyTimeLineAdapter(ExploreActivity.this, mUsersList, mProgress, lisinter); // set the adapter
+                    ExploreActivity.this.mList.setAdapter(mTimeLine);
+                    ExploreActivity.this.mList.setTextFilterEnabled(true);
 
 
                 }

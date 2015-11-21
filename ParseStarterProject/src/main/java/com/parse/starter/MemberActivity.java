@@ -37,11 +37,11 @@ public class MemberActivity extends Activity {
     private  List mUserGoals;
     private ArrayAdapter listAdapter;
     private  DateFormat df = new SimpleDateFormat("dd/MM/yy");
-    private   TextView name, bio;
-    private   TextView txtuser, badges;
-    private   ImageView image;
-    private   ParseUser current;
-    private   TextView follower, following;
+    private   TextView mName, mBio;
+    private   TextView mTxtuser, mBadges;
+    private   ImageView mImage;
+    private   ParseUser mCurrent;
+    private   TextView mfollower, mfollowing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +52,12 @@ public class MemberActivity extends Activity {
         mBrowse.setVisibility(View.GONE);
         mSetting = (Button) findViewById(R.id.setting);
         mSetting.setVisibility(View.GONE);
-        name = (TextView) findViewById(R.id.nameText);
-        bio = (TextView) findViewById(R.id.bio);
-        image = (ImageView) findViewById(R.id.userIcon);
-        badges = (TextView) findViewById(R.id.badgestTextNumber);
+        mName = (TextView) findViewById(R.id.nameText);
+        mBio = (TextView) findViewById(R.id.bio);
+        mImage = (ImageView) findViewById(R.id.userIcon);
+        mBadges = (TextView) findViewById(R.id.badgestTextNumber);
         memberName = getIntent().getStringExtra("name");
-        txtuser = (TextView) findViewById(R.id.welcome);
+        mTxtuser = (TextView) findViewById(R.id.welcome);
         mGoalsList = (ListView) findViewById(R.id.goals_list);
         List goals = getUserGoals(memberName);
 
@@ -65,8 +65,8 @@ public class MemberActivity extends Activity {
         currentUser.whereEqualTo("name", memberName);
 
 
-        follower = (TextView) findViewById(R.id.followersTextNumber);
-        following = (TextView) findViewById(R.id.followeingTextNumber);
+        mfollower = (TextView) findViewById(R.id.followersTextNumber);
+        mfollowing = (TextView) findViewById(R.id.followeingTextNumber);
         getFollowing();
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Follow");
         query.whereEqualTo(Constants.TO_NAME, memberName);
@@ -97,7 +97,7 @@ public class MemberActivity extends Activity {
                 ParseObject follow = new ParseObject("Follow");
                 if (mlogout.getText().toString().equalsIgnoreCase("follow")) {
                     follow.put("from", ParseUser.getCurrentUser());
-                    follow.put("to", current);
+                    follow.put("to", mCurrent);
                     follow.put(Constants.TO_NAME, memberName);
                     follow.put(Constants.FROM_NAME, ParseUser.getCurrentUser().getUsername().toString());
                     follow.saveInBackground();
@@ -141,11 +141,11 @@ public class MemberActivity extends Activity {
         currentUser.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> userList, ParseException e) {
                 if (e == null) {
-                    current = userList.get(0);
-                    name.setText(current.get("name").toString());
-                    bio.setText(current.get("bio").toString());
-                    ParseFile imageFile = (ParseFile) current.get("image");
-                    MemberActivity.this.txtuser.setText(current.get("name").toString());
+                    mCurrent = userList.get(0);
+                    mName.setText(mCurrent.get("name").toString());
+                    mBio.setText(mCurrent.get("bio").toString());
+                    ParseFile imageFile = (ParseFile) mCurrent.get("image");
+                    MemberActivity.this.mTxtuser.setText(mCurrent.get("name").toString());
 
                     imageFile.getDataInBackground(new GetDataCallback() {
                         public void done(byte[] data, ParseException e) {
@@ -155,9 +155,9 @@ public class MemberActivity extends Activity {
 
                                 } else {
                                     Bitmap imagebit = BitmapFactory.decodeByteArray(data, 0, data.length);
-                                    MemberActivity.this.image.setImageBitmap(imagebit);
+                                    MemberActivity.this.mImage.setImageBitmap(imagebit);
                                     //MemberActivity.this.image.setRotation(90);
-                                    MemberActivity.this.image.setVisibility(View.VISIBLE);
+                                    MemberActivity.this.mImage.setVisibility(View.VISIBLE);
 
                                 }
 
@@ -217,9 +217,9 @@ public class MemberActivity extends Activity {
             ;
 
             if (mUserGoals.size() == 1 && mUserGoals.get(0).equals("No_Goals"))
-                badges.setText("0");
+                mBadges.setText("0");
             else
-                badges.setText(mUserGoals.size() + "");
+                mBadges.setText(mUserGoals.size() + "");
 
             MemberActivity.this.mGoalsList.setAdapter(listAdapter);
             MemberActivity.this.mGoalsList.setTextFilterEnabled(true);
@@ -236,8 +236,8 @@ public class MemberActivity extends Activity {
         query.whereEqualTo(Constants.FROM_NAME, memberName);
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> followList, ParseException e) {
-                following = (TextView) findViewById(R.id.followeingTextNumber);
-                following.setText(followList.size() + "");
+                mfollowing = (TextView) findViewById(R.id.followeingTextNumber);
+                mfollowing.setText(followList.size() + "");
 
             }
         });
@@ -251,8 +251,8 @@ public class MemberActivity extends Activity {
 
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> followList, ParseException e) {
-                follower = (TextView) findViewById(R.id.followersTextNumber);
-                follower.setText(followList.size() + "");
+                mfollower = (TextView) findViewById(R.id.followersTextNumber);
+               mfollower.setText(followList.size() + "");
             }
         });
 

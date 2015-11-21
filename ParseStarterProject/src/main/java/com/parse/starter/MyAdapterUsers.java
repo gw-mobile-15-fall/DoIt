@@ -21,10 +21,9 @@ import com.parse.ParseUser;
 import java.util.List;
 
 public class MyAdapterUsers extends BaseAdapter {
-    private List<String> userList;
+    private List<String> mUserList;
 
-    private List icons;
-    private Context context;
+     private Context context;
     private Holder holder = new Holder();
     private static LayoutInflater mInflater = null;
     onItemClicked l = null;
@@ -41,7 +40,7 @@ public class MyAdapterUsers extends BaseAdapter {
     };
 
     public MyAdapterUsers(ExploreActivity mainActivity, List userList, onItemClicked lisitener) {
-        this.userList = userList;
+        this.mUserList = userList;
         context = mainActivity;
         mInflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -52,7 +51,7 @@ public class MyAdapterUsers extends BaseAdapter {
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
-        return userList.size();
+        return mUserList.size();
     }
 
     @Override
@@ -87,10 +86,10 @@ public class MyAdapterUsers extends BaseAdapter {
         holder.icon.setOnClickListener(myButtonClickListener);
         holder.bio.setOnClickListener(myButtonClickListener);
 
-        holder.user.setText(userList.get(position));
+        holder.user.setText(mUserList.get(position));
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.whereEqualTo("username", userList.get(position));
+        query.whereEqualTo("username", mUserList.get(position));
 
         try {
             List<ParseUser> objects = query.find();

@@ -18,9 +18,9 @@ import android.widget.TextView;
 import java.util.List;
 
 public class MyAdapter extends BaseAdapter {
-    private List<String> goals;
-    private List<Integer> progress;
-    private List icons;
+    private List<String> mGoals;
+    private List<Integer> mProgress;
+    private List mIcons;
     private Context context;
     private  onItemClicked l = null;
     private OnClickListener myButtonClickListener = new OnClickListener() {
@@ -38,12 +38,12 @@ public class MyAdapter extends BaseAdapter {
     SharedPreferences mPreferences;
 
     public MyAdapter(Activity mainActivity, List goalsList, List progressList, List icons, onItemClicked listenter) {
-        goals = goalsList;
+        mGoals = goalsList;
         context = mainActivity;
-        progress = progressList;
+        mProgress = progressList;
         mInflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.icons = icons;
+        this.mIcons = icons;
         l = listenter;
 
     }
@@ -51,7 +51,7 @@ public class MyAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
-        return goals.size();
+        return mGoals.size();
     }
 
     @Override
@@ -84,20 +84,20 @@ public class MyAdapter extends BaseAdapter {
         holder.progress = (TextView) rowView.findViewById(R.id.progress);
         //mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-        holder.goal.setText(goals.get(position));
+        holder.goal.setText(mGoals.get(position));
 
-        holder.progress.setText(context.getResources().getString(R.string.in_step) + progress.get(position));
+        holder.progress.setText(context.getResources().getString(R.string.in_step) + mProgress.get(position));
         if (l != null) {
-            holder.progress.setText(context.getResources().getString(R.string.in_step) + progress.get(position));
+            holder.progress.setText(context.getResources().getString(R.string.in_step) + mProgress.get(position));
 
             holder.goal.setOnClickListener(myButtonClickListener);
             holder.icon.setOnClickListener(myButtonClickListener);
             holder.progress.setOnClickListener(myButtonClickListener);
 
         } else
-            holder.progress.setText(" Within: " + progress.get(position));
+            holder.progress.setText(" Within: " + mProgress.get(position));
 
-        byte b[] = (byte[]) icons.get(position);
+        byte b[] = (byte[]) mIcons.get(position);
         if (b == null || b.length == 0) {
             Drawable myDrawable = context.getResources().getDrawable(R.drawable.doit_icon);
             holder.icon.setImageDrawable(myDrawable);

@@ -22,7 +22,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,17 +36,17 @@ import java.util.List;
 public class GoalDeatils extends Activity {
     private String goal;
 
-    private  int progress;
-    private ProgressBar pBar;
-    private Button nextStepButton,CameraButton,exploreButton,mShare,mWatch;
-    private TextView goalTitle,nextStep,NextStepText;
-    private List GoalSteps;
-    private  ImageView   mImageView,timeline;
-    private org.json.JSONArray JSONArray = new JSONArray();
+    private  int mProgress;
+    private ProgressBar mBar;
+    private Button mNextStepButton, mCameraButton, mExploreButton,mShare,mWatch;
+    private TextView mGoalTitle, mNextStep, mNextStepText;
+    private List mGoalSteps;
+    private  ImageView   mImageView;
+
     private  JSONObject test = new JSONObject();
     private DateFormat df = new SimpleDateFormat("dd/MM/yy");
     private Calendar calobj = Calendar.getInstance();
-    private Bitmap imageBitmap;
+    private Bitmap mImageBitmap;
 
 
 
@@ -58,26 +57,25 @@ public class GoalDeatils extends Activity {
 
          goal = goalIntent.getStringExtra("goal");
         Log.d("Goa; = ", goal + " ---------------------------");
-        progress = Integer.parseInt(goalIntent.getStringExtra("progress"));
+        mProgress = Integer.parseInt(goalIntent.getStringExtra("progress"));
 
 
         setContentView(R.layout.goal_details);
         mShare = (Button) findViewById(R.id.Share);
-        pBar = (ProgressBar) findViewById(R.id.progressBar);
-        goalTitle =  (TextView)findViewById(R.id.goal_title);
-        nextStep=  (TextView)findViewById(R.id.nextStepTitle);
-        NextStepText=  (TextView)findViewById(R.id.NextStepText);
-        nextStepButton = (Button) findViewById(R.id.nextStepButton);
-        CameraButton = (Button) findViewById(R.id.CameraButton);
+        mBar = (ProgressBar) findViewById(R.id.progressBar);
+        mGoalTitle =  (TextView)findViewById(R.id.goal_title);
+        mNextStep =  (TextView)findViewById(R.id.nextStepTitle);
+        mNextStepText =  (TextView)findViewById(R.id.NextStepText);
+        mNextStepButton = (Button) findViewById(R.id.nextStepButton);
+        mCameraButton = (Button) findViewById(R.id.CameraButton);
            mImageView = (ImageView) findViewById(R.id.imageView);
-        exploreButton = (Button) findViewById(R.id.explorebutton);
-        timeline  = (ImageView) findViewById(R.id.messageIcon);
+        mExploreButton = (Button) findViewById(R.id.explorebutton);
         mWatch = (Button) findViewById(R.id.Watch);
         mWatch.setVisibility(View.INVISIBLE);
         getSteps();
-        goalTitle.setText(goal);
-        pBar.setProgress(progress);
-        pBar.setVisibility(View.VISIBLE);
+        mGoalTitle.setText(goal);
+        mBar.setProgress(mProgress);
+        mBar.setVisibility(View.VISIBLE);
 
 
 
@@ -92,7 +90,7 @@ public class GoalDeatils extends Activity {
         });
 
 
-        exploreButton.setOnClickListener(new View.OnClickListener() {
+        mExploreButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {  // explore Button
                 // Logout current user
@@ -106,7 +104,7 @@ public class GoalDeatils extends Activity {
 
 
 
-        CameraButton.setOnClickListener(new View.OnClickListener() {
+        mCameraButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) { // camera button presses
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -116,29 +114,29 @@ public class GoalDeatils extends Activity {
         });
 
 
-        nextStepButton.setOnClickListener(new View.OnClickListener() {
+        mNextStepButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) { // next Step Button pressed
 
-                if (progress < GoalSteps.size() - 1) // if not last step
+                if (mProgress < mGoalSteps.size() - 1) // if not last step
                 {
-                    progress++; // increase the progress
-                    NextStepText.setText(GoalSteps.get(progress).toString() + ""); // set the next step
-                    saveProgress(false); // save the progress in DB
-                    pBar.setProgress(progress); // update the progress bar
+                    mProgress++; // increase the mProgress
+                    mNextStepText.setText(mGoalSteps.get(mProgress).toString() + ""); // set the next step
+                    saveProgress(false); // save the mProgress in DB
+                    mBar.setProgress(mProgress); // update the mProgress bar
                     mImageView.setVisibility(View.INVISIBLE); // remove the image taken if any
-                    pBar.getProgressDrawable().setColorFilter(getColor(progress), PorterDuff.Mode.SRC_IN); // set color of progress bar
+                    mBar.getProgressDrawable().setColorFilter(getColor(mProgress), PorterDuff.Mode.SRC_IN); // set color of mProgress bar
                     checkIfExternal();
                 } else // last step
                 {
-                    NextStepText.setText(getResources().getString(R.string.congrats)); // show congrats message
-                    pBar.setProgress(10); // set the progress to completed
-                    nextStep.setVisibility(View.GONE);
-                    saveProgress(true);// save progress
-                    pBar.getProgressDrawable().setColorFilter(getColor(progress), PorterDuff.Mode.SRC_IN); // set color of progress bar
+                    mNextStepText.setText(getResources().getString(R.string.congrats)); // show congrats message
+                    mBar.setProgress(10); // set the mProgress to completed
+                    mNextStep.setVisibility(View.GONE);
+                    saveProgress(true);// save mProgress
+                    mBar.getProgressDrawable().setColorFilter(getColor(mProgress), PorterDuff.Mode.SRC_IN); // set color of mProgress bar
 
-                    nextStepButton.setText(getResources().getString(R.string.no_task_left)); // set next step to no task left
-                    nextStepButton.setEnabled(false);
+                    mNextStepButton.setText(getResources().getString(R.string.no_task_left)); // set next step to no task left
+                    mNextStepButton.setEnabled(false);
                     mImageView.setVisibility(View.GONE);
                     removeNameFromGoal(); // remove the user from the members who have this goal
                 }
@@ -157,8 +155,8 @@ public class GoalDeatils extends Activity {
         if (requestCode == Constants.CAMERA) { // user took a pic of a goal
             if(resultCode == Activity.RESULT_OK){
                 Bundle extras = data.getExtras();
-                 imageBitmap = (Bitmap) extras.get("data");
-                mImageView.setImageBitmap(imageBitmap); // show the pic of a goal
+                 mImageBitmap = (Bitmap) extras.get("data");
+                mImageView.setImageBitmap(mImageBitmap); // show the pic of a goal
                 mImageView.setVisibility(View.VISIBLE);
 
             }
@@ -180,7 +178,7 @@ public class GoalDeatils extends Activity {
             public void done(List<ParseObject> userList, ParseException e) {
                 if (e == null) {
                     ParseObject obj = userList.get(0); // one result will be returened
-                    obj.put("progress", progress);
+                    obj.put("progress", mProgress);
                     obj.put("lastUpdate", System.currentTimeMillis() ); // set the time of last update
                     if(finished) // if user finished, add the finish time
                         obj.put("timeEnd", df.format(calobj.getTime()));
@@ -196,7 +194,7 @@ public class GoalDeatils extends Activity {
     }
 
 
-    public void getSteps(){ // get the steps of this goal
+    public void getSteps(){ // get the mSteps of this goal
 
     ParseQuery<ParseObject> query = ParseQuery.getQuery("Goals");
         query.whereEqualTo("name", goal);
@@ -205,8 +203,8 @@ public class GoalDeatils extends Activity {
                 if (e == null) {
                     ParseObject obj = userList.get(0);
 
-                    GoalSteps = (List) obj.get("steps"); // add the steps in local list
-                    NextStepText.setText(GoalSteps.get(progress).toString()); // set the current step based on progress
+                    mGoalSteps = (List) obj.get("steps"); // add the mSteps in local list
+                    mNextStepText.setText(mGoalSteps.get(mProgress).toString()); // set the current step based on mProgress
                     checkIfExternal();
 
                 }
@@ -224,28 +222,28 @@ public class GoalDeatils extends Activity {
 }
 
     private void checkIfExternal() { // check if there is an external link
-        if( NextStepText.getText().toString().contains("watch")) { // if the next step is video
+        if( mNextStepText.getText().toString().contains("watch")) { // if the next step is video
 
             mWatch.setVisibility(View.VISIBLE);
             mWatch.setText("Watch");
             mWatch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String temp = NextStepText.getText().toString();
+                    String temp = mNextStepText.getText().toString();
                     int start = temp.indexOf("http");
 
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(temp.substring(start, temp.length()))));
                 }
             });
         }
-        else if( NextStepText.getText().toString().contains("read")) { // if the next step is article
+        else if( mNextStepText.getText().toString().contains("read")) { // if the next step is article
 
             mWatch.setVisibility(View.VISIBLE);
             mWatch.setText("Read");
             mWatch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String temp = NextStepText.getText().toString();
+                    String temp = mNextStepText.getText().toString();
                     int start = temp.indexOf("http");
 
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(temp.substring(start, temp.length()))));
@@ -260,9 +258,9 @@ public class GoalDeatils extends Activity {
     }
 
     @Override
-    public void onBackPressed() { // if back presses, save current progress
+    public void onBackPressed() { // if back presses, save current mProgress
 
-        if( progress < GoalSteps.size()-1)
+        if( mProgress < mGoalSteps.size()-1)
         {
             saveProgress(false); // save, not finished goal
 
@@ -276,14 +274,14 @@ public class GoalDeatils extends Activity {
 
         Intent intent = this.getIntent();
         try {
-            test.put("Progress:",progress); // send lateset progress to caller to be updated
+            test.put("Progress:", mProgress); // send lateset mProgress to caller to be updated
         } catch (JSONException e) {
             e.printStackTrace();
         }
         intent.putExtra("object", test.toString());
         this.setResult(RESULT_OK, intent);
 
-        Log.d("onBackPressed", "progress:" + progress);
+        Log.d("onBackPressed", "progress:" + mProgress);
         finish();
     }
 
@@ -343,11 +341,11 @@ public class GoalDeatils extends Activity {
 
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_step_text) + ":" + progress + " in :" + goal);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_step_text) + ":" + mProgress + " in :" + goal);
 
 
         if(mImageView.getDrawable() != null){ // if there is a pic
-            shareIntent.putExtra(Intent.EXTRA_STREAM, getImageUri(imageBitmap));
+            shareIntent.putExtra(Intent.EXTRA_STREAM, getImageUri(mImageBitmap));
             shareIntent.setType("image/*");
         }
         else{
