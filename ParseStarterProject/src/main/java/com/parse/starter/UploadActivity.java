@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -44,14 +43,16 @@ String item;
         title= (EditText) findViewById(R.id. editText2);
         list = (Spinner)findViewById(R.id.spinner);
         stepsList = new LinkedList();
-        List l = ParseUser.getCurrentUser().getList("areas");
-        Log.d("area:", l.get(0).toString());
-
+        List l = ParseUser.getCurrentUser().getList("areas"); // get the channels that the user can add goals to db
+        // set the adapter from the channels
         adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, l);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         list.setAdapter(adapter);
 
+
+
         steps.setClickable(true);
+        // user can click on step to remove it!
         steps.setOnItemClickListener(new AdapterView.OnItemClickListener()
 
         {
@@ -63,28 +64,26 @@ String item;
                 Toast.makeText(UploadActivity.this, "You selected : " + item, Toast.LENGTH_SHORT).show();
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 
-                // set title
+
                 alertDialogBuilder.setTitle("Remove this step " + item + "?");
 
-                // set dialog message
+
                 alertDialogBuilder
                         .setMessage("Click yes to remove!")
                         .setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                // if this button is clicked, close
-                                // current activity
+
                                 Toast.makeText(UploadActivity.this, "You will remove " + item, Toast.LENGTH_SHORT).show();
-                                stepsList.remove(item);
+                                stepsList.remove(item); // remove from list
                                 adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, stepsList);
-                                steps.setAdapter(adapter);
+                                steps.setAdapter(adapter); // update the list view
 
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                // if this button is clicked, just close
-                                // the dialog box and do nothing
+                                // nothig to do
                                 dialog.cancel();
                             }
                         });
@@ -101,12 +100,13 @@ String item;
 
         add.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                if (!text.getText().toString().equals("")) {
-                    stepsList.add(text.getText().toString());
+                if (!text.getText().toString().equals("")) { // if the task isn't empty
+                    stepsList.add(text.getText().toString()); // add to list
                     adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, stepsList);
-                    steps.setAdapter(adapter);
+                    //adapter.notifyDataSetChanged();
+                    steps.setAdapter(adapter); // update list view
                     text.clearFocus();
-                    text.setText("");
+                    text.setText(""); // set the textfiled to empty
 
                 }
 
@@ -116,22 +116,16 @@ String item;
 
         upload.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                Log.d("setOnClickListener:", "");
-                if (stepsList.size() > 5 ){
-                    Log.d("stepsList.size() > 5 ", "");
 
+                if (stepsList.size() > Constants.MiNIMUM_STEPS ){ // check if above the minmim = 5 steps
+                    // add the goal detalis
                     ParseObject obj = new ParseObject("Goals");
                     obj.put("name", title.getText().toString());
                     obj.put("Category", list.getSelectedItem().toString());
                     obj.put("steps", stepsList);
-                    obj.saveInBackground();
-                    Log.d("ssave", "");
-                  //  ParsePush push = new ParsePush();
-                  //  push.setChannel(list.getSelectedItem().toString());
-                  //  push.setMessage("New Goal in " + list.getSelectedItem().toString());
-                  //  Log.d("New Goal in " , list.getSelectedItem().toString());
-                   // push.sendInBackground();
-                 //   Log.d("push.sendInBackground()", list.getSelectedItem().toString());
+                    obj.saveInBackground(); // save it to db
+                    text.setText(""); // set the textfiled to empty
+                    text.setText(""); // set the textfiled to empty
                 }
 
 

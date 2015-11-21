@@ -1,11 +1,4 @@
-/*
- * Copyright (c) 2015-present, Parse, LLC.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- */
+
 package com.parse.starter;
 
 import android.app.Activity;
@@ -24,14 +17,14 @@ import com.parse.SignUpCallback;
 
 public class LoginOrSignupActivity extends Activity {
 
-    public static final String TYPE = "type";
-    public static final String LOGIN = "Log In";
-    public static final String SIGNUP = "Sign Up";
+    private static final String TYPE = "type";
+    private static final String LOGIN = "Log In";
+    private static final String SIGNUP = "Sign Up";
 
-    protected Button mLoginButton;
-    protected Button mSignupButton;
-    protected EditText mEmail;
-    protected EditText mPass;
+    private Button mLoginButton;
+    private Button mSignupButton;
+    private EditText mEmail;
+    private EditText mPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +42,10 @@ public class LoginOrSignupActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginOrSignupActivity.this, StarterActivity.class);
                 intent.putExtra(TYPE, LOGIN);
-                //startActivity(intent);
-                //mEmail.getText().toString()    mPass.getText().toString()
                 ParseUser.logInInBackground("omar", "1234567",
                         new LogInCallback() {
                             public void done(ParseUser user, ParseException e) {
                                 if (user != null) {
-                                    // If user exist and authenticated, send user to ProfileActivity.class
                                     Intent intent = new Intent(
                                             LoginOrSignupActivity.this,
                                             ProfileActivity.class);
@@ -89,7 +79,6 @@ public class LoginOrSignupActivity extends Activity {
                             Toast.LENGTH_LONG).show();
 
                 } else {
-                    // Save new user data into Parse.com Data Storage
                     ParseUser user = new ParseUser();
                     user.setUsername(usernametxt);
                     user.setPassword(passwordtxt);

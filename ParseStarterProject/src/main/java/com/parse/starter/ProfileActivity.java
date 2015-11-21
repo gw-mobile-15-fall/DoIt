@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,9 +24,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,70 +33,64 @@ import java.util.List;
 public class ProfileActivity extends Activity {
 
     // Declare Variable
-    Button mlogout;
-    Button mBrowse, mSetting, timeLine, Watch;
-    ListView mGoalsList;
-    String goal;
-    List mUserGoals, mProgress, mIcons;
-    Context pointer;
+    private  Button mlogout;
+    private  Button mBrowse, mSetting, timeLine, Watch;
+    private  ListView mGoalsList;
+    private  String goal;
+    private  List mUserGoals, mProgress, mIcons;
+    private  Context pointer;
     private ArrayAdapter listAdapter;
-    JSONObject JSONObject_ = new JSONObject();
-    JSONArray JSONArray = new JSONArray();
-    DateFormat df = new SimpleDateFormat("dd/MM/yy");
-    Calendar calobj = Calendar.getInstance();
-    TextView name, bio, badges;
-    boolean flag = false;
-    ImageView image;
-    MyAdapter adapter;
-    onItemClicked lisinter = new onItemClicked() {
+
+    private  DateFormat df = new SimpleDateFormat("dd/MM/yy");
+    private  Calendar calobj = Calendar.getInstance();
+    private TextView name, bio, badges;
+    private  boolean flag = false;
+    private ImageView image;
+    private MyAdapter adapter;
+    TextView follower, following;
+    onItemClicked lisinter = new onItemClicked() { // listener to user's goals list
         @Override
         public void postion(int i) {
             Log.d("Profile Activity got:", i + "");
 
-            int item = (int) ProfileActivity.this.mGoalsList.getItemAtPosition(i);
+            int item = (int) ProfileActivity.this.mGoalsList.getItemAtPosition(i); // get the postion of item
             Toast.makeText(ProfileActivity.this, "You selected : " + mUserGoals.get(item), Toast.LENGTH_SHORT).show();
 
-            Intent intenet = new Intent(ProfileActivity.this, GoalDeatils.class);
-            intenet.putExtra("goal", mUserGoals.get(item).toString());
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("UserWithGoals");
-            query.whereEqualTo("userName", ParseUser.getCurrentUser().getUsername());
-            query.whereEqualTo("name", mUserGoals.get(item).toString());
+            Intent intenet = new Intent(ProfileActivity.this, GoalDeatils.class); // start intent to goal detail
+            intenet.putExtra("goal", mUserGoals.get(item).toString()); // add goal name to intent
+
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("UserWithGoals"); // get current progress
+            query.whereEqualTo("userName", ParseUser.getCurrentUser().getUsername());// get current progress from this user
+            query.whereEqualTo("name", mUserGoals.get(item).toString());// get current progress from this goal
             List<ParseObject> userGoalList = null;
             try {
-                userGoalList = query.find();
+                userGoalList = query.find(); // grab the goal
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            ParseObject obj = userGoalList.get(0);
+            ParseObject obj = userGoalList.get(0); // get the goal, it is unique! so we use get[0]
 
 
-            intenet.putExtra("progress", obj.get("progress").toString());
+            intenet.putExtra("progress", obj.get("progress").toString()); // send progress to new Activity
 
 
             Log.d("goal seleceted", mUserGoals.get(item).toString());
 
 
-            startActivityForResult(intenet, 3);
+            startActivityForResult(intenet, 3); // go to the goal details.
         }
     };
 
-    TextView follower, following;
+
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Get the view from singleitemview.xml
         setContentView(R.layout.activity_profile);
-
-        // Retrieve current user from Parse.com
         ParseUser currentUser = ParseUser.getCurrentUser();
-
-        // Convert currentUser into String
         String struser = currentUser.getUsername().toString();
-
-        // Locate TextView in welcome.xml
         TextView txtuser = (TextView) findViewById(R.id.welcome);
         mGoalsList = (ListView) findViewById(R.id.goals_list);
         mlogout = (Button) findViewById(R.id.log_out);
@@ -114,82 +104,63 @@ public class ProfileActivity extends Activity {
 
         follower = (TextView) findViewById(R.id.followersTextNumber);
         following = (TextView) findViewById(R.id.followeingTextNumber);
-        getFollowing();
+        getFollowing(); // get the following/followers
         getFollowers();
+       // txtuser.setText("You are logged in as " + currentUser.get("name"));
+        txtuser.setText("");
 
         try {
-            List goals = getUserGoals(this, false);
+            List goals = getUserGoals(this, false); // grab the user's goals
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
 
-       /* ParseObject Java = new ParseObject("Goals");
-        ParseObject pizza = new ParseObject("Goals");
-        Java.put("name","How to learn Android Dev!?");
-        Java.addAllUnique("steps", Arrays.asList("Install Eclipse from: https://eclipse.org/downloads/", "watch this video: bla bla"));
-        pizza.put("name","How to cook pizza!?");
-        pizza.addAllUnique("steps", Arrays.asList("Go to Walmart!", "buy frozen pizza","cook it! Easy!"));
-        Java.saveInBackground();
-        pizza.saveInBackground();
-        */
-        // Set the currentUser String into TextView
 
-        txtuser.setText("You are logged in as " + currentUser.get("name"));
-
-
-        // Locate Button in welcome.xml
-
-
-        following.setOnClickListener(new View.OnClickListener() {
+        following.setOnClickListener(new View.OnClickListener() { // user click on following
 
             public void onClick(View arg0) {
-                // Logout current user
                 Intent intent = new Intent(ProfileActivity.this, ExploreActivity.class);
                 intent.putExtra("type", "following");
-                //intent.putExtra("goal", goal);
                 startActivityForResult(intent, Constants.FOLLOWING);
 
             }
         });
-        timeLine.setOnClickListener(new View.OnClickListener() {
+        timeLine.setOnClickListener(new View.OnClickListener() {// user click on timeline
 
             public void onClick(View arg0) {
-                // Logout current user
-                Intent intent = new Intent(ProfileActivity.this, ExploreActivity.class);
+                 Intent intent = new Intent(ProfileActivity.this, ExploreActivity.class);
                 intent.putExtra("type", "timeline");
-                //intent.putExtra("goal", goal);
-                startActivityForResult(intent, Constants.TIMELINE);
+                 startActivityForResult(intent, Constants.TIMELINE);
 
             }
         });
         follower.setOnClickListener(new View.OnClickListener() {
 
-            public void onClick(View arg0) {
+            public void onClick(View arg0) {// user click on followers
                 // Logout current user
                 Intent intent = new Intent(ProfileActivity.this, ExploreActivity.class);
                 intent.putExtra("type", "followers");
-                //intent.putExtra("goal", goal);
+
                 startActivityForResult(intent, Constants.FOLLOWERS);
 
             }
         });
 
 
-        name.setText(currentUser.get("name").toString());
-        bio.setText(currentUser.get("bio").toString());
-        ParseFile imageFile = (ParseFile) currentUser.get("image");
+        name.setText(currentUser.get("name").toString()); // show the name
+        bio.setText(currentUser.get("bio").toString()); // show the label
+        ParseFile imageFile = (ParseFile) currentUser.get("image"); // get the image "icon"
 
-        imageFile.getDataInBackground(new GetDataCallback() {
+        imageFile.getDataInBackground(new GetDataCallback() { // get the avatar
             public void done(byte[] data, ParseException e) {
                 if (e == null) {
-                    // data has the bytes for the image
-                    if (data == null || data.length == 0) {
-
+                     if (data == null || data.length == 0) {
+                        // no pic, do nothing!
                     } else {
+                       // there is avatar, draw it
                         Bitmap imagebit = BitmapFactory.decodeByteArray(data, 0, data.length);
                         ProfileActivity.this.image.setImageBitmap(imagebit);
-                        //ProfileActivity.this.image.setRotation(90);
                         ProfileActivity.this.image.setVisibility(View.VISIBLE);
 
                     }
@@ -200,10 +171,10 @@ public class ProfileActivity extends Activity {
                 }
             }
         });
-        mSetting.setOnClickListener(new OnClickListener() {
+
+        mSetting.setOnClickListener(new OnClickListener() { // setting pressed
 
             public void onClick(View arg0) {
-                // Logout current user
                 Intent setting = new Intent(ProfileActivity.this, SettingActivity.class);
                 ProfileActivity.this.startActivityForResult(setting, Constants.SETTING);
 
@@ -220,8 +191,7 @@ public class ProfileActivity extends Activity {
 
         mBrowse.setOnClickListener(new OnClickListener() {
 
-            public void onClick(View arg0) {
-                // Logout current user
+            public void onClick(View arg0) { // browse goals
                 Intent goals = new Intent(ProfileActivity.this, ListGoals.class);
                 ProfileActivity.this.startActivityForResult(goals, Constants.BROWSE);
 
@@ -232,201 +202,103 @@ public class ProfileActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == Constants.BROWSE) {
-            if (resultCode == Activity.RESULT_OK) {
-                String result = data.getStringExtra("goal");
+        if (requestCode == Constants.BROWSE) { // come back from browse goals
+            if (resultCode == Activity.RESULT_OK) { // user select goal
+                String result = data.getStringExtra("goal"); // get the goal name
 
-                byte[] icon = data.getByteArrayExtra("icon");
+                byte[] icon = data.getByteArrayExtra("icon"); // get the icon
                 Log.d("I got goal in Profile: ", result);
-                addGoal(result, icon);
-                mUserGoals.remove("No_Goals");
+                addGoal(result, icon); // add goal and icon to the list
+                mUserGoals.remove("No_Goals"); // remove the no_goal label if any
                 if (listAdapter == null) {
 
                 } else {
-                    //listAdapter.add(result);
-
-                    // listAdapter.notifyDataSetChanged();
 
                 }
             }
             if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
+                //user did not select any goal
             }
-        } else if (requestCode == Constants.SETTING && resultCode == RESULT_OK) {
-            if (data.getStringExtra("name") != null)
+        } else if (requestCode == Constants.SETTING && resultCode == RESULT_OK) { // user apply changes in setting page
+            if (data.getStringExtra("name") != null)  // update name
                 name.setText(data.getStringExtra("name").toString());
-            if (data.getStringExtra("bio") != null)
+            if (data.getStringExtra("bio") != null)// update bio
                 bio.setText(data.getStringExtra("bio").toString());
-            if (data.getParcelableExtra("image") != null) {
+            if (data.getParcelableExtra("image") != null) { // if there is avatar, draw it
                 image.setImageBitmap((Bitmap) data.getParcelableExtra("image"));
             }
 
-        } else if (requestCode == Constants.GOAL_DEATAL) {
+        } else if (requestCode == Constants.GOAL_DEATAL) { // back from goal detalis
             getFollowers();
             getFollowing();
             try {
-                getUserGoals(this, false);
+                getUserGoals(this, false); // update the list to get new progress
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            Log.d("Back:requestCode == 3", "");
 
-
-        } else if (requestCode == Constants.FOLLOWERS)
-            getFollowers();
+        } else if (requestCode == Constants.FOLLOWERS) //
+            getFollowers(); // update it in case unfollow
         else if (requestCode == Constants.FOLLOWING)
-            getFollowing();
+            getFollowing(); // update it in case unfollow
+
 
 
     }
 
-    public void addGoal(String g, byte[] icon) {
-
+    public void addGoal(String g, byte[] icon) { // add current user to the db as a goal achiever
         goal = g;
-
-
         ParseObject obj = new ParseObject("UserWithGoals");
-
+        /* below add user's info */
         obj.put("userName", ParseUser.getCurrentUser().getUsername());
-        obj.put("name", g);
-        obj.put("progress", 0);
-        obj.put("timeStart", df.format(calobj.getTime()));
-        obj.put("timeEnd", "---");
-        if (icon != null)
+        obj.put("name", goal);
+        obj.put("progress", 0); // just started
+        obj.put("timeStart", df.format(calobj.getTime())); // start time
+        obj.put("timeEnd", "---"); // unkown end date
+        if (icon != null) // if avatar exist, add it
             obj.put("icon", icon);
 
 
-        // obj.put("progress",0);
         try {
-            obj.save();
+            obj.save(); // save to db
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-
-        //  }
-        //}
-        //   }
-        //   });
-
         try {
-            getUserGoals(this, true);
+            getUserGoals(this, true); // update the (list view) goals list
         } catch (ParseException e) {
             e.printStackTrace();
         }
     }
 
-    /*
-    if (mUserGoals != null) {
-        Log.d("found user goals", mUserGoals.size() + "");
-        obj.saveInBackground();
-    } else {
-        Log.d("found user goals", "with 0 goals");
-        mUserGoals = new LinkedList();
-
-
-    }
-
-
-    // obj.addAllUnique("GoalsList", mUserGoals);
-
-    Log.d("Added:size() != 0", ParseUser.getCurrentUser().getUsername() + "  with  " + ProfileActivity.this.goal);
-    mBrowse = (Button) findViewById(R.id.browse);
-//                        mBrowse.setText(mUserGoals.size() + "");
-
-    listAdapter = new ArrayAdapter(ProfileActivity.this, R.layout.group_item, R.id.usergoal, mUserGoals);
-    mGoalsList = (ListView) findViewById(R.id.Goals_list);
-    if (listAdapter == null) {
-        Log.d("listAdapter == null", "");
-    }
-    if (mGoalsList == null)
-        Log.d("mGoalsList == null ", "");
-
-
-        ProfileActivity.this.mGoalsList.setAdapter(listAdapter);
-        ProfileActivity.this.mGoalsList.setTextFilterEnabled(true);
-        ProfileActivity.this.mGoalsList.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String item = (String) ProfileActivity.this.mGoalsList.getItemAtPosition(position);
-                Toast.makeText(ProfileActivity.this, "You selected : " + item, Toast.LENGTH_SHORT).show();
-
-                Intent intenet = new Intent(ProfileActivity.this, GoalDeatils.class);
-
-                for (int i = 0; i < ProfileActivity.this.JSONArray.length(); i++) {
-                    try {
-                        JSONObject_ = JSONArray.getJSONObject(i);
-                        Log.d("JSONObject.get(\"Name:\")",JSONObject_.get("Name:").toString());
-
-                        if (JSONObject_.get("Name:").toString().equals(item)) {
-
-                            intenet.putExtra("goal", item);
-                            Log.d("will get::::::", JSONObject_.get("Progress:").toString());
-
-                            intenet.putExtra("progress", JSONObject_.get("Progress:").toString());
-
-                            break;
-                        }
-                    } catch (JSONException e1) {
-                        e1.printStackTrace();
-                    }
-
-                }
-
-                Log.d("goal&&&&&&&&&&", item);
-//                                    Log.d("progress", mUserGoals.get(mUserGoals.indexOf(item) + 1).toString());
-                intenet.putExtra("object", JSONObject_.toString());
-                startActivityForResult(intenet, 3);
-
-            }
-        });
-
-
-
-}
-
-
-} else {
-
-Log.d("score", "Error: " + e.getMessage());
-}
-Log.d("Added:", ParseUser.getCurrentUser().getUsername() + "//  with  //" + ProfileActivity.this.goal);
-
-}
-
-
-});
-}
-*/
     public List getUserGoals(Context p, boolean b) throws ParseException {
         pointer = p;
         List l;
         flag = b;
+
         ParseQuery<ParseObject> query = ParseQuery.getQuery("UserWithGoals");
         query.whereEqualTo("userName", ParseUser.getCurrentUser().getUsername());
-        List<ParseObject> userList = query.find();//;InBackground(new FindCallback<ParseObject>() {
-        // public void done(List<ParseObject> userList, ParseException e) {
-        // JSONObject JSONObject = new JSONObject();
-        // JSONArray JSONArray = new JSONArray();
+        List<ParseObject> userList = query.find(); // get all user's goals
         mUserGoals = new LinkedList();
         mProgress = new LinkedList();
         mIcons = new LinkedList();
-        //     if (e == null) {
+
         ParseObject obj = new ParseObject("UserWithGoals");
-        if (userList.size() == 0) {
+
+        if (userList.size() == 0) { // user with no goals in db
+            badges.setText("0"); // set label to 0
+            mUserGoals.add("No_Goals"); // add to the list view, no goal
+        } else { // user have goals
+
+            mUserGoals.remove("No_Goals"); // remove 'no goal' label if exits
 
 
-            mUserGoals.add("No_Goals");
-        } else {
-
-            mUserGoals.remove("No_Goals");
-
-
-            for (int i = 0; i < userList.size(); i++) {
+            for (int i = 0; i < userList.size(); i++) { // go throgh the list and extract the goal's name, progress, goal's con
 
                 obj = userList.get(i);
 
-                if (obj.getString("timeEnd").equals("---")) {
+                if (obj.getString("timeEnd").equals("---")) { // if it is ongoing goal (not finished)
                     mUserGoals.add(obj.get("name"));
                     mProgress.add(obj.get("progress"));
                     mIcons.add(obj.get("icon"));
@@ -438,37 +310,43 @@ Log.d("Added:", ParseUser.getCurrentUser().getUsername() + "//  with  //" + Prof
 
 
         Log.d("found user goals", mUserGoals.size() + "------");
-        if (mUserGoals.size() != 0) {
+
+        if (mUserGoals.size() != 0) { // should be always true ( size must be > 0 )
             mBrowse = (Button) findViewById(R.id.browse);
-//                            mBrowse.setText(mUserGoals.size() + "");
             ProfileActivity.this.mGoalsList = (ListView) findViewById(R.id.Goals_list);
-            if (mUserGoals.get(0).toString().equals("No_Goals"))
+
+            if (mUserGoals.get(0).toString().equals("No_Goals")) // no goals, simple list view
+            {
                 listAdapter = new ArrayAdapter(ProfileActivity.this, R.layout.group_item, R.id.usergoal, mUserGoals);
-            else
+                ProfileActivity.this.mGoalsList.setAdapter(listAdapter);
+
+            }
+            else // there are goals, custmoize the list view
+            {
                 adapter = new MyAdapter(this, mUserGoals, mProgress, mIcons, lisinter);
-            //listAdapter = new ArrayAdapter(ProfileActivity.this, R.layout.group_item, R.id.usergoal, mUserGoals);
+                ProfileActivity.this.mGoalsList.setAdapter(adapter);
+
+            }
+
+
             if (listAdapter == null)
                 Log.d("listAdapter == null", "");
             if (ProfileActivity.this.mGoalsList == null)
                 Log.d("mGoalsList == null", "");
-            ;
+
 
             if (mUserGoals.size() == 1 && mUserGoals.get(0).equals("No_Goals"))
                 badges.setText("0");
             else
                 badges.setText(mUserGoals.size() + "");
-            if (mUserGoals.get(0).toString().equals("No_Goals"))
-                ProfileActivity.this.mGoalsList.setAdapter(listAdapter);
-            else
-                ProfileActivity.this.mGoalsList.setAdapter(adapter);
+
+
 
             ProfileActivity.this.mGoalsList.setTextFilterEnabled(true);
             ProfileActivity.this.mGoalsList.setClickable(true);
 
 
-            // ProfileActivity.this.mGoalsList.setOnItemClickListener(onItemClickListener);
-
-            ProfileActivity.this.mGoalsList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            /*ProfileActivity.this.mGoalsList.setOnItemClickListener(new AdapterView.OnItemClickListener()
 
             {
 
@@ -503,26 +381,19 @@ Log.d("Added:", ParseUser.getCurrentUser().getUsername() + "//  with  //" + Prof
                 }
 
 
-            });
+            });*/
 
 
         }
 
-        //     } else {
-        //         Log.d("score", "Error: " + e.getMessage());
-
-        //     }
-
-        //   }
-        // });
 
         return mUserGoals;
     }
 
 
-    public void getFollowing() {
+    private void getFollowing() { // get the following
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Follow");
-        query.whereEqualTo("from", ParseUser.getCurrentUser());
+        query.whereEqualTo("from", ParseUser.getCurrentUser());  // get the following users
 
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> followList, ParseException e) {
@@ -535,9 +406,9 @@ Log.d("Added:", ParseUser.getCurrentUser().getUsername() + "//  with  //" + Prof
     }
 
 
-    public void getFollowers() {
+    private void getFollowers() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Follow");
-        query.whereEqualTo("to", ParseUser.getCurrentUser());
+        query.whereEqualTo("to", ParseUser.getCurrentUser());// get people who are following current user
 
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> followList, ParseException e) {

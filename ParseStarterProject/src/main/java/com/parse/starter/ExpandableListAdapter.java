@@ -65,8 +65,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         try {
             if (icon == null)
                 ;
-                // Drawable myDrawable = context.getResources().getDrawable(R.drawable.doit_icon);
-                // delete.setImageDrawable(myDrawable);
+
             else {
                 bitmapdata = icon.getData();
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapdata, 0, bitmapdata.length);
@@ -117,7 +116,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         Log.d("#######", goalCollections.get(goals.get(groupPosition)).toString());
         return goalCollections.get(goals.get(groupPosition)).size();
-        // return 1;
+
     }
 
     public Object getGroup(int groupPosition) {

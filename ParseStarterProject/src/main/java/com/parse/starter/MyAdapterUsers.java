@@ -21,11 +21,11 @@ import com.parse.ParseUser;
 import java.util.List;
 
 public class MyAdapterUsers extends BaseAdapter {
-    List<String> userList;
+    private List<String> userList;
 
-    List icons;
-    Context context;
-    Holder holder = new Holder();
+    private List icons;
+    private Context context;
+    private Holder holder = new Holder();
     private static LayoutInflater mInflater = null;
     onItemClicked l = null;
     private OnClickListener myButtonClickListener = new OnClickListener() {
@@ -112,7 +112,6 @@ public class MyAdapterUsers extends BaseAdapter {
         }
 
 
-        // The query was successful.
 
 
         rowView.setOnClickListener(new OnClickListener() {

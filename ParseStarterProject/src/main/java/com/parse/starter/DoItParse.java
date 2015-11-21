@@ -22,19 +22,13 @@ public class DoItParse extends Application {
     public void onCreate() {
         super.onCreate();
 
-        // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
-
-        // Add your initialization code here
         Parse.initialize(this, Constants.PARSE_APP_ID, Constants.PARSE_CLIENT_ID);
-
-
         ParseInstallation.getCurrentInstallation().saveInBackground();
 
 
         ParseUser.enableAutomaticUser();
         ParseACL defaultACL = new ParseACL();
-        // Optionally enable public read access.
         defaultACL.setPublicReadAccess(true);
         ParseACL.setDefaultACL(defaultACL, true);
         ParseInstallation installation = ParseInstallation.getCurrentInstallation();

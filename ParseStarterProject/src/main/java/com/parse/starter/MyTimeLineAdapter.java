@@ -20,13 +20,13 @@ import com.parse.ParseUser;
 import java.util.List;
 
 public class MyTimeLineAdapter extends BaseAdapter {
-    List<String> userList, events;
+    private List<String> userList, events;
 
-    List icons;
-    Context context;
-    Holder holder = new Holder();
+    private List icons;
+    private Context context;
+    private  Holder holder = new Holder();
     private static LayoutInflater mInflater = null;
-    onItemClicked l = null;
+    private  onItemClicked l = null;
     private View.OnClickListener myButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {

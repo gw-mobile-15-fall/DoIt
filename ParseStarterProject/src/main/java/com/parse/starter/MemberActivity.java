@@ -1,7 +1,6 @@
 package com.parse.starter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -22,47 +21,32 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by omar on 10/28/2015.
- */
 
+
+/* TODO this class is very similar to profile activty but without privileges  */
 public class MemberActivity extends Activity {
-    Button mlogout;
-    Button mBrowse, mSetting;
-    ListView mGoalsList;
-    String memberName;
-    List mUserGoals;
-    Context pointer;
+    private Button mlogout;
+    private Button mBrowse, mSetting;
+    private  ListView mGoalsList;
+    private String memberName;
+    private  List mUserGoals;
     private ArrayAdapter listAdapter;
-    org.json.JSONObject JSONObject = new JSONObject();
-    org.json.JSONArray JSONArray = new JSONArray();
-    DateFormat df = new SimpleDateFormat("dd/MM/yy");
-    Calendar calobj = Calendar.getInstance();
-    TextView name, bio;
-    TextView txtuser, badges;
-    ImageView image;
-    ParseUser current;
-    TextView follower, following;
+    private  DateFormat df = new SimpleDateFormat("dd/MM/yy");
+    private   TextView name, bio;
+    private   TextView txtuser, badges;
+    private   ImageView image;
+    private   ParseUser current;
+    private   TextView follower, following;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_profile);
-
-        // Retrieve current user from Parse.com
-
-        // Convert currentUser into String
         mlogout = (Button) findViewById(R.id.log_out);
         mBrowse = (Button) findViewById(R.id.browse);
         mBrowse.setVisibility(View.GONE);
@@ -73,11 +57,9 @@ public class MemberActivity extends Activity {
         image = (ImageView) findViewById(R.id.userIcon);
         badges = (TextView) findViewById(R.id.badgestTextNumber);
         memberName = getIntent().getStringExtra("name");
-        // Locate TextView in welcome.xml
         txtuser = (TextView) findViewById(R.id.welcome);
         mGoalsList = (ListView) findViewById(R.id.goals_list);
         List goals = getUserGoals(memberName);
-        Log.d("member=========", memberName);
 
         ParseQuery<ParseUser> currentUser = ParseUser.getQuery();
         currentUser.whereEqualTo("name", memberName);
@@ -104,7 +86,6 @@ public class MemberActivity extends Activity {
         });
 
 
-        //  mlogout.setVisibility(View.GONE);
 
         getFollowers();
 
@@ -112,8 +93,6 @@ public class MemberActivity extends Activity {
         mlogout.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
-                // Logout current user
-
 
                 ParseObject follow = new ParseObject("Follow");
                 if (mlogout.getText().toString().equalsIgnoreCase("follow")) {
@@ -154,12 +133,10 @@ public class MemberActivity extends Activity {
 
                 }
 
-                //  follow.put("date", Date());
 
 
             }
         });
-
 
         currentUser.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> userList, ParseException e) {
@@ -211,23 +188,15 @@ public class MemberActivity extends Activity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        // public void done(List<ParseObject> userList, ParseException e) {
-        // JSONObject JSONObject = new JSONObject();
-        // JSONArray JSONArray = new JSONArray();
+
         mUserGoals = new LinkedList();
-        //     if (e == null) {
         ParseObject obj = new ParseObject("UserWithGoals");
         if (userList.size() == 0) {
-
-
             mUserGoals.add("No_Goals");
-        } else {
-
+        }
+        else {
             mUserGoals.remove("No_Goals");
-
-
             for (int i = 0; i < userList.size(); i++) {
-
                 obj = userList.get(i);
                 mUserGoals.add(obj.get("name"));
             }
@@ -239,9 +208,7 @@ public class MemberActivity extends Activity {
         Log.d("found user goals", mUserGoals.size() + "------");
         if (mUserGoals.size() != 0) {
             mBrowse = (Button) findViewById(R.id.browse);
-//                            mBrowse.setText(mUserGoals.size() + "");
             MemberActivity.this.mGoalsList = (ListView) findViewById(R.id.Goals_list);
-
             listAdapter = new ArrayAdapter(MemberActivity.this, R.layout.group_item, R.id.usergoal, mUserGoals);
             if (listAdapter == null)
                 Log.d("listAdapter == null", "");
@@ -254,7 +221,6 @@ public class MemberActivity extends Activity {
             else
                 badges.setText(mUserGoals.size() + "");
 
-
             MemberActivity.this.mGoalsList.setAdapter(listAdapter);
             MemberActivity.this.mGoalsList.setTextFilterEnabled(true);
 
@@ -265,10 +231,9 @@ public class MemberActivity extends Activity {
         return null;
     }
 
-    public void getFollowing() {
+    private void getFollowing() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Follow");
         query.whereEqualTo(Constants.FROM_NAME, memberName);
-
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> followList, ParseException e) {
                 following = (TextView) findViewById(R.id.followeingTextNumber);
@@ -280,7 +245,7 @@ public class MemberActivity extends Activity {
     }
 
 
-    public void getFollowers() {
+    private void getFollowers() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Follow");
         query.whereEqualTo(Constants.TO_NAME, memberName);
 
@@ -288,8 +253,6 @@ public class MemberActivity extends Activity {
             public void done(List<ParseObject> followList, ParseException e) {
                 follower = (TextView) findViewById(R.id.followersTextNumber);
                 follower.setText(followList.size() + "");
-
-
             }
         });
 

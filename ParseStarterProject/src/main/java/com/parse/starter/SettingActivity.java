@@ -19,16 +19,13 @@ import com.parse.ParseUser;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-/**
- * Created by omar on 10/27/2015.
- */
+
 public class SettingActivity extends Activity {
     Button camButton, applyButton, upload, Browse, historyButton, yourChannels;
     EditText name, bio;
     ImageView mImageView;
     Bitmap imageBitmap;
-    EditText nameInput, bioInput;
-    private int PICK_IMAGE_REQUEST = 2;
+     private int PICK_IMAGE_REQUEST = 2;
     private int CAM_IMAGE_REQUEST = 1;
 
     @Override
@@ -40,31 +37,33 @@ public class SettingActivity extends Activity {
         mImageView = (ImageView) findViewById(R.id.imageView2);
         historyButton = (Button) findViewById(R.id.historyButton);
         yourChannels = (Button) findViewById(R.id.yourChannels);
-        name.setText(ParseUser.getCurrentUser().get("name").toString());
+
+        name.setText(ParseUser.getCurrentUser().get("name").toString()); // write the user's name
         bio.setText(ParseUser.getCurrentUser().get("bio").toString());
         ParseFile p = (ParseFile) ParseUser.getCurrentUser().getParseFile("image");
         byte[] b = null;
         try {
-            b = p.getData();
+            b = p.getData(); // get avatar
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        if (b != null) {
+        if (b != null) {// draw the avatar
             mImageView.setImageBitmap(BitmapFactory.decodeByteArray(b, 0, b.length));
         }
+
+
         Browse = (Button) findViewById(R.id.Browse);
         camButton = (Button) findViewById(R.id.camButton);
         applyButton = (Button) findViewById(R.id.applyButton);
 
 
         upload = (Button) findViewById(R.id.upload);
-        if (ParseUser.getCurrentUser().getList("areas").size() == 0)
+        if (ParseUser.getCurrentUser().getList("areas").size() == 0) // if the user cannot post goals, disable the button
             upload.setVisibility(View.GONE);
 
 
-        camButton.setOnClickListener(new View.OnClickListener() {
+        camButton.setOnClickListener(new View.OnClickListener() { // open the camera to take pic
             public void onClick(View arg0) {
-                // Logout current user
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, CAM_IMAGE_REQUEST);
 
@@ -72,7 +71,7 @@ public class SettingActivity extends Activity {
         });
 
         historyButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg0) {
+            public void onClick(View arg0) { // start graph
                 // Logout current user
                 Intent intent = new Intent(SettingActivity.this, GraphActivity.class);
                 intent.putExtra("type", "history");
@@ -81,7 +80,7 @@ public class SettingActivity extends Activity {
             }
         });
         yourChannels.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg0) {
+            public void onClick(View arg0) { // start subscribe to channels
                 // Logout current user
                 Intent intent = new Intent(SettingActivity.this, subscribeActivity.class);
 
@@ -91,7 +90,7 @@ public class SettingActivity extends Activity {
         });
 
         Browse.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg0) {
+            public void onClick(View arg0) { // open th gallery to pick pic
                 // Logout current user
                 Intent intent = new Intent();
                 intent.setType("image/*");
@@ -104,37 +103,36 @@ public class SettingActivity extends Activity {
 
 
         upload.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg0) {
-                // Logout current user
-                Intent intent = new Intent(SettingActivity.this, UploadActivity.class);
+            public void onClick(View arg0) { // upload goal to db if has permission!
+                 Intent intent = new Intent(SettingActivity.this, UploadActivity.class);
                 startActivity(intent);
 
             }
         });
         applyButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg0) {
-                // Logout current user
+            public void onClick(View arg0) { // user pressed 'apply' change
                 Intent returnIntent = new Intent();
                 ParseUser user = ParseUser.getCurrentUser();
-                if (SettingActivity.this.name.getText().toString() != null) {
-                    user.put("name", SettingActivity.this.name.getText().toString());
-                    returnIntent.putExtra("name", SettingActivity.this.name.getText().toString());
+
+                if (SettingActivity.this.name.getText().toString() != null) { // if name not null
+                    user.put("name", SettingActivity.this.name.getText().toString()); // save the new name in db
+                    returnIntent.putExtra("name", SettingActivity.this.name.getText().toString());// send the name caller activity
                 }
                 if (SettingActivity.this.bio.getText().toString() != null) {
-                    user.put("bio", SettingActivity.this.bio.getText().toString());
-                    returnIntent.putExtra("bio", SettingActivity.this.bio.getText().toString());
+                    user.put("bio", SettingActivity.this.bio.getText().toString()); // save the new bio in db
+                    returnIntent.putExtra("bio", SettingActivity.this.bio.getText().toString());// send bio caller activity
 
                 }
-                if (imageBitmap != null) {
+                if (imageBitmap != null) { // if there is avatar
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream); // convert the pic to bitmap
                     byte[] image = stream.toByteArray();
                     ParseFile file = new ParseFile("photo.png", image);
-                    user.put("image", file);
-                    returnIntent.putExtra("image", imageBitmap);
+                    user.put("image", file); // save pic to db
+                    returnIntent.putExtra("image", imageBitmap); // send pic to caller
 
                 }
-                user.saveInBackground();
+                user.saveInBackground(); // save all changes to db
 
 
                 setResult(Activity.RESULT_OK, returnIntent);
@@ -150,31 +148,28 @@ public class SettingActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == CAM_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            if (resultCode == Activity.RESULT_OK) {
+        if (requestCode == CAM_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) { // user took a pic
+            if (resultCode == Activity.RESULT_OK) { // user took a pic
                 Bundle extras = data.getExtras();
                 imageBitmap = (Bitmap) extras.get("data");
                 mImageView.setImageBitmap(imageBitmap);
                 // mImageView.setRotation(90);
-                mImageView.setVisibility(View.VISIBLE);
+                mImageView.setVisibility(View.VISIBLE); // update the image view with new pic
 
             }
         }
         if (resultCode == Activity.RESULT_CANCELED) {
-            //Write your code if there's no result
+            // user cancel the pic
         }
 
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) { // user choose pic from gallery
 
             Uri uri = data.getData();
 
             try {
                 imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                // Log.d(TAG, String.valueOf(bitmap));
-
-
-                mImageView.setImageBitmap(imageBitmap);
+                mImageView.setImageBitmap(imageBitmap); // refelct the change to imageview
                 mImageView.setVisibility(View.VISIBLE);
 
             } catch (IOException e) {

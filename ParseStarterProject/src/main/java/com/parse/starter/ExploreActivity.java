@@ -21,22 +21,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-/**
- * Created by omar on 10/28/2015.
- */
+
 public class ExploreActivity extends Activity {
-    ListView list;
-    List<String> usersList = new LinkedList<>();
-    List<String> progress = new LinkedList<>();
+    private ListView list;
+    private List<String> usersList = new LinkedList<>();
+    private List<String> progress = new LinkedList<>();
 
-    ArrayAdapter listAdapter;
-    MyAdapterUsers usersAdapter;
-    MyTimeLineAdapter timeLine;
-    TextView title;
-    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-    onItemClicked lisinter = new onItemClicked() {
+    private  ArrayAdapter listAdapter;
+    private  MyAdapterUsers usersAdapter;
+    private MyTimeLineAdapter timeLine;
+    private TextView title;
+    onItemClicked lisinter = new onItemClicked() { // lisinter to members' list to access thier profiles
         @Override
         public void postion(int i) {
             Log.d("Profile Activity got:", i + "");
@@ -60,24 +56,27 @@ public class ExploreActivity extends Activity {
         Intent intent = getIntent();
 
 
-        if (intent.getStringExtra("type").equals("explore")) {
-            title.setText(getResources().getString(R.string.friends_who_have));
+        if (intent.getStringExtra("type").equals("explore")) { // members who have same goal!
+            title.setText(getResources().getString(R.string.friends_who_have)); // set title
             String goal = intent.getStringExtra("goal");
             Log.d("Goal is: ", goal);
             title.append(" " + goal + " goal!");
+
+
             ParseQuery<ParseObject> queryGoal = ParseQuery.getQuery("Goals");
-            queryGoal.whereEqualTo("name", goal);
+            queryGoal.whereEqualTo("name", goal); //get a list of users with same goal
+
             Log.d("will request", goal);
             usersList = new LinkedList<>();
             queryGoal.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> catList, ParseException e) {
-                    if (e == null) {
-                        ParseObject obj = catList.get(0);
+                    if (e == null) { // No Error, means get the list of members
+                        ParseObject obj = catList.get(0); // since we have one list => index = 0
                         if (obj.getList("users") != null) {
-                            usersList = obj.getList("users");
+                            usersList = obj.getList("users"); // added the members' list to LinkedList
 
 
-                            usersAdapter = new MyAdapterUsers(ExploreActivity.this, usersList, lisinter);
+                            usersAdapter = new MyAdapterUsers(ExploreActivity.this, usersList, lisinter); // set the list view with memebers' list
                             ExploreActivity.this.list.setAdapter(usersAdapter);
                             ExploreActivity.this.list.setTextFilterEnabled(true);
 
@@ -85,7 +84,7 @@ public class ExploreActivity extends Activity {
                         } else
 
                         {
-                            usersList.add("No Users");
+                            usersList.add("No Users"); // no users have same goal
                         }
 
 
@@ -94,21 +93,21 @@ public class ExploreActivity extends Activity {
             });
 
 
-        } else if (intent.getStringExtra("type").equals("followers")) {
+        } else if (intent.getStringExtra("type").equals("followers")) { // get followers
             usersList = new LinkedList<>();
-            title.setText(getResources().getString(R.string.followers));
+            title.setText(getResources().getString(R.string.followers)); // set title of screen
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Follow");
-            query.whereEqualTo("to", ParseUser.getCurrentUser());
+            query.whereEqualTo("to", ParseUser.getCurrentUser()); // find people eho follow current user
 
             query.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> followList, ParseException e) {
-                    if (e == null) {
+                    if (e == null) { // get list, no error
                         ParseObject obj = new ParseObject("Follow");
                         for (int i = 0; i < followList.size(); i++) {
                             obj = followList.get(i);
-                            usersList.add(obj.get(Constants.FROM_NAME).toString());
+                            usersList.add(obj.get(Constants.FROM_NAME).toString());// get the names of each one, added to list
                         }
-                        usersAdapter = new MyAdapterUsers(ExploreActivity.this, usersList, lisinter);
+                        usersAdapter = new MyAdapterUsers(ExploreActivity.this, usersList, lisinter); // set adapter list
                         ExploreActivity.this.list.setAdapter(usersAdapter);
                         ExploreActivity.this.list.setTextFilterEnabled(true);
 
@@ -119,7 +118,7 @@ public class ExploreActivity extends Activity {
             });
 
 
-        } else if (intent.getStringExtra("type").equals("following")) {
+        } else if (intent.getStringExtra("type").equals("following")) { // same followers :)
             title.setText(getResources().getString(R.string.following));
 
             usersList = new LinkedList<>();
@@ -135,7 +134,6 @@ public class ExploreActivity extends Activity {
                             obj = followList.get(i);
                             usersList.add(obj.get(Constants.TO_NAME).toString());
                             user = obj.getParseUser("to");
-                            // obj.getParseObject("to").fetch();
 
 
                         }
@@ -150,61 +148,61 @@ public class ExploreActivity extends Activity {
 
 
             });
-        } else if (intent.getStringExtra("type").equals("timeline")) {
-            title.setText(getResources().getString(R.string.timeLine));
+        } else if (intent.getStringExtra("type").equals("timeline")) { // user click on timeline
+            title.setText(getResources().getString(R.string.timeLine)); // set tilte
 
             Calendar calendar = Calendar.getInstance();
 
             Log.d("start timeline", "");
             usersList = new LinkedList<>();
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Follow");
-            query.whereEqualTo("from", ParseUser.getCurrentUser());
+            query.whereEqualTo("from", ParseUser.getCurrentUser()); // get all the members were followed by current user
 
             List<ParseObject> followList = null;
             try {
-                followList = query.find();
+                followList = query.find(); // get users list!
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            if (followList != null || followList.size() > 0) {
+            if (followList != null || followList.size() > 0) { //  get the list of memebers if has following
                 ParseObject obj = new ParseObject("Follow");
                 for (int i = 0; i < followList.size(); i++) {
                     obj = followList.get(i);
-                    usersList.add(obj.get(Constants.TO_NAME).toString());
+                    usersList.add(obj.get(Constants.TO_NAME).toString()); // add the names to list
                     Log.d("users::", obj.get(Constants.TO_NAME).toString());
                 }
 
 
                 List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
 
-                for (int i = 0; i < usersList.size(); i++) {
+                for (int i = 0; i < usersList.size(); i++) { // here go to all users in the list, create a query for goals and
+                    // add them to SUPER query
                     ParseQuery<ParseObject> getGoals = ParseQuery.getQuery("UserWithGoals");
                     getGoals.whereEqualTo("userName", usersList.get(i).toString());
                     Log.d("get goals of users::", usersList.get(i).toString());
                     queries.add(getGoals);
 
                 }
-                // getGoals.orderByAscending("lastUpdate");
-                ParseQuery<ParseObject> superQuery = ParseQuery.getQuery("UserWithGoals");
-                ParseQuery.or(queries);
-                superQuery.addDescendingOrder("updatedAt");
+                ParseQuery<ParseObject> superQuery = ParseQuery.getQuery("UserWithGoals"); // super query to get all the goals from all flowwing users
+                ParseQuery.or(queries); // add all the queries to the SUPER query
+                superQuery.addDescendingOrder("updatedAt"); // sort them by updated date
+                superQuery.setLimit(50); // get the most recent 50 events
                 List<ParseObject> usersGoalsLists = null;
                 try {
-                    usersGoalsLists = superQuery.find();
+                    usersGoalsLists = superQuery.find(); // excute
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
                 usersList.clear();
                 for (int i = 0; i < usersGoalsLists.size(); i++) {
-//                    Log.d("gwt Event", usersGoalsLists.get(i).get("lastUpdate").toString());
-                    //calendar.setTimeInMillis(Long.parseLong(usersGoalsLists.get(i).get("lastUpdate").toString()));
-                    Date d = (Date) usersGoalsLists.get(i).getUpdatedAt();
-                    getTime(d);
-                    usersList.add(usersGoalsLists.get(i).get("userName").toString());
-                    progress.add("" + getPhrase(usersGoalsLists.get(i).get("progress").toString()) + " " + usersGoalsLists.get(i).get("name").toString() +
-                            " on: " + getTime(d));
 
-                    timeLine = new MyTimeLineAdapter(ExploreActivity.this, usersList, progress, lisinter);
+                    Date d = (Date) usersGoalsLists.get(i).getUpdatedAt(); // get the last update date
+
+                    usersList.add(usersGoalsLists.get(i).get("userName").toString()); // get the user f this event
+                    progress.add("" + getPhrase(usersGoalsLists.get(i).get("progress").toString()) + " " + usersGoalsLists.get(i).get("name").toString() +
+                            " on: " + getTime(d)); // get the pharse based on the current step!
+
+                    timeLine = new MyTimeLineAdapter(ExploreActivity.this, usersList, progress, lisinter); // set the adapter
                     ExploreActivity.this.list.setAdapter(timeLine);
                     ExploreActivity.this.list.setTextFilterEnabled(true);
 
@@ -215,7 +213,7 @@ public class ExploreActivity extends Activity {
             }
 
         } else if (intent.getStringExtra("type").equals("history")) {
-            title.setText(getResources().getString(R.string.history));
+            /*title.setText(getResources().getString(R.string.history));
 
             Log.d("start history", "");
             List<String> goalsDone = new LinkedList<>();
@@ -238,7 +236,6 @@ public class ExploreActivity extends Activity {
                     obj = goalsList.get(i);
                     goalsDone.add(obj.get("name").toString());
                     goalsIcons.add(obj.getBytes("icon"));
-                    //Log.d("users::", obj.getCreatedAt() + " " + obj.getUpdatedAt().toString() );
                     Duration.add(getDifferenceDays(obj.getCreatedAt(), obj.getUpdatedAt()) + " Days");
 
                 }
@@ -249,7 +246,7 @@ public class ExploreActivity extends Activity {
                 ExploreActivity.this.list.setTextFilterEnabled(true);
 
 
-            }
+            }*/
 
 
         }
@@ -268,7 +265,7 @@ public class ExploreActivity extends Activity {
         finish();
     }
 
-    public String getPhrase(String stepInString) {
+    private String getPhrase(String stepInString) { // called from time line , get the phares based on step
         int step = Integer.parseInt(stepInString);
         switch (step) {
             case 0:
@@ -286,14 +283,11 @@ public class ExploreActivity extends Activity {
         }
     }
 
-    public String getTime(Date date) {
+    private String getTime(Date date) {
         SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("EEE hh:mm a");
         return DATE_FORMAT.format(date);
 
     }
 
-    public static long getDifferenceDays(Date d1, Date d2) {
-        long diff = d2.getTime() - d1.getTime();
-        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-    }
+
 }

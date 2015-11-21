@@ -39,7 +39,7 @@ public class subscribeActivity extends Activity {
         steps = (ListView) findViewById(R.id.listView);
         sub = (Button) findViewById(R.id.add_step);
         unsub = (Button) findViewById(R.id.upload_goal);
-        ;
+        unsub.setVisibility(View.GONE);
         text = (EditText) findViewById(R.id.editText);
         title = (EditText) findViewById(R.id.editText2);
         titleText = (TextView) findViewById(R.id.goal_t);
@@ -49,30 +49,34 @@ public class subscribeActivity extends Activity {
         stepsText.setVisibility(View.GONE);
         title.setVisibility(View.GONE);
         text.setVisibility(View.GONE);
-        channels.setText("choose to sub/unsub");
-        sub.setText("sub");
-        unsub.setText("unsub");
 
         list = (Spinner) findViewById(R.id.spinner);
-        subChannels = ParseInstallation.getCurrentInstallation().getList("channels");
-        if (subChannels == null || subChannels.size() == 0) {
+        channels.setText(getResources().getString(R.string.choose_channel)); // set tilte
+        sub.setText(getResources().getString(R.string.subscribe)); // set button text
+
+        subChannels = ParseInstallation.getCurrentInstallation().getList("channels"); // grab the current channels of this user
+        if (subChannels == null || subChannels.size() == 0) { // no Channels!
             subChannels = new LinkedList();
             subChannels.add("No Channels");
         }
 
-
+        // list the user's channels
         adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, subChannels);
         steps.setAdapter(adapter);
 
-        List l = new LinkedList();
+        List l = new LinkedList(); // current channels to subscribe
         l.add("IT");
         l.add("Cook");
         l.add("Travel");
+
+        // set up the channels to subscribe
         adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, l);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         list.setAdapter(adapter);
         steps.setClickable(true);
-        steps.setOnItemClickListener(new AdapterView.OnItemClickListener()
+
+
+        steps.setOnItemClickListener(new AdapterView.OnItemClickListener() // unsubscribe when clicked!
 
         {
 
@@ -84,21 +88,23 @@ public class subscribeActivity extends Activity {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 
                 // set title
-                alertDialogBuilder.setTitle("Unsubscribe From " + item + "?");
+                alertDialogBuilder.setTitle(getResources().getString(R.string.unsubscribe_from) + item + "?");
 
                 // set dialog message
                 alertDialogBuilder
-                        .setMessage("Click yes to Unsubscribe!")
+                        .setMessage(getResources().getString(R.string.unsubscribe_yes))
                         .setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // if this button is clicked, close
                                 // current activity
-                                Toast.makeText(subscribeActivity.this, "You will Unsubscribe from " + item, Toast.LENGTH_SHORT).show();
-                                ParsePush.unsubscribeInBackground(item);
-                                subChannels.remove(list.getSelectedItem().toString());
+                                Toast.makeText(subscribeActivity.this, getResources().getString(R.string.unsubscribe_from) + " "  + item, Toast.LENGTH_SHORT).show();
+                                ParsePush.unsubscribeInBackground(item); // unsubscribe in backend
+                                subChannels.remove(list.getSelectedItem().toString()); // remove from list view
                                 if (subChannels.size() == 0)
                                     subChannels.add("No Channels");
+
+                                // update the list
                                 adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, subChannels);
                                 adapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
                                 steps.setAdapter(adapter);
@@ -107,17 +113,14 @@ public class subscribeActivity extends Activity {
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                // if this button is clicked, just close
-                                // the dialog box and do nothing
+                                // nothing
                                 dialog.cancel();
                             }
                         });
 
-                // create alert dialog
-                AlertDialog alertDialog = alertDialogBuilder.create();
+                 AlertDialog alertDialog = alertDialogBuilder.create();
 
-                // show it
-                alertDialog.show();
+                 alertDialog.show();
             }
 
 
@@ -125,10 +128,10 @@ public class subscribeActivity extends Activity {
 
         sub.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                ParsePush.subscribeInBackground(list.getSelectedItem().toString());
+                ParsePush.subscribeInBackground(list.getSelectedItem().toString()); // subscribe in db
 
-                subChannels.remove("No Channels");
-                subChannels.add(list.getSelectedItem().toString());
+                subChannels.remove("No Channels"); // remove 'no channels/ if any
+                subChannels.add(list.getSelectedItem().toString()); // update the list with the new channels
                 adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, subChannels);
                 adapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
                 steps.setAdapter(adapter);
@@ -138,7 +141,7 @@ public class subscribeActivity extends Activity {
 
         });
 
-        unsub.setOnClickListener(new View.OnClickListener() {
+        /*unsub.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 ParsePush.unsubscribeInBackground(item);
                 subChannels.remove(item);
@@ -150,7 +153,7 @@ public class subscribeActivity extends Activity {
 
 
             }
-        });
+        });*/
 
 
     }

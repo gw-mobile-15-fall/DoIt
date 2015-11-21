@@ -75,5 +75,10 @@
     <string name="You_followed">You followed</string>
     <string name="You_unfollowed">You unfollowed</string>
     <string name="Select_Picture">"Select Picture"</string>
+    <string name="choose_channel">"choose channel to subscribe:"</string>
+    <string name="subscribe">"subscribe!"</string>
+    <string name="unsubscribe_yes">"click yes to unsubscribe from :"</string>
+
+    <string name="unsubscribe_from">"unsubscribe from :"</string>
 
 </resources>

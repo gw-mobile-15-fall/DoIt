@@ -18,11 +18,11 @@ import android.widget.TextView;
 import java.util.List;
 
 public class MyAdapter extends BaseAdapter {
-    List<String> goals;
-    List<Integer> progress;
-    List icons;
-    Context context;
-    onItemClicked l = null;
+    private List<String> goals;
+    private List<Integer> progress;
+    private List icons;
+    private Context context;
+    private  onItemClicked l = null;
     private OnClickListener myButtonClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {

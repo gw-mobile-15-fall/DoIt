@@ -22,22 +22,19 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-/**
- * Created by omar on 10/13/2015.
- */
+
 public class ListGoals extends Activity{
 
 
-        List<String> groupList;
-        List<String> childList;
-        Map<String, List<String>> goalsCollection ;
-        ExpandableListView expListView;
-    List<String> travel = new LinkedList<String>();
-    List<String> it = new LinkedList<String>();
-    List<String> cook = new LinkedList<String>();
+    private   List<String> groupList;
+    private List<String> childList;
+    private   Map<String, List<String>> goalsCollection ;
+    private    ExpandableListView expListView;
+    private  List<String> travel = new LinkedList<String>();
+    private  List<String> it = new LinkedList<String>();
+    private  List<String> cook = new LinkedList<String>();
     private Map<String, ParseFile> iconCollections  = new LinkedHashMap<String, ParseFile>(); ;
-//    goalsCollection = new LinkedHashMap<String, List<String>>();
-boolean flag = true;
+    private boolean flag = true;
     @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -84,8 +81,6 @@ boolean flag = true;
                             iconCollections.put(catList.get(i).getString("name"),catList.get(i).getParseFile("icon"));
                         }
                     }
-                   // createCollection();
-                    Log.d("********", "");
                     Log.d("score", "Retrieved " + groupList.size() + " scores");
 
 
@@ -95,8 +90,6 @@ boolean flag = true;
             final ExpandableListAdapter expListAdapter = new ExpandableListAdapter(
                     ListGoals.this, groupList, goalsCollection,iconCollections);
             expListView.setAdapter(expListAdapter);
-
-            //setGroupIndicatorToRight();
 
             expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
@@ -120,7 +113,6 @@ boolean flag = true;
                                     Log.d("catList.size()", catList.size() + "");
                                     ParseObject goal = catList.get(0);
                                     goal.addUnique("users", ParseUser.getCurrentUser().getUsername());
-                                    // goal.put("CCC",ParseUser.getCurrentUser());
                                     try {
                                         goal.save();
                                         Intent toWelcome = new Intent();
@@ -132,7 +124,6 @@ boolean flag = true;
 
                                         setResult(RESULT_OK, toWelcome);
                                         finish();
-                                        //return true;
                                     } catch (ParseException e1) {
                                         e1.printStackTrace();
                                     }
@@ -150,29 +141,13 @@ boolean flag = true;
                     });
 
 
-                    // Intent toWelcome = new Intent();
-                    // toWelcome.putExtra("goal", selected);
-                    // setResult(RESULT_OK, toWelcome);
-                    // finish();
                     return true;
 
                 }
             });
 
-
-
-
-
-
-
-
-
-
-
-
                     flag = false;
                 } else {
-                    Log.d("############", "Error: ");
                 }
             }
         });
@@ -180,33 +155,13 @@ boolean flag = true;
     }
 
     private void createCollection() {
-        // preparing laptops collection(child)
-
-        Log.d("********", " start grou :" + groupList.size());
-       /* groupList.add("Cook");
-        groupList.add("IT");
-        groupList.add("Travel");
-        cook.add("pizaa");
-        travel.add("Paris");
-        travel.add("NY");
-        travel.add("LA");
-cook.add("burger");
-        it.add("iOS");
-        it.add("Android");
-        */
-
-        goalsCollection = new LinkedHashMap<String, List<String>>();
+    goalsCollection = new LinkedHashMap<String, List<String>>();
 
         for (String Goal : groupList) {
             if (Goal.equals("Cook")) {
-                Log.d("********", " start Cook::::");
-
                 loadChild(cook);
                 goalsCollection.put(Goal, childList);
             } else if (Goal.equals("IT")) {
-
-                Log.d("********", " start IT::::");
-
                 loadChild(it);
                 goalsCollection.put(Goal, childList);
             }
@@ -228,7 +183,6 @@ cook.add("burger");
     }
 
     private void setGroupIndicatorToRight() {
-        /* Get the screen width */
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int width = dm.widthPixels;
@@ -237,17 +191,13 @@ cook.add("burger");
                 - getDipsFromPixel(5));
     }
 
-    // Convert pixel to dip
     public int getDipsFromPixel(float pixels) {
-        // Get the screen's density scale
         final float scale = getResources().getDisplayMetrics().density;
-        // Convert the dps to pixels, based on density scale
         return (int) (pixels * scale + 0.5f);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
