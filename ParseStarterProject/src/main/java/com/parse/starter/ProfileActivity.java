@@ -6,7 +6,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -30,7 +34,7 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ProfileActivity extends Activity {
+public class ProfileActivity extends AppCompatActivity {
 
     // Declare Variable
     private  Button mlogout;
@@ -102,7 +106,7 @@ public class ProfileActivity extends Activity {
         image = (ImageView) findViewById(R.id.userIcon);
         mBadges = (TextView) findViewById(R.id.badgestTextNumber);
         timeLine = (Button) findViewById(R.id.timeLine);
-
+        mSetting.setVisibility(View.GONE);
         follower = (TextView) findViewById(R.id.followersTextNumber);
         following = (TextView) findViewById(R.id.followeingTextNumber);
         getFollowing(); // get the following/followers
@@ -173,6 +177,7 @@ public class ProfileActivity extends Activity {
             }
         });
 
+        /*
         mSetting.setOnClickListener(new OnClickListener() { // setting pressed
 
             public void onClick(View arg0) {
@@ -180,7 +185,7 @@ public class ProfileActivity extends Activity {
                 ProfileActivity.this.startActivityForResult(setting, Constants.SETTING);
 
             }
-        });
+        });*/
         mlogout.setOnClickListener(new OnClickListener() {
 
             public void onClick(View arg0) {
@@ -422,4 +427,31 @@ public class ProfileActivity extends Activity {
 
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+
+        inflater.inflate(R.menu.menu_profile, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            Intent setting = new Intent(ProfileActivity.this, SettingActivity.class);
+            ProfileActivity.this.startActivityForResult(setting, Constants.SETTING);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
 }

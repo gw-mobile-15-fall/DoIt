@@ -15,7 +15,7 @@ public class AuthenticateActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_authenticate, menu);
+        getMenuInflater().inflate(R.menu.menu_profile, menu);
         return true;
     }
 

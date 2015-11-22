@@ -8,7 +8,10 @@ import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -33,7 +36,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class GoalDeatils extends Activity {
+public class GoalDeatils extends AppCompatActivity {
     private String goal;
 
     private  int mProgress;
@@ -79,15 +82,15 @@ public class GoalDeatils extends Activity {
 
 
 
-
-        mShare.setOnClickListener(new View.OnClickListener() {
+        mShare.setVisibility(View.GONE);
+        /*mShare.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) { // share button presses
                 // Logout current user
                 shareStep();
 
             }
-        });
+        });*/
 
 
         mExploreButton.setOnClickListener(new View.OnClickListener() {
@@ -323,19 +326,7 @@ public class GoalDeatils extends Activity {
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
 
-        int id = item.getItemId();
-
-      if(id == R.id.action_share){
-            Log.d("", "share button pressed");
-            shareStep();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
     private void shareStep(){ // share content
 
 
@@ -373,4 +364,30 @@ public class GoalDeatils extends Activity {
         else
             return Color.RED;
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        menu.removeItem(R.id.action_share);
+        inflater.inflate(R.menu.menu_goal_details, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+
+        if (id == R.id.action_share) {
+            shareStep();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

@@ -1,15 +1,15 @@
 package com.parse.starter;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class StarterActivity extends AppCompatActivity {
+public class StarterActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,7 @@ public class StarterActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_starter, menu);
+        getMenuInflater().inflate(R.menu.menu_goal_details, menu);
         return true;
     }
 

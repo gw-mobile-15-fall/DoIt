@@ -65,6 +65,8 @@ public class SettingActivity extends Activity {
         mCamButton.setOnClickListener(new View.OnClickListener() { // open the camera to take pic
             public void onClick(View arg0) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra("android.intent.extras.CAMERA_FACING", 1);
+
                 startActivityForResult(intent, CAM_IMAGE_REQUEST);
 
             }
@@ -152,11 +154,9 @@ public class SettingActivity extends Activity {
             if (resultCode == Activity.RESULT_OK) { // user took a pic
                 Bundle extras = data.getExtras();
                 mImageBitmap = (Bitmap) extras.get("data");
-                mImageView.setImageBitmap(mImageBitmap);
-                // mImageView.setRotation(90);
-                mImageView.setVisibility(View.VISIBLE); // update the image view with new pic
 
-            }
+                mImageView.setVisibility(View.VISIBLE); // update the image view with new pic
+             }
         }
         if (resultCode == Activity.RESULT_CANCELED) {
             // user cancel the pic
@@ -181,4 +181,13 @@ public class SettingActivity extends Activity {
 
 
     }
+
+    private Uri getImageUri( Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+
 }
