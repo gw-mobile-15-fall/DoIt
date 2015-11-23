@@ -66,6 +66,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             ParseQuery<ParseObject> query = ParseQuery.getQuery("UserWithGoals"); // get current progress
             query.whereEqualTo("userName", ParseUser.getCurrentUser().getUsername());// get current progress from this user
+            query.whereEqualTo("timeEnd","---");
             query.whereEqualTo("name", mUserGoals.get(item).toString());// get current progress from this goal
             List<ParseObject> userGoalList = null;
             try {

@@ -181,8 +181,8 @@ public class ExploreActivity extends Activity {
                     queries.add(getGoals);
 
                 }
-                ParseQuery<ParseObject> superQuery = ParseQuery.getQuery("UserWithGoals"); // super query to get all the goals from all flowwing users
-                ParseQuery.or(queries); // add all the queries to the SUPER query
+                ParseQuery<ParseObject> superQuery =  ParseQuery.or(queries);  // super query to get all the goals from all flowwing users
+               // ParseQuery.or(queries); // add all the queries to the SUPER query
                 superQuery.addDescendingOrder("updatedAt"); // sort them by updated date
                 superQuery.setLimit(50); // get the most recent 50 events
                 List<ParseObject> usersGoalsLists = null;
