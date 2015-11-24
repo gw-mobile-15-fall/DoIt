@@ -61,28 +61,35 @@ public class ExploreActivity extends Activity {
             mTitle.append(" " + goal + " goal!");
 
 
-            ParseQuery<ParseObject> queryGoal = ParseQuery.getQuery("Goals");
+            ParseQuery<ParseObject> queryGoal = ParseQuery.getQuery("UserWithGoals");
             queryGoal.whereEqualTo("name", goal); //get a list of users with same goal
+            queryGoal.whereNotEqualTo("userName", ParseUser.getCurrentUser().getUsername());
+            queryGoal.whereEqualTo("timeEnd", "---");
 
             Log.d("will request", goal);
             mUsersList = new LinkedList<>();
+            mProgress = new LinkedList<>();
             queryGoal.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> catList, ParseException e) {
                     if (e == null) { // No Error, means get the list of members
-                        ParseObject obj = catList.get(0); // since we have one list => index = 0
-                        if (obj.getList("users") != null) {
-                            mUsersList = obj.getList("users"); // added the members' list to LinkedList
-
-
+                        if(catList == null || catList.size() == 0)
+                        {
+                            mUsersList.add("No Users"); // no users have same goal
                             mUsersAdapter = new MyAdapterUsers(ExploreActivity.this, mUsersList, lisinter); // set the list view with memebers' list
                             ExploreActivity.this.mList.setAdapter(mUsersAdapter);
                             ExploreActivity.this.mList.setTextFilterEnabled(true);
-
-
-                        } else
-
+                        }
+                        else
                         {
-                            mUsersList.add("No Users"); // no users have same goal
+                            for(int i = 0 ; i < catList.size() ; i++ )
+                                {
+                                    ParseObject obj = catList.get(i); // since we have one list => index = 0
+                                    mUsersList.add(obj.getString("userName")); // added the members' list to LinkedList
+                                    mProgress.add( getResources().getString(R.string.in_step) +": "+ obj.getInt("progress"));
+                                }
+                            mTimeLine = new MyTimeLineAdapter(ExploreActivity.this, mUsersList,mProgress, lisinter); // set the list view with memebers' list
+                            ExploreActivity.this.mList.setAdapter(mTimeLine);
+                            ExploreActivity.this.mList.setTextFilterEnabled(true);
                         }
 
 
