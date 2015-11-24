@@ -37,6 +37,8 @@ public class SettingActivity extends Activity {
         mImageView = (ImageView) findViewById(R.id.imageView2);
         mHistoryButton = (Button) findViewById(R.id.historyButton);
         mYourChannels = (Button) findViewById(R.id.yourChannels);
+      //  mImageView.setPadding(2,2,2,2);
+       // mImageView.setBackgroundColor(Color.BLACK);
 
         mName.setText(ParseUser.getCurrentUser().get("name").toString()); // write the user's name
         mBio.setText(ParseUser.getCurrentUser().get("bio").toString());
@@ -49,6 +51,7 @@ public class SettingActivity extends Activity {
         }
         if (b != null) {// draw the avatar
             mImageView.setImageBitmap(BitmapFactory.decodeByteArray(b, 0, b.length));
+
         }
 
 
@@ -58,14 +61,14 @@ public class SettingActivity extends Activity {
 
 
         mUpload = (Button) findViewById(R.id.upload);
-        if (ParseUser.getCurrentUser().getList("areas").size() == 0) // if the user cannot post goals, disable the button
+        if (ParseUser.getCurrentUser().getList("areas") == null) // if the user cannot post goals, disable the button
             mUpload.setVisibility(View.GONE);
 
 
         mCamButton.setOnClickListener(new View.OnClickListener() { // open the camera to take pic
             public void onClick(View arg0) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra("android.intent.extras.CAMERA_FACING", 1);
+                //intent.putExtra("android.intent.extras.CAMERA_FACING", 1);
 
                 startActivityForResult(intent, CAM_IMAGE_REQUEST);
 
@@ -154,6 +157,7 @@ public class SettingActivity extends Activity {
             if (resultCode == Activity.RESULT_OK) { // user took a pic
                 Bundle extras = data.getExtras();
                 mImageBitmap = (Bitmap) extras.get("data");
+                mImageView.setImageBitmap(mImageBitmap); // refelct the change to imageview
 
                 mImageView.setVisibility(View.VISIBLE); // update the image view with new pic
              }

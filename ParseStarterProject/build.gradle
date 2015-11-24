@@ -27,14 +27,18 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            debuggable true
+        }
     }
 }
 
 dependencies {
     compile 'com.android.support:appcompat-v7:22.2.0'
-
     compile 'com.parse.bolts:bolts-android:1.2.1'
     compile 'com.parse:parse-android:1.10.2'
+    compile 'com.google.android.gms:play-services:8.3.0'
+    compile files('libs/mpandroidchartlibrary-2-1-6.jar')
 }
 
 /* Uncomment if you enable ProGuard and you want to automatically upload symbols on build.

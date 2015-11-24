@@ -167,7 +167,10 @@ public class ProfileActivity extends AppCompatActivity {
                        // there is avatar, draw it
                         Bitmap imagebit = BitmapFactory.decodeByteArray(data, 0, data.length);
                         ProfileActivity.this.image.setImageBitmap(imagebit);
-                        ProfileActivity.this.image.setVisibility(View.VISIBLE);
+                        // ProfileActivity.this.image.setPadding(2, 2, 2, 2);
+                        // image.setBackgroundColor(Color.BLACK);
+
+                         ProfileActivity.this.image.setVisibility(View.VISIBLE);
 
                     }
 

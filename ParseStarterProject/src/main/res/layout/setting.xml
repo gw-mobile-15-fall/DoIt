@@ -48,6 +48,7 @@
         android:layout_height="103dp"
         android:id="@+id/imageView2"
         android:layout_gravity="center_horizontal"
+        android:background="@drawable/image_border"
         android:layout_weight="0.24" />
 
     <TextView

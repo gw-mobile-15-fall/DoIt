@@ -75,7 +75,9 @@ public class MemberActivity extends Activity {
             public void done(List<ParseObject> catList, ParseException e) {
                 if (e == null) {
                     if (catList == null || catList.size() == 0)
-                        mlogout.setText(getResources().getString(R.string.Follow));
+                    {
+                         mlogout.setText(getResources().getString(R.string.Follow));
+                    }
                     else
                         mlogout.setText(getResources().getString(R.string.Unfollow));
 

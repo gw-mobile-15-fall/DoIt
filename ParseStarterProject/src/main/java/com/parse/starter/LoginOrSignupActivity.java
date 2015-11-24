@@ -42,7 +42,7 @@ public class LoginOrSignupActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginOrSignupActivity.this, StarterActivity.class);
                 intent.putExtra(TYPE, LOGIN);
-                ParseUser.logInInBackground("omar", "1234567",
+                ParseUser.logInInBackground("athoug", "1234567",
                         new LogInCallback() {
                             public void done(ParseUser user, ParseException e) {
                                 if (user != null) {
