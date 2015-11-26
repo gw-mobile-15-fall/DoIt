@@ -20,14 +20,14 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_starter">Starter</string>
     <string name="Do_it">DO IT.</string>
-    <string name="account_log_in_greeting">LOGIN  TO  YOUR  ACCOUNT</string>
+    <string name="account_log_in_greeting">LOGIN TO YOUR ACCOUNT</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="forget_password">FORGOT PASSWORD ?</string>
-    <string name="login">LOGIN</string>
+    <string name="login">Login</string>
     <string name="create_account">CREATE ACCOUNT</string>
     <string name="title_activity_authenticate">AuthenticateActivity</string>
-    <string name="LogOut">LogOut</string>
+    <string name="LogOut">Logout</string>
     <string name="jon_doe">John Doe</string>
     <string name="user_bio">placeholder test for the user bio goes here. They can write a breif discription of themselves</string>
     <string name="badges">Badges</string>
@@ -44,7 +44,7 @@
     <string name="twenty_perccent">20 %</string>
     <string name="NextStep">Next Step</string>
     <string name="name">name:</string>
-    <string name="setting">setting</string>
+    <string name="setting">Settings</string>
     <string name="bio"> Bio:</string>
     <string name="explore"> explore</string>
     <string name="friends_who_have">Members who have:</string>
@@ -80,5 +80,7 @@
     <string name="unsubscribe_yes">"click yes to unsubscribe from :"</string>
 
     <string name="unsubscribe_from">"unsubscribe from :"</string>
+    <string name="browse">Browse</string>
+    <string name="timeline">Timeline</string>
 
 </resources>
