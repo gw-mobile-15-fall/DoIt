@@ -37,8 +37,8 @@ import java.util.List;
 public class ProfileActivity extends AppCompatActivity {
 
     // Declare Variable
-    private  Button mlogout;
-    private  Button mBrowse, mSetting, timeLine, Watch;
+    private  ImageView mlogout;
+    private  ImageView mBrowse, mSetting, timeLine, Watch;
     private  ListView mGoalsList;
     private  String goal;
     private  List mUserGoals, mProgress, mIcons;
@@ -99,14 +99,14 @@ public class ProfileActivity extends AppCompatActivity {
         String struser = currentUser.getUsername().toString();
         TextView txtuser = (TextView) findViewById(R.id.welcome);
         mGoalsList = (ListView) findViewById(R.id.goals_list);
-        mlogout = (Button) findViewById(R.id.log_out);
-        mBrowse = (Button) findViewById(R.id.browse);
-        mSetting = (Button) findViewById(R.id.setting);
+        mlogout = (ImageView) findViewById(R.id.log_out);
+        mBrowse = (ImageView) findViewById(R.id.browse);
+        mSetting = (ImageView) findViewById(R.id.setting);
         mName = (TextView) findViewById(R.id.nameText);
         mBio = (TextView) findViewById(R.id.bio);
         image = (ImageView) findViewById(R.id.userIcon);
         mBadges = (TextView) findViewById(R.id.badgestTextNumber);
-        timeLine = (Button) findViewById(R.id.timeLine);
+        timeLine = (ImageView) findViewById(R.id.timeLine);
         mSetting.setVisibility(View.GONE);
         follower = (TextView) findViewById(R.id.followersTextNumber);
         following = (TextView) findViewById(R.id.followeingTextNumber);
@@ -322,7 +322,7 @@ public class ProfileActivity extends AppCompatActivity {
         Log.d("found user goals", mUserGoals.size() + "------");
 
         if (mUserGoals.size() != 0) { // should be always true ( size must be > 0 )
-            mBrowse = (Button) findViewById(R.id.browse);
+            mBrowse = (ImageView) findViewById(R.id.browse);
             ProfileActivity.this.mGoalsList = (ListView) findViewById(R.id.Goals_list);
 
             if (mUserGoals.get(0).toString().equals("No_Goals")) // no goals, simple list view
