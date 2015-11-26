@@ -82,5 +82,11 @@
     <string name="unsubscribe_from">"unsubscribe from :"</string>
     <string name="browse">Browse</string>
     <string name="timeline">Timeline</string>
+    <string name="Upload">Upload</string>
+    <string name="Name">Name</string>
+    <string name="userbio">Enter your bio</string>
+    <string name="subscription">Subscription</string>
+    <string name="add_new_goal">Create New Goal</string>
+    <string name="history_goal">Goal History</string>
 
 </resources>
