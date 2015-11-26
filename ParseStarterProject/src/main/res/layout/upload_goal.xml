@@ -6,59 +6,85 @@
     android:weightSum="1">
 
     <TextView
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/textColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/categories"
+        android:text="@string/goal_categories"
         android:id="@+id/categories" />
-
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#ffffff"
-        android:id="@+id/spinner" />
-
-    <TextView
+    
+    <LinearLayout 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/goal_title"
-        android:id="@+id/goal_t" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText2"
-        android:layout_gravity="center_horizontal" />
+        <Spinner
+            android:layout_gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:id="@+id/spinner" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/write_task"
-        android:id="@+id/taskTest" />
+        <EditText
+            android:layout_gravity="center_horizontal"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:textSize="14dp"
+            android:textStyle="normal"
+            android:text="@string/goal_title"
+            android:textColor="@color/textColor"
+            android:id="@+id/editText2"/>
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText" />
+        <EditText
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:textSize="14dp"
+            android:text="@string/write_task"
+            android:textColor="@color/textColor"
+            android:textStyle="normal"
+            android:id="@+id/editText" />
+        
+        
+        <LinearLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal">
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add_step"
-        android:id="@+id/add_step"
-        android:layout_gravity="right" />
+            <Button
+                android:textColor="@color/textColor"
+                android:background="@color/dark_orange"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:textSize="10dp"
+                android:text="@string/add_step"
+                android:id="@+id/add_step"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/upload_goal"
-        android:id="@+id/upload_goal"
-        android:layout_gravity="right" />
+            <Button
+                android:layout_marginLeft="15dp"
+                android:textColor="@color/textColor"
+                android:background="@color/dark_orange"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:textSize="10dp"
+                android:text="@string/upload_goal"
+                android:id="@+id/upload_goal" />
+            
+        </LinearLayout>
+        
+    </LinearLayout>
+
 
     <ListView
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="203dp"
         android:id="@+id/listView"
