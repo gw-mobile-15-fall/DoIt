@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/textColor"
     android:weightSum="1">
 
     <TextView
@@ -10,6 +11,10 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/friends_who_have"
         android:id="@+id/title_explore"
+        android:textColor="@color/dark_orange"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.03" />
 
