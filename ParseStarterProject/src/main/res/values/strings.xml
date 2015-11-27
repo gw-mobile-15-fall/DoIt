@@ -88,5 +88,6 @@
     <string name="subscription">Subscription</string>
     <string name="add_new_goal">Create New Goal</string>
     <string name="history_goal">Goal History</string>
+     <string name="goal_categories">Select the goal category</string>
 
 </resources>
