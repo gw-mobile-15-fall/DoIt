@@ -44,7 +44,7 @@ public class GoalDeatils extends AppCompatActivity {
     private Button mNextStepButton, mCameraButton, mExploreButton,mShare,mWatch;
     private TextView mGoalTitle, mNextStep, mNextStepText;
     private List mGoalSteps;
-    private  ImageView   mImageView;
+    private  ImageView   mImageView,mWatch_imageview;
 
     private  JSONObject test = new JSONObject();
     private DateFormat df = new SimpleDateFormat("dd/MM/yy");
@@ -72,9 +72,11 @@ public class GoalDeatils extends AppCompatActivity {
         mNextStepButton = (Button) findViewById(R.id.nextStepButton);
         mCameraButton = (Button) findViewById(R.id.CameraButton);
            mImageView = (ImageView) findViewById(R.id.imageView);
+        mWatch_imageview =(ImageView) findViewById(R.id.watch_imageview);
         mExploreButton = (Button) findViewById(R.id.explorebutton);
         mWatch = (Button) findViewById(R.id.Watch);
-        mWatch.setVisibility(View.INVISIBLE);
+        mWatch.setVisibility(View.GONE);
+        mWatch_imageview.setVisibility(View.GONE);
         getSteps();
         mGoalTitle.setText(goal);
         mBar.setProgress(mProgress);
@@ -82,7 +84,7 @@ public class GoalDeatils extends AppCompatActivity {
 
 
 
-        mShare.setVisibility(View.GONE);
+
         /*mShare.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) { // share button presses
@@ -228,6 +230,8 @@ public class GoalDeatils extends AppCompatActivity {
         if( mNextStepText.getText().toString().contains("watch")) { // if the next step is video
 
             mWatch.setVisibility(View.VISIBLE);
+
+            mWatch_imageview.setVisibility(View.VISIBLE);
             mWatch.setText("Watch");
             mWatch.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -242,6 +246,7 @@ public class GoalDeatils extends AppCompatActivity {
         else if( mNextStepText.getText().toString().contains("read")) { // if the next step is article
 
             mWatch.setVisibility(View.VISIBLE);
+            mWatch_imageview.setVisibility(View.VISIBLE);
             mWatch.setText("Read");
             mWatch.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -256,7 +261,10 @@ public class GoalDeatils extends AppCompatActivity {
 
 
         else
-            mWatch.setVisibility(View.INVISIBLE); // make the watch inviable if it is normal task
+        {
+            mWatch_imageview.setVisibility(View.GONE);
+            mWatch.setVisibility(View.GONE); // make the watch inviable if it is normal task
+        }
 
     }
 

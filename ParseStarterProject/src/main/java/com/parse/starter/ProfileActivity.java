@@ -106,7 +106,7 @@ public class ProfileActivity extends AppCompatActivity {
         image = (ImageView) findViewById(R.id.userIcon);
         mBadges = (TextView) findViewById(R.id.badgestTextNumber);
         timeLine = (ImageView) findViewById(R.id.timeLine);
-        mSetting.setVisibility(View.GONE);
+
         follower = (TextView) findViewById(R.id.followersTextNumber);
         following = (TextView) findViewById(R.id.followeingTextNumber);
         getFollowing(); // get the following/followers
