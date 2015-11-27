@@ -42,11 +42,11 @@ public class subscribeActivity extends Activity {
         mUnsub.setVisibility(View.GONE);
         text = (EditText) findViewById(R.id.editText);
         title = (EditText) findViewById(R.id.editText2);
-        titleText = (TextView) findViewById(R.id.goal_t);
-        stepsText = (TextView) findViewById(R.id.taskTest);
+      //  titleText = (TextView) findViewById(R.id.goal_t);
+     //   stepsText = (TextView) findViewById(R.id.taskTest);
         channels = (TextView) findViewById(R.id.categories);
-        titleText.setVisibility(View.GONE);
-        stepsText.setVisibility(View.GONE);
+      //  titleText.setVisibility(View.GONE);
+     //   stepsText.setVisibility(View.GONE);
         title.setVisibility(View.GONE);
         text.setVisibility(View.GONE);
 

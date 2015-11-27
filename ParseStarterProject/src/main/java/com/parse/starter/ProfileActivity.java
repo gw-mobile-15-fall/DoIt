@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -97,7 +96,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         ParseUser currentUser = ParseUser.getCurrentUser();
         String struser = currentUser.getUsername().toString();
-        TextView txtuser = (TextView) findViewById(R.id.welcome);
+       // TextView txtuser = (TextView) findViewById(R.id.welcome);
         mGoalsList = (ListView) findViewById(R.id.goals_list);
         mlogout = (ImageView) findViewById(R.id.log_out);
         mBrowse = (ImageView) findViewById(R.id.browse);
@@ -113,7 +112,7 @@ public class ProfileActivity extends AppCompatActivity {
         getFollowing(); // get the following/followers
         getFollowers();
        // txtuser.setText("You are logged in as " + currentUser.get("name"));
-        txtuser.setText("");
+        //txtuser.setText("");
 
         try {
             List goals = getUserGoals(this, false); // grab the user's goals

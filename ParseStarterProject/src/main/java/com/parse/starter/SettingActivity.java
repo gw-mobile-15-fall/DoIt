@@ -21,9 +21,9 @@ import java.io.IOException;
 
 
 public class SettingActivity extends Activity {
-    Button mCamButton, mApplyButton, mUpload, mBrowse, mHistoryButton, mYourChannels;
+    Button  mApplyButton, mUpload, mHistoryButton, mYourChannels;
     EditText mName, mBio;
-    ImageView mImageView;
+    ImageView mImageView,mBrowse,mCamButton,mUploadIcon;
     Bitmap mImageBitmap;
      private int PICK_IMAGE_REQUEST = 2;
     private int CAM_IMAGE_REQUEST = 1;
@@ -35,8 +35,10 @@ public class SettingActivity extends Activity {
         mName = (EditText) findViewById(R.id.memberName);
         mBio = (EditText) findViewById(R.id.bioText);
         mImageView = (ImageView) findViewById(R.id.imageView2);
+        mUploadIcon =(ImageView) findViewById(R.id.uploadIcon);
         mHistoryButton = (Button) findViewById(R.id.historyButton);
         mYourChannels = (Button) findViewById(R.id.yourChannels);
+
       //  mImageView.setPadding(2,2,2,2);
        // mImageView.setBackgroundColor(Color.BLACK);
 
@@ -55,14 +57,17 @@ public class SettingActivity extends Activity {
         }
 
 
-        mBrowse = (Button) findViewById(R.id.Browse);
-        mCamButton = (Button) findViewById(R.id.camButton);
+        mBrowse = (ImageView) findViewById(R.id.Browse);
+        mCamButton = (ImageView) findViewById(R.id.camButton);
         mApplyButton = (Button) findViewById(R.id.applyButton);
 
 
         mUpload = (Button) findViewById(R.id.upload);
         if (ParseUser.getCurrentUser().getList("areas") == null) // if the user cannot post goals, disable the button
+        {
             mUpload.setVisibility(View.GONE);
+            mUploadIcon.setVisibility(View.GONE);
+        }
 
 
         mCamButton.setOnClickListener(new View.OnClickListener() { // open the camera to take pic

@@ -57,7 +57,7 @@ public class MemberActivity extends Activity {
         mImage = (ImageView) findViewById(R.id.userIcon);
         mBadges = (TextView) findViewById(R.id.badgestTextNumber);
         memberName = getIntent().getStringExtra("name");
-        mTxtuser = (TextView) findViewById(R.id.welcome);
+        //mTxtuser = (TextView) findViewById(R.id.welcome);
         mGoalsList = (ListView) findViewById(R.id.goals_list);
         List goals = getUserGoals(memberName);
 
