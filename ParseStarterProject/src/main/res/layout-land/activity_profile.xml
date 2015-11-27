@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_gravity="center_horizontal"
-            android:paddingTop="40dp"
+            android:paddingTop="20dp"
             android:background="@color/bg_color">
 
             <LinearLayout
