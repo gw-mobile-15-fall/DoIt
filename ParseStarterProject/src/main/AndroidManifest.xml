@@ -73,12 +73,12 @@
 
         <activity
             android:name="com.parse.starter.ProfileActivity"
-            android:label="@string/welcome"
+            android:label="@string/Do_it"
             android:theme="@style/AppTheme">
         </activity>
         <activity
             android:name="com.parse.starter.ListGoals"
-            android:label="@string/welcome"
+            android:label="@string/Do_it"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
         </activity>
         <activity
@@ -88,7 +88,7 @@
         </activity>
         <activity
             android:name="com.parse.starter.SettingActivity"
-            android:label="@string/welcome"
+            android:label="@string/Do_it"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
         </activity>
 

@@ -313,6 +313,10 @@ public class ProfileActivity extends AppCompatActivity {
                     mIcons.add(obj.get("icon"));
                 }
             }
+            if (mUserGoals.size() == 0){ //
+                mBadges.setText("0"); // set label to 0
+                mUserGoals.add("No_Goals"); // add to the list view, no goal
+            }
 
 
         }
@@ -320,12 +324,15 @@ public class ProfileActivity extends AppCompatActivity {
 
         Log.d("found user goals", mUserGoals.size() + "------");
 
+
+
         if (mUserGoals.size() != 0) { // should be always true ( size must be > 0 )
             mBrowse = (ImageView) findViewById(R.id.browse);
             ProfileActivity.this.mGoalsList = (ListView) findViewById(R.id.Goals_list);
 
             if (mUserGoals.get(0).toString().equals("No_Goals")) // no goals, simple list view
             {
+                mBadges.setText("0");
                 mListAdapter = new ArrayAdapter(ProfileActivity.this, R.layout.group_item, R.id.usergoal, mUserGoals);
                 ProfileActivity.this.mGoalsList.setAdapter(mListAdapter);
 
