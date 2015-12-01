@@ -78,7 +78,7 @@ public class MyAdapterUsers extends BaseAdapter {
         // TODO Auto-generated method stub
 
         View rowView;
-        rowView = mInflater.inflate(R.layout.profile_goals_with_border, null);
+        rowView = mInflater.inflate(R.layout.profile_goals, null);
         holder.user = (TextView) rowView.findViewById(R.id.goal_name);
         holder.icon = (ImageView) rowView.findViewById(R.id.imageView1);
         holder.bio = (TextView) rowView.findViewById(R.id.progress);

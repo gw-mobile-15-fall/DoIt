@@ -58,7 +58,7 @@ public class ExploreActivity extends Activity {
             mTitle.setText(getResources().getString(R.string.friends_who_have)); // set title
             String goal = intent.getStringExtra("goal");
             Log.d("Goal is: ", goal);
-            mTitle.append(" " + goal + " goal!");
+            mTitle.append("\n" + goal + " Goal");
 
 
             ParseQuery<ParseObject> queryGoal = ParseQuery.getQuery("UserWithGoals");

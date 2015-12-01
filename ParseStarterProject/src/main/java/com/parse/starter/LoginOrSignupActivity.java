@@ -90,7 +90,7 @@ public class LoginOrSignupActivity extends Activity {
                             if (e == null) {
                                 // Show a simple Toast message upon successful registration
                                 Toast.makeText(getApplicationContext(),
-                                        "Successfully Signed up, please log in.",
+                                        "Successfully Signed up",
                                         Toast.LENGTH_LONG).show();
                             } else {
                                 Toast.makeText(getApplicationContext(),

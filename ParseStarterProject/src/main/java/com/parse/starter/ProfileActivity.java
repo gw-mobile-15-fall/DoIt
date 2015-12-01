@@ -180,7 +180,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        /*
+
         mSetting.setOnClickListener(new OnClickListener() { // setting pressed
 
             public void onClick(View arg0) {
@@ -188,12 +188,17 @@ public class ProfileActivity extends AppCompatActivity {
                 ProfileActivity.this.startActivityForResult(setting, Constants.SETTING);
 
             }
-        });*/
+        });
         mlogout.setOnClickListener(new OnClickListener() {
 
             public void onClick(View arg0) {
                 // Logout current user
                 ParseUser.logOut();
+                Intent goals = new Intent(ProfileActivity.this, LoginOrSignupActivity.class);
+                Toast.makeText(getApplicationContext(),
+                        "Logged out!", Toast.LENGTH_LONG)
+                        .show();
+                ProfileActivity.this.startActivity(goals);
                 finish();
             }
         });
