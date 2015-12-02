@@ -88,6 +88,15 @@
     <string name="subscription">Subscription</string>
     <string name="add_new_goal">Create New Goal</string>
     <string name="history_goal">Goal History</string>
-     <string name="goal_categories">Select the goal category</string>
-
+    <string name="goal_categories">Select the goal category</string>
+    <string name="orange">Select the goal category</string>
+    <string name="light_orange_1">#ffc166</string>
+    <string name="light_orange_2">#ffb74d</string>
+    <string name="light_orange_3">#ffac33</string>
+    <string name="light_orange_4">#ffa21a</string>
+    <string name="light_orange_5">#ff9700</string>
+    <string name="dark_orange">#F7931E</string>
+    <string name="light_gray">#d3d3d3</string>
+    <string name="read"> Read</string>
+    <string name="watch">Watch</string>
 </resources>
