@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center_horizontal"
-        android:paddingTop="10dp"
         android:background="@color/bg_color">
 
         <LinearLayout
@@ -35,24 +34,23 @@
                 android:id="@+id/nameText"
                 android:text="@string/jon_doe"
                 android:textColor="@color/dark_orange"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:textStyle="normal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"/>
+                android:layout_gravity="center_horizontal"/>
 
 
             <TextView
                 android:id="@+id/bio"
                 android:text="@string/user_bio"
                 android:textColor="@color/textColor"
-                android:textSize="12sp"
+                android:textSize="10sp"
                 android:textStyle="normal"
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="2dp"/>
 
         </LinearLayout>
 
