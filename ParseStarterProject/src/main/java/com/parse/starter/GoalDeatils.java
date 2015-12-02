@@ -75,9 +75,7 @@ public class GoalDeatils extends AppCompatActivity {
         mWatch_imageview =(ImageView) findViewById(R.id.watch_imageview);
         mExploreButton = (Button) findViewById(R.id.explorebutton);
         mWatch = (Button) findViewById(R.id.Watch);
-        mWatch.setVisibility(View.GONE);
-        mWatch_imageview.setVisibility(View.GONE);
-        getSteps();
+          getSteps();
         mGoalTitle.setText(goal);
         mBar.setProgress(mProgress);
         mBar.setVisibility(View.VISIBLE);
@@ -142,6 +140,8 @@ public class GoalDeatils extends AppCompatActivity {
 
                     mNextStepButton.setText(getResources().getString(R.string.no_task_left)); // set next step to no task left
                     mNextStepButton.setEnabled(false);
+
+
                     mImageView.setVisibility(View.GONE);
                     removeNameFromGoal(); // remove the user from the members who have this goal
                 }
@@ -228,11 +228,11 @@ public class GoalDeatils extends AppCompatActivity {
 
     private void checkIfExternal() { // check if there is an external link
         if( mNextStepText.getText().toString().contains("watch")) { // if the next step is video
+            mWatch.setBackgroundColor(Color.parseColor(getResources().getString(R.string.dark_orange)));
 
-            mWatch.setVisibility(View.VISIBLE);
-
+            mWatch.setEnabled(true);
             mWatch_imageview.setVisibility(View.VISIBLE);
-            mWatch.setText("Watch");
+            mWatch.setText(getResources().getString(R.string.watch));
             mWatch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -245,9 +245,10 @@ public class GoalDeatils extends AppCompatActivity {
         }
         else if( mNextStepText.getText().toString().contains("read")) { // if the next step is article
 
-            mWatch.setVisibility(View.VISIBLE);
+            mWatch.setEnabled(true);
+            mWatch.setBackgroundColor(Color.parseColor(getResources().getString(R.string.dark_orange)));
             mWatch_imageview.setVisibility(View.VISIBLE);
-            mWatch.setText("Read");
+            mWatch.setText(getResources().getString(R.string.read));
             mWatch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -262,8 +263,10 @@ public class GoalDeatils extends AppCompatActivity {
 
         else
         {
-            mWatch_imageview.setVisibility(View.GONE);
-            mWatch.setVisibility(View.GONE); // make the watch inviable if it is normal task
+            //mWatch_imageview.setVisibility(View.GONE);
+            mWatch.setEnabled(false); // make the watch inviable if it is normal task
+            mWatch.setBackgroundColor(Color.parseColor(getResources().getString(R.string.light_gray)));
+
         }
 
     }
@@ -363,14 +366,14 @@ public class GoalDeatils extends AppCompatActivity {
 
     private int getColor(int progress){
 
-        if ( progress > 0 && progress < 4 )
-            return Color.WHITE;
-        else if  ( progress >= 4  && progress < 7 )
-            return Color.GRAY;
-        else if ( progress >= 7  && progress < 9 )
-            return Color.GREEN;
+        if ( progress > 0 && progress < 3 )
+            return Color.parseColor(getResources().getString(R.string.light_orange_2));
+        else if  ( progress >= 3  && progress < 6 )
+            return Color.parseColor(getResources().getString(R.string.light_orange_3));
+        else if ( progress >= 6  && progress < 9 )
+            return Color.parseColor(getResources().getString(R.string.light_orange_4));
         else
-            return Color.RED;
+            return Color.parseColor(getResources().getString(R.string.light_orange_5));
     }
 
     @Override

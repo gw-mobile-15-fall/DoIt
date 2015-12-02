@@ -86,7 +86,7 @@ public class MyAdapter extends BaseAdapter {
 
         holder.goal.setText(mGoals.get(position));
 
-        holder.progress.setText(context.getResources().getString(R.string.in_step) + mProgress.get(position));
+        holder.progress.setText(context.getResources().getString(R.string.in_step) + ": "+ mProgress.get(position));
         if (l != null) {
             holder.progress.setText(context.getResources().getString(R.string.in_step) + mProgress.get(position));
 
