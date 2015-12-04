@@ -1,0 +1,63 @@
+Parse.Cloud.afterSave("Follow", function(request) {
+    var obj = request.object;
+var query = new Parse.Query(Parse.User);
+query.equalTo('username', obj.get('fromName'));
+// Find devices associated with these users
+var pushQuery = new Parse.Query(Parse.Installation);
+// need to have users linked to installations
+pushQuery.matchesQuery('user', query);
+ 
+ 
+Parse.Push.send({
+    where: pushQuery,
+    data: {
+         
+            alert: " You Followed :"+obj.get('toName'),
+            sound: ""
+         
+    }
+}, {
+    success: function () {
+          
+    },
+    error: function (error) {
+        response.error(error);
+    }
+});
+     
+    
+ 
+});
+ 
+ 
+Parse.Cloud.afterSave("Goals", function(request) {
+ var obj = request.object;
+ var createdAt = obj.get("createdAt");
+var updatedAt = obj.get("updatedAt");
+var objectExisted = (createdAt.getTime() != updatedAt.getTime());
+ 
+  if (objectExisted) { // it existed before 
+      } 
+      else {
+          // it is new 
+        Parse.Push.send({
+          channels: [ obj.get('Category') ], // Set our Installation query
+          data: {
+            alert: "New Goal \"" + obj.get('name')+ "\" added in :"+obj.get('Category')
+          }
+        }, {
+          success: function() {
+            // Push was successful
+          },
+          error: function(error) {
+            // Handle error
+          }
+        });
+     
+    }
+  
+ 
+         
+         
+         
+});
