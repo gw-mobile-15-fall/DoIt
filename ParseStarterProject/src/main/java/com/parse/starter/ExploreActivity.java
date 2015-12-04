@@ -218,41 +218,7 @@ public class ExploreActivity extends Activity {
             }
 
         } else if (intent.getStringExtra("type").equals("history")) {
-            /*title.setText(getResources().getString(R.string.history));
-
-            Log.d("start history", "");
-            List<String> goalsDone = new LinkedList<>();
-            List<String> Duration = new LinkedList<>();
-
-            List<byte[]> goalsIcons = new LinkedList<>();
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("UserWithGoals");
-            query.whereNotEqualTo("timeEnd", "---");
-            query.whereEqualTo("userName", ParseUser.getCurrentUser().getUsername());
-
-            List<ParseObject> goalsList = null;
-            try {
-                goalsList = query.find();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            if (goalsList != null || goalsList.size() > 0) {
-                ParseObject obj = new ParseObject("UsersWithGoals");
-                for (int i = 0; i < goalsList.size(); i++) {
-                    obj = goalsList.get(i);
-                    goalsDone.add(obj.get("name").toString());
-                    goalsIcons.add(obj.getBytes("icon"));
-                    Duration.add(getDifferenceDays(obj.getCreatedAt(), obj.getUpdatedAt()) + " Days");
-
-                }
-
-
-                MyAdapter GoalsDoneAdapter = new MyAdapter(ExploreActivity.this, goalsDone, Duration, goalsIcons, null);
-                ExploreActivity.this.list.setAdapter(GoalsDoneAdapter);
-                ExploreActivity.this.list.setTextFilterEnabled(true);
-
-
-            }*/
-
+            //
 
         }
 
@@ -284,7 +250,7 @@ public class ExploreActivity extends Activity {
             case 10:
                 return getResources().getString(R.string.finished);
             default:
-                return getResources().getString(R.string.in_step) + step + getResources().getString(R.string.of);
+                return getResources().getString(R.string.in_step) +" "+ step +" "+ getResources().getString(R.string.of);
         }
     }
 

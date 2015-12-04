@@ -4,6 +4,7 @@ package com.parse.starter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,7 +25,7 @@ public class LoginOrSignupActivity extends Activity {
     private Button mLoginButton;
     private Button mSignupButton;
     private EditText mEmail;
-    private EditText mPass;
+    private EditText mPass,mPass2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,8 @@ public class LoginOrSignupActivity extends Activity {
         mSignupButton = (Button) findViewById(R.id.creatAccountButton);
         mEmail = (EditText) findViewById(R.id.emailLogin);
         mPass = (EditText) findViewById(R.id.passLogin);
+        mPass.setTransformationMethod(new PasswordTransformationMethod());
+
 
 
         mLoginButton.setOnClickListener(new View.OnClickListener() {
@@ -42,7 +45,9 @@ public class LoginOrSignupActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginOrSignupActivity.this, StarterActivity.class);
                 intent.putExtra(TYPE, LOGIN);
-                ParseUser.logInInBackground("omar", "1234567",
+                String usernametxt = mEmail.getText().toString();
+                String passwordtxt = mPass.getText().toString();
+                ParseUser.logInInBackground(usernametxt, passwordtxt,
                         new LogInCallback() {
                             public void done(ParseUser user, ParseException e) {
                                 if (user != null) {

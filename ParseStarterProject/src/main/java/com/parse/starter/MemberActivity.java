@@ -30,8 +30,8 @@ import java.util.List;
 
 /* TODO this class is very similar to profile activty but without privileges  */
 public class MemberActivity extends Activity {
-    private Button mlogout;
-    private Button mBrowse, mSetting;
+    private Button mFollow;
+    private ImageView mBrowse, mSetting;
     private  ListView mGoalsList;
     private String memberName;
     private  List mUserGoals;
@@ -46,12 +46,12 @@ public class MemberActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
-        mlogout = (Button) findViewById(R.id.log_out);
-        mBrowse = (Button) findViewById(R.id.browse);
-        mBrowse.setVisibility(View.GONE);
-        mSetting = (Button) findViewById(R.id.setting);
-        mSetting.setVisibility(View.GONE);
+        setContentView(R.layout.member_profile);
+        mFollow = (Button) findViewById(R.id.follow);
+       // mBrowse = (ImageView) findViewById(R.id.browse);
+       // mBrowse.setVisibility(View.GONE);
+      //  mSetting = (ImageView) findViewById(R.id.setting);
+      //  mSetting.setVisibility(View.GONE);
         mName = (TextView) findViewById(R.id.nameText);
         mBio = (TextView) findViewById(R.id.bio);
         mImage = (ImageView) findViewById(R.id.userIcon);
@@ -76,10 +76,10 @@ public class MemberActivity extends Activity {
                 if (e == null) {
                     if (catList == null || catList.size() == 0)
                     {
-                         mlogout.setText(getResources().getString(R.string.Follow));
+                         mFollow.setText(getResources().getString(R.string.Follow));
                     }
                     else
-                        mlogout.setText(getResources().getString(R.string.Unfollow));
+                        mFollow.setText(getResources().getString(R.string.Unfollow));
 
                 }
 
@@ -92,19 +92,19 @@ public class MemberActivity extends Activity {
         getFollowers();
 
 
-        mlogout.setOnClickListener(new View.OnClickListener() {
+        mFollow.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
 
                 ParseObject follow = new ParseObject("Follow");
-                if (mlogout.getText().toString().equalsIgnoreCase("follow")) {
+                if (mFollow.getText().toString().equalsIgnoreCase("follow")) {
                     follow.put("from", ParseUser.getCurrentUser());
                     follow.put("to", mCurrent);
                     follow.put(Constants.TO_NAME, memberName);
                     follow.put(Constants.FROM_NAME, ParseUser.getCurrentUser().getUsername().toString());
                     follow.saveInBackground();
                     Toast.makeText(MemberActivity.this, "You follwed : " + memberName, Toast.LENGTH_SHORT).show();
-                    mlogout.setText(getResources().getString(R.string.Unfollow));
+                    mFollow.setText(getResources().getString(R.string.Unfollow));
                     getFollowers();
 
                 } else {
@@ -115,14 +115,14 @@ public class MemberActivity extends Activity {
                         public void done(List<ParseObject> catList, ParseException e) {
                             if (e == null) {
                                 if (catList == null || catList.size() == 0)
-                                    ;//mlogout.setText("follow");
+                                    ;//mFollow.setText("follow");
                                 else {
                                     ParseObject obj = catList.get(0);
 
                                     obj.deleteInBackground();
 
                                     Toast.makeText(MemberActivity.this, getResources().getString(R.string.You_unfollowed) + memberName, Toast.LENGTH_SHORT).show();
-                                    mlogout.setText(getResources().getString(R.string.Follow));
+                                    mFollow.setText(getResources().getString(R.string.Follow));
 
                                 }
 
@@ -136,7 +136,6 @@ public class MemberActivity extends Activity {
                 }
 
 
-
             }
         });
 
@@ -147,7 +146,7 @@ public class MemberActivity extends Activity {
                     mName.setText(mCurrent.get("name").toString());
                     mBio.setText(mCurrent.get("bio").toString());
                     ParseFile imageFile = (ParseFile) mCurrent.get("image");
-                    MemberActivity.this.mTxtuser.setText(mCurrent.get("name").toString());
+                    //MemberActivity.this.mTxtuser.setText(mCurrent.get("name").toString());
 
                     imageFile.getDataInBackground(new GetDataCallback() {
                         public void done(byte[] data, ParseException e) {
@@ -209,8 +208,7 @@ public class MemberActivity extends Activity {
 
         Log.d("found user goals", mUserGoals.size() + "------");
         if (mUserGoals.size() != 0) {
-            mBrowse = (Button) findViewById(R.id.browse);
-            MemberActivity.this.mGoalsList = (ListView) findViewById(R.id.Goals_list);
+             MemberActivity.this.mGoalsList = (ListView) findViewById(R.id.Goals_list);
             listAdapter = new ArrayAdapter(MemberActivity.this, R.layout.group_item, R.id.usergoal, mUserGoals);
             if (listAdapter == null)
                 Log.d("listAdapter == null", "");

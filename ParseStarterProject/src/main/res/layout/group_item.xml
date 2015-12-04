@@ -18,7 +18,7 @@
 
         <ImageView
             android:id="@+id/goal_icon"
-            android:src="@drawable/ios_dev"
+            android:src="@drawable/doit_icon"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginTop="5dp"

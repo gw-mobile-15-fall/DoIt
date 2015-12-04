@@ -17,7 +17,7 @@
         android:layout_height="20dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="40dp"
-        android:src="@drawable/ios_dev"
+        android:src="@drawable/doit_icon"
         android:contentDescription="@string/app_name"/>
 
 </RelativeLayout>

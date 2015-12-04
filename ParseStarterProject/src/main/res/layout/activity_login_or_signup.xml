@@ -43,10 +43,12 @@
         android:layout_height="40dp"
         android:textSize="14dp"
         android:textStyle="normal"
-        android:text="@string/email"
+
         android:textColor="@color/textColor"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="220dp"
+        android:textColorHint="@color/textColor"
+        android:hint="@string/email"
 
         />
 
@@ -56,21 +58,15 @@
         android:layout_height="40dp"
         android:textSize="14dp"
         android:textStyle="normal"
-        android:text="@string/password"
+        android:textColorHint="@color/textColor"
+        android:hint="@string/password"
+
         android:textColor="@color/textColor"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="265dp"
         />
 
-    <TextView
-        android:id="@+id/forgetPassText"
-        android:text="@string/forget_password"
-        android:textColor="@color/dark_orange"
-        android:textSize="14sp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="330dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+
 
     <Button
         android:id="@+id/loginButton"

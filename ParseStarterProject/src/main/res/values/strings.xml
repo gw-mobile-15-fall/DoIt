@@ -21,7 +21,7 @@
     <string name="title_activity_starter">Starter</string>
     <string name="Do_it">DO IT.</string>
     <string name="account_log_in_greeting">LOGIN TO YOUR ACCOUNT</string>
-    <string name="email">Email</string>
+    <string name="email">User Name</string>
     <string name="password">Password</string>
     <string name="forget_password">FORGOT PASSWORD ?</string>
     <string name="login">Login</string>
@@ -65,8 +65,8 @@
     <string name="half_way">half way throgh in</string>
     <string name="almost_finish">yalmost finish</string>
     <string name="finished">finished</string>
-    <string name="in_step">in step</string>
-    <string name="of">of</string>
+    <string name="in_step">in step: </string>
+    <string name="of">of </string>
     <string name="yourChannels">your Channels</string>
     <string name="congrats">congrats</string>
     <string name="no_task_left">Wow! No more tasks!</string>
@@ -99,4 +99,10 @@
     <string name="light_gray">#d3d3d3</string>
     <string name="read"> Read</string>
     <string name="watch">Watch</string>
+    <string name="Cook">Cook</string>
+    <string name="IT">IT</string>
+    <string name="Travel">Travel</string>
+    <string name="name1">name</string>
+    <string name="Category">Category</string>
+
 </resources>

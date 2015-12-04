@@ -35,11 +35,13 @@ public class ListGoals extends Activity{
     private  List<String> mCook = new LinkedList<String>();
     private Map<String, ParseFile> iconCollections  = new LinkedHashMap<String, ParseFile>(); ;
     private boolean flag = true;
+    private String mName,mCategory;
     @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.list_goals);
-
+                mName = getResources().getString(R.string.name1);
+                mCategory = getResources().getString(R.string.Category);
             createGroupList();
 
 
@@ -57,28 +59,28 @@ public class ListGoals extends Activity{
                     Log.d("ParseException", "null ");
 
                     for (int i = 0; i < catList.size(); i++) {
-                        if (!mGroupList.contains(catList.get(i).getString("Category")))
-                            mGroupList.add(catList.get(i).getString("Category"));
+                        if (!mGroupList.contains(catList.get(i).getString(mCategory)))
+                            mGroupList.add(catList.get(i).getString(mCategory));
 
 
-                        if(catList.get(i).getString("Category").equals("IT")) {
-                            mIT.add(catList.get(i).getString("name"));
-                            Log.d("Added to IT", catList.get(i).getString("name"));
-                            iconCollections.put(catList.get(i).getString("name"), catList.get(i).getParseFile("icon"));
-
-                        }
-                        else if(catList.get(i).getString("Category").equals("Travel")) {
-                            mTravel.add(catList.get(i).getString("name"));
-                            Log.d("Added to travel", catList.get(i).getString("name"));
-                            iconCollections.put(catList.get(i).getString("name"),catList.get(i).getParseFile("icon"));
+                        if(catList.get(i).getString(mCategory).equals(getResources().getString(R.string.IT))) {
+                            mIT.add(catList.get(i).getString(mName));
+                            Log.d("Added to IT", catList.get(i).getString(mName));
+                            iconCollections.put(catList.get(i).getString(mName), catList.get(i).getParseFile("icon"));
 
                         }
-                        else  if(catList.get(i).getString("Category").equals("Cook")) {
+                        else if(catList.get(i).getString(mCategory).equals(getResources().getString(R.string.Travel))) {
+                            mTravel.add(catList.get(i).getString(mName));
+                            Log.d("Added to travel", catList.get(i).getString(mName));
+                            iconCollections.put(catList.get(i).getString(mName),catList.get(i).getParseFile("icon"));
+
+                        }
+                        else  if(catList.get(i).getString(mCategory).equals(getResources().getString(R.string.Cook))) {
 
 
-                            mCook.add(catList.get(i).getString("name"));
-                            Log.d("Added to Cook", catList.get(i).getString("name"));
-                            iconCollections.put(catList.get(i).getString("name"),catList.get(i).getParseFile("icon"));
+                            mCook.add(catList.get(i).getString(mName));
+                            Log.d("Added to Cook", catList.get(i).getString(mName));
+                            iconCollections.put(catList.get(i).getString(mName),catList.get(i).getParseFile("icon"));
                         }
                     }
                     Log.d("score", "Retrieved " + mGroupList.size() + " scores");
@@ -97,12 +99,12 @@ public class ListGoals extends Activity{
                                             int groupPosition, int childPosition, long id) {
                     final String selected = (String) expListAdapter.getChild(
                             groupPosition, childPosition);
-                    Toast.makeText(getBaseContext(), selected + "**", Toast.LENGTH_LONG)
+                    Toast.makeText(getBaseContext(), selected , Toast.LENGTH_LONG)
                             .show();
 
 
                     ParseQuery<ParseObject> queryGoal = ParseQuery.getQuery("Goals");
-                    queryGoal.whereEqualTo("name", selected);
+                    queryGoal.whereEqualTo(mName, selected);
                     Log.d("will request", selected);
 
                     queryGoal.findInBackground(new FindCallback<ParseObject>() {
@@ -158,21 +160,21 @@ public class ListGoals extends Activity{
     mGoalsCollection = new LinkedHashMap<String, List<String>>();
 
         for (String Goal : mGroupList) {
-            if (Goal.equals("Cook")) {
+            if (Goal.equals(getResources().getString(R.string.Cook))) {
                 loadChild(mCook);
                 mGoalsCollection.put(Goal, mChildList);
-            } else if (Goal.equals("IT")) {
+            } else if (Goal.equals(getResources().getString(R.string.IT))) {
                 loadChild(mIT);
                 mGoalsCollection.put(Goal, mChildList);
             }
-            else if (Goal.equals("Travel")) {
+            else if (Goal.equals(getResources().getString(R.string.Travel))) {
                 loadChild(mTravel);
                 mGoalsCollection.put(Goal, mChildList);
             }
 
         }
 
-        Log.d("goalsCollection size ", Integer.toString(mGoalsCollection.get("Cook").size()));
+     //   Log.d("goalsCollection size ", Integer.toString(mGoalsCollection.get("Cook").size()));
     }
 
     private void loadChild(List<String> laptopModels) {
